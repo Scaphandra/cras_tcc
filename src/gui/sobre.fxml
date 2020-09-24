@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="169.0" prefWidth="297.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Sobre:">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+      </Label>
+      <Label text="Sistema de Gerenciamento do Centro de Referência da Assistência Social" textAlignment="CENTER" wrapText="true">
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="20.0" top="20.0" />
+         </padding>
+      </Label>
+      <Label text="Versão 1.0" textAlignment="CENTER">
+         <padding>
+            <Insets left="10.0" />
+         </padding>
+      </Label>
+   </children>
+</VBox>
