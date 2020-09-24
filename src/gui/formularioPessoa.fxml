@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-
-<AnchorPane prefHeight="328.0" prefWidth="631.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<AnchorPane prefHeight="328.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.FormularioPessoaControlador">
    <children>
       <GridPane layoutX="20.0" layoutY="22.0" prefHeight="177.0" prefWidth="563.0">
         <columnConstraints>
@@ -35,7 +34,7 @@
             <Label text="R.G.:" GridPane.rowIndex="2" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <TextField>
+                  <TextField fx:id="dataNasc">
                      <HBox.margin>
                         <Insets top="2.0" />
                      </HBox.margin>
@@ -52,14 +51,14 @@
                   </TextField>
                </children>
             </HBox>
-            <TextField prefHeight="25.0" prefWidth="463.0" GridPane.columnIndex="1">
+            <TextField fx:id="nome" prefHeight="25.0" prefWidth="463.0" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
             </TextField>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <TextField prefHeight="25.0" prefWidth="106.0">
+                  <TextField fx:id="rg" prefHeight="25.0" prefWidth="106.0">
                      <HBox.margin>
                         <Insets top="2.0" />
                      </HBox.margin>
@@ -69,7 +68,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="cpf">
                      <HBox.margin>
                         <Insets left="5.0" top="2.0" />
                      </HBox.margin>
@@ -79,7 +78,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField>
+                  <TextField fx:id="nis">
                      <HBox.margin>
                         <Insets left="5.0" top="2.0" />
                      </HBox.margin>
@@ -89,7 +88,7 @@
             <Label text="Cor/Raça:" GridPane.rowIndex="3" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <ComboBox prefHeight="25.0" prefWidth="119.0">
+                  <ComboBox fx:id="boxCor" prefHeight="25.0" prefWidth="119.0">
                      <HBox.margin>
                         <Insets top="3.0" />
                      </HBox.margin>
@@ -99,7 +98,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox prefHeight="25.0" prefWidth="119.0">
+                  <ComboBox fx:id="boxSexo" prefHeight="25.0" prefWidth="119.0">
                      <HBox.margin>
                         <Insets left="5.0" top="3.0" />
                      </HBox.margin>
@@ -109,7 +108,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox prefHeight="25.0" prefWidth="137.0">
+                  <ComboBox fx:id="boxGenero" prefHeight="25.0" prefWidth="137.0">
                      <HBox.margin>
                         <Insets left="5.0" top="3.0" />
                      </HBox.margin>
@@ -119,7 +118,7 @@
             <Label text="Ocupação:" GridPane.rowIndex="4" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <children>
-                  <TextField prefHeight="25.0" prefWidth="247.0">
+                  <TextField fx:id="ocupacao" prefHeight="25.0" prefWidth="247.0">
                      <HBox.margin>
                         <Insets top="2.0" />
                      </HBox.margin>
@@ -129,7 +128,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox prefHeight="25.0" prefWidth="147.0">
+                  <ComboBox fx:id="boxEscolaridade" prefHeight="25.0" prefWidth="147.0">
                      <HBox.margin>
                         <Insets left="5.0" top="3.0" />
                      </HBox.margin>
@@ -139,7 +138,7 @@
             <Label text="Renda:      R$" GridPane.rowIndex="5" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
-                  <TextField prefHeight="25.0" prefWidth="76.0">
+                  <TextField fx:id="renda" prefHeight="25.0" prefWidth="76.0">
                      <HBox.margin>
                         <Insets top="2.0" />
                      </HBox.margin>
@@ -149,7 +148,7 @@
                         <Insets left="20.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <TextField prefHeight="25.0" prefWidth="182.0">
+                  <TextField fx:id="responsave" prefHeight="25.0" prefWidth="182.0">
                      <HBox.margin>
                         <Insets left="5.0" top="2.0" />
                      </HBox.margin>
@@ -185,12 +184,12 @@
       </HBox>
       <HBox layoutX="144.0" layoutY="244.0" prefHeight="56.0" prefWidth="315.0">
          <children>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="81.0" text="Cancelar">
+            <Button fx:id="cancelar" mnemonicParsing="false" onAction="#clicarCancelar" prefHeight="25.0" prefWidth="81.0" text="Cancelar">
                <HBox.margin>
                   <Insets top="20.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="85.0" text="Salvar">
+            <Button fx:id="salvar" mnemonicParsing="false" onAction="#clicarSalvar" prefHeight="25.0" prefWidth="85.0" text="Salvar">
                <HBox.margin>
                   <Insets left="175.0" top="20.0" />
                </HBox.margin>
