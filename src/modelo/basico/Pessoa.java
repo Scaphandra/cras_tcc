@@ -57,6 +57,8 @@ public class Pessoa {
 	
 	private String ocupacao;
 	
+	private String parentesco;
+	
 	@Column(columnDefinition = "boolean default false")
 	private boolean prioritarioSCFV = false;
 	
@@ -87,7 +89,7 @@ public class Pessoa {
 	public Pessoa(String nome, String cpf_pes, String rg, String nis, Date dataNascimento, Sexo sexo, Genero genero,
 			String nomeMae, CorRaca cor, Escolaridade escolaridade_pes, double renda, String ocupacao,
 			boolean prioritarioSCFV, List<Beneficio> beneficios, boolean gestante, boolean comDeficiencia,
-			boolean noSCFV, Familia familia) {
+			boolean noSCFV, Familia familia, String parentesco) {
 		super();
 		this.nome_pes = nome;
 		this.cpf_pes = cpf_pes;
@@ -107,6 +109,7 @@ public class Pessoa {
 		this.comDeficiencia = comDeficiencia;
 		this.noSCFV = noSCFV;
 		this.familia = familia;
+		this.parentesco = parentesco;
 	}
 
 
@@ -366,6 +369,16 @@ public class Pessoa {
 
 	public void setBeneficios_pes(List<Beneficio> beneficios_pes) {
 		this.beneficios_pes = beneficios_pes;
+	}
+
+
+	public String getParentesco() {
+		return parentesco;
+	}
+
+
+	public void setParentesco(String parentesco) {
+		this.parentesco = parentesco;
 	}
 
 

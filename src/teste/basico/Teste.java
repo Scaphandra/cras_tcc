@@ -41,7 +41,7 @@ public class Teste {
 		
 		Pessoa p = new Pessoa();
 		
-		p.setNome("Marcelo");
+		p.setNome_pes("Marcelo");
 		p.setDataNascimento(data);
 		p.setSexo(Sexo.M);
 		p.setGenero(Genero.M);
