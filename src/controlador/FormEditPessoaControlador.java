@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import modelo.basico.Beneficio;
 import modelo.basico.Pessoa;
@@ -26,8 +27,10 @@ import modelo.enumerados.Escolaridade;
 import modelo.enumerados.Genero;
 import modelo.enumerados.Sexo;
 
-public class FormularioPessoaControlador implements Initializable{
+public class FormEditPessoaControlador implements Initializable{
 	
+	@FXML
+	private Label idPessoa;
 	@FXML
 	private CheckBox pbf_b;
 	
@@ -58,6 +61,7 @@ public class FormularioPessoaControlador implements Initializable{
 	private boolean outro;
 	
 	
+	private Pessoa entidade;
 	
 	@FXML
 	private TextField nome;
@@ -141,7 +145,10 @@ public class FormularioPessoaControlador implements Initializable{
 	@FXML
 	private Button cencelar;
 	
-
+	
+	public void setPessoa(Pessoa entidade) {
+		this.entidade = entidade;
+	}
 	
 	@FXML
 	public void clicarSalvar() {
@@ -286,6 +293,15 @@ public class FormularioPessoaControlador implements Initializable{
 		}
 		
 		return beneficios;
+	}
+	
+	public void carregarDadosPessoa() {
+		if(entidade == null) {
+			throw new IllegalStateException("A pessoa não existe no banco de dados");
+		}
+		nome.setText(entidade.getNome_pes());
+		idPessoa.setText(String.valueOf(entidade.getId_pessoa()));
+		
 	}
 	
 	public void salvarPessoa() {

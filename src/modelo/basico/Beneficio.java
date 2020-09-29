@@ -69,6 +69,7 @@ public class Beneficio {
 	public void setFamilia_beneficio(Familia familia_beneficio) {
 		this.familia_beneficio = familia_beneficio;
 	}
+	
 
 	@Override
 	public String toString() {

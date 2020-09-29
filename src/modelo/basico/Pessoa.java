@@ -89,7 +89,7 @@ public class Pessoa {
 	public Pessoa(String nome, String cpf_pes, String rg, String nis, Date dataNascimento, Sexo sexo, Genero genero,
 			String nomeMae, CorRaca cor, Escolaridade escolaridade_pes, double renda, String ocupacao,
 			boolean prioritarioSCFV, List<Beneficio> beneficios, boolean gestante, boolean comDeficiencia,
-			boolean noSCFV, Familia familia, String parentesco) {
+			boolean noSCFV,Familia familia, String parentesco) {
 		super();
 		this.nome_pes = nome;
 		this.cpf_pes = cpf_pes;
