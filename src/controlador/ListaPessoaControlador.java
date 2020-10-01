@@ -11,6 +11,7 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import aplicacao.App;
+import gui.DataChangeListener;
 import gui.util.Alerta;
 import gui.util.Util;
 import javafx.collections.FXCollections;
@@ -31,7 +32,7 @@ import javafx.stage.Stage;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
 
-public class ListaPessoaControlador implements Initializable{
+public class ListaPessoaControlador implements Initializable, DataChangeListener{
 
 	private Pessoa pessoa;
 	
@@ -124,6 +125,7 @@ public class ListaPessoaControlador implements Initializable{
 			
 			FormularioPessoaControlador controlador = loader.getController();
 			controlador.setPessoa(obj);
+			controlador.subscribeDataChangeListener(this);
 			controlador.preencherPessoa();
 			
 			Stage avisoCena = new Stage();
@@ -138,5 +140,11 @@ public class ListaPessoaControlador implements Initializable{
 			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
 			
 		}
+	}
+
+	@Override
+	public void onDataChanged() {
+		carregarPessoas();
+		
 	}
 }

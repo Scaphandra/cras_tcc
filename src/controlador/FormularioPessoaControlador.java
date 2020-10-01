@@ -9,7 +9,8 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import gui.util.Constraints;
+import gui.DataChangeListener;
+import gui.util.MaskFieldUtil;
 import gui.util.Util;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,11 +30,11 @@ import modelo.enumerados.Escolaridade;
 import modelo.enumerados.Genero;
 import modelo.enumerados.Sexo;
 
-import gui.util.*;
-
 public class FormularioPessoaControlador implements Initializable{
 
 	private Pessoa entidade;
+	
+	private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 	
 	@FXML
 	private CheckBox pbf_b;
@@ -153,6 +154,10 @@ public class FormularioPessoaControlador implements Initializable{
 	public void setPessoa(Pessoa entidade) {
 		this.entidade = entidade;
 	}
+	
+	public void subscribeDataChangeListener(DataChangeListener pes) {
+		dataChangeListeners.add(pes);
+	}
 	@FXML
 	public void clicarSalvar(ActionEvent evento) {
 		if(entidade == null) {
@@ -162,7 +167,15 @@ public class FormularioPessoaControlador implements Initializable{
 		System.out.println("salvar");
 		criarListaBeneficio();
 		salvarPessoa();
+		notificar();
 		Util.atual(evento).close();
+		
+	}
+
+	private void notificar() {//na classe que emite evento
+		for(DataChangeListener listener: dataChangeListeners) {
+			listener.onDataChanged();
+		}
 		
 	}
 
@@ -285,12 +298,12 @@ public class FormularioPessoaControlador implements Initializable{
 		List <Beneficio> beneficios = new ArrayList<>();
 		
 		if(pbf == true) {
-			beneficios.add(new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty()? 0.0:Double.parseDouble(valorBolsa.getText()), null));	
+			beneficios.add(new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty()? 0.0:Double.parseDouble(valorBolsa.getText().replace(".","").replace(",",".")), null));	
 		}else {
 			beneficios.add(new Beneficio());
 		}
 		if(bpci == true) {
-			beneficios.add(new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty()? 0.0:Double.parseDouble(valorBpci.getText()), null));	
+			beneficios.add(new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty()? 0.0:Double.parseDouble(valorBpci.getText().replace(".","")), null));	
 		}else {
 			beneficios.add(new Beneficio());
 		
