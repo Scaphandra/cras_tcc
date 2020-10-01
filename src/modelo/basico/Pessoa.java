@@ -269,9 +269,12 @@ public class Pessoa {
 	}
 
 
-	public void setBeneficios(Beneficio beneficio) {
-		this.beneficios_pes.add(beneficio);
-		this.total_beneficios += beneficio.getValor_beneficio();
+	public void setBeneficios(List<Beneficio> beneficios) {
+		this.beneficios_pes = beneficios;
+		for(Beneficio b: beneficios) {
+			
+			this.total_beneficios += b.getValor_beneficio();
+		}
 	}
 
 
@@ -380,6 +383,7 @@ public class Pessoa {
 	public void setParentesco(String parentesco) {
 		this.parentesco = parentesco;
 	}
+	
 
 
 	@Override

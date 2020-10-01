@@ -12,7 +12,7 @@ import javax.persistence.TypedQuery;
 
 import aplicacao.App;
 import gui.util.Alerta;
-import gui.util.CenaAtual;
+import gui.util.Util;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,6 +47,9 @@ public class ListaPessoaControlador implements Initializable{
 	@FXML 
 	private TableColumn<Pessoa, Familia> colunaIdFamilia;
 	
+	@FXML 
+	private TableColumn <Pessoa, Pessoa> colunaSelecionar;
+	
 	@FXML
 	private Button selecionar;
 	
@@ -62,8 +65,15 @@ public class ListaPessoaControlador implements Initializable{
 	
 	@FXML
 	public void clicarNova(ActionEvent evento) {
-		Stage parentStage = CenaAtual.atual(evento);
-		criarFormularioAviso("/gui/formularioPessoa.fxml", parentStage);
+		Stage parentStage = Util.atual(evento);
+		Pessoa obj = new Pessoa();
+		criarFormularioAviso(obj, "/gui/formularioPessoa.fxml", parentStage);
+		
+	}
+	public void clicarEditar(ActionEvent evento) {
+		Stage parentStage = Util.atual(evento);
+		Pessoa obj = new Pessoa();
+		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
 		
 	}
 
@@ -106,11 +116,15 @@ public class ListaPessoaControlador implements Initializable{
 		tabelaPessoa.setItems(obsPessoa);
 	}
 	
-	private void criarFormularioAviso(String nomeView, Stage parentStage) {
+	private void criarFormularioAviso(Pessoa obj, String nomeView, Stage parentStage) {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
 			Pane pane = loader.load();
+			
+			FormularioPessoaControlador controlador = loader.getController();
+			controlador.setPessoa(obj);
+			controlador.preencherPessoa();
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Digite os dados para inclusão de pessoa");

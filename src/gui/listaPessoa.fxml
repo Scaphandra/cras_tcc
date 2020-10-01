@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -19,7 +20,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
           <Button fx:id="nova" mnemonicParsing="false" onAction="#clicarNova" text="Nova" />
-            <Button fx:id="selecionar" layoutX="58.0" layoutY="13.0" mnemonicParsing="false" onAction="#clicarSelecionar" text="Selecionar" />
+            <Button fx:id="editar" mnemonicParsing="false" onAction="#clicarEditar" text="editar" />
         </items>
       </ToolBar>
       <TableView fx:id="tabelaPessoa" prefHeight="200.0" prefWidth="200.0">
@@ -29,6 +30,7 @@
             <TableColumn fx:id="colunaIdFamilia" prefWidth="79.99996948242188" text="Família" />
         </columns>
       </TableView>
+      <HBox prefHeight="47.0" prefWidth="595.0" />
    </children>
    <padding>
       <Insets left="5.0" top="5.0" />
