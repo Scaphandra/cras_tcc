@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import util.*?>
 
 <AnchorPane prefHeight="453.0" prefWidth="634.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.FormularioPessoaControlador">
    <children>
@@ -37,7 +36,7 @@
             <Label text="R.G.:" GridPane.rowIndex="2" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <TextField fx:id="dataNasc">
+                  <TextField fx:id="dataNasc" promptText="*">
                      <HBox.margin>
                         <Insets top="2.0" />
                      </HBox.margin>
@@ -54,7 +53,7 @@
                   </TextField>
                </children>
             </HBox>
-            <TextField fx:id="nome" prefHeight="25.0" prefWidth="463.0" GridPane.columnIndex="1">
+            <TextField fx:id="nome" prefHeight="25.0" prefWidth="463.0" promptText="*" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
@@ -91,7 +90,7 @@
             <Label text="Cor/Raça:" GridPane.rowIndex="3" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <ComboBox fx:id="boxCor" onAction="#clicarBoxCor" prefHeight="25.0" prefWidth="119.0">
+                  <ComboBox fx:id="boxCor" onAction="#clicarBoxCor" prefHeight="25.0" prefWidth="119.0" promptText="*">
                      <HBox.margin>
                         <Insets top="3.0" />
                      </HBox.margin>
@@ -101,7 +100,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="boxSexo" onAction="#clicarBoxSexo" prefHeight="25.0" prefWidth="119.0">
+                  <ComboBox fx:id="boxSexo" onAction="#clicarBoxSexo" prefHeight="25.0" prefWidth="119.0" promptText="*">
                      <HBox.margin>
                         <Insets left="5.0" top="3.0" />
                      </HBox.margin>
@@ -111,7 +110,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="boxGenero" onAction="#clicarBoxGenero" prefHeight="25.0" prefWidth="143.0">
+                  <ComboBox fx:id="boxGenero" onAction="#clicarBoxGenero" prefHeight="25.0" prefWidth="143.0" promptText="*">
                      <HBox.margin>
                         <Insets left="5.0" top="3.0" />
                      </HBox.margin>
@@ -131,7 +130,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="boxEscolaridade" onAction="#clicarBoxEscolaridade" prefHeight="25.0" prefWidth="149.0">
+                  <ComboBox fx:id="boxEscolaridade" onAction="#clicarBoxEscolaridade" prefHeight="25.0" prefWidth="149.0" promptText="*">
                      <HBox.margin>
                         <Insets left="5.0" top="3.0" />
                      </HBox.margin>
@@ -241,7 +240,7 @@
                               <Insets top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="valorBolsa" prefHeight="24.0" prefWidth="48.0">
+                        <TextField fx:id="valorBolsa" disable="true" prefHeight="24.0" prefWidth="48.0">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
@@ -258,7 +257,7 @@
                               <Insets top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="valorBpci" prefHeight="25.0" prefWidth="45.0">
+                        <TextField fx:id="valorBpci" disable="true" prefHeight="25.0" prefWidth="45.0">
                            <HBox.margin>
                               <Insets left="5.0" top="2.0" />
                            </HBox.margin>
@@ -272,7 +271,7 @@
                               <Insets top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="valorBpcd" prefHeight="25.0" prefWidth="47.0">
+                        <TextField fx:id="valorBpcd" disable="true" prefHeight="25.0" prefWidth="47.0">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
@@ -286,7 +285,7 @@
                               <Insets top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="valorNv" prefHeight="25.0" prefWidth="46.0">
+                        <TextField fx:id="valorNv" disable="true" prefHeight="25.0" prefWidth="46.0">
                            <HBox.margin>
                               <Insets left="5.0" top="2.0" />
                            </HBox.margin>
@@ -300,7 +299,7 @@
                               <Insets top="5.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="valorOutro" prefHeight="25.0" prefWidth="44.0">
+                        <TextField fx:id="valorOutro" disable="true" prefHeight="25.0" prefWidth="44.0">
                            <HBox.margin>
                               <Insets left="5.0" top="2.0" />
                            </HBox.margin>
@@ -311,5 +310,6 @@
             </GridPane>
          </children>
       </HBox>
+      <Label layoutX="20.0" layoutY="5.0" text="Campos com asterisco são obrigatórios (*)" textFill="#b6b2b2" />
    </children>
 </AnchorPane>

@@ -125,7 +125,6 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 			
 			FormularioPessoaControlador controlador = loader.getController();
 			controlador.setPessoa(obj);
-			controlador.subscribeDataChangeListener(this);
 			controlador.preencherPessoa();
 			
 			Stage avisoCena = new Stage();

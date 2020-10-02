@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import gui.DataChangeListener;
+import gui.util.Constraints;
 import gui.util.MaskFieldUtil;
 import gui.util.Util;
 import javafx.collections.FXCollections;
@@ -155,20 +156,19 @@ public class FormularioPessoaControlador implements Initializable{
 		this.entidade = entidade;
 	}
 	
-	public void subscribeDataChangeListener(DataChangeListener pes) {
-		dataChangeListeners.add(pes);
-	}
+	
 	@FXML
 	public void clicarSalvar(ActionEvent evento) {
 		if(entidade == null) {
 			throw new IllegalStateException("Pessoa não está no banco");
 		}
 		
-		System.out.println("salvar");
-		criarListaBeneficio();
-		salvarPessoa();
-		notificar();
-		Util.atual(evento).close();
+		
+			criarListaBeneficio();
+			salvarPessoa();
+			notificar();
+			Util.atual(evento).close();
+		
 		
 	}
 
@@ -188,6 +188,7 @@ public class FormularioPessoaControlador implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		initializeNodes();
+		
 			
 	}
 	
@@ -195,26 +196,54 @@ public class FormularioPessoaControlador implements Initializable{
 	public void clicarBeneficioBpci() {
 		
 		bpci = bpci_b.selectedProperty().getValue();
-		System.out.println(bpci);
+		if(bpci == false) {
+			valorBpci.setDisable(true);
+		}else {
+			valorBpci.setDisable(false);
+			
+		}
 	}
 	
 	
 	@FXML
 	public void clicarBeneficioPbf() {
 		pbf = (boolean)pbf_b.selectedProperty().getValue();
+		if(pbf == false){
+			valorBolsa.setDisable(true);
+		}else {
+			valorBolsa.setDisable(false);
+			
+		}
 		
 	}
 	@FXML
 	public void clicarBeneficioBpcd() {
 		bpcd = (boolean) bpcd_b.selectedProperty().getValue();
+		if(bpcd == false) {
+			valorBpcd.setDisable(true);
+		}else {
+			valorBpcd.setDisable(false);
+			
+		}
 	}
 	@FXML
 	public void clicarBeneficioNv() {
 		nv = (boolean) nova_b.selectedProperty().getValue();
+		if(nv == false) {
+			valorNv.setDisable(true);
+		}else {
+			valorNv.setDisable(false);
+			
+		}
 	}
 	@FXML
 	public void clicarBeneficioOutro() {
 		outro = (boolean) outro_b.selectedProperty().getValue();
+		if(outro == false) {
+			valorOutro.setDisable(true);
+		}else {
+			valorOutro.setDisable(false);
+		}
 	}
 	@FXML
 	public void clicarGestante() {
@@ -261,7 +290,7 @@ public class FormularioPessoaControlador implements Initializable{
 	}
 	
 	private void initializeNodes() {
-		
+		Constraints.setTextFieldMaxLength(this.nis, 11);
 		carregarComboBox();
 		MaskFieldUtil.cpfField(this.cpf);
 		MaskFieldUtil.dateField(this.dataNasc);
@@ -298,29 +327,39 @@ public class FormularioPessoaControlador implements Initializable{
 		List <Beneficio> beneficios = new ArrayList<>();
 		
 		if(pbf == true) {
-			beneficios.add(new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty()? 0.0:Double.parseDouble(valorBolsa.getText().replace(".","").replace(",",".")), null));	
+			beneficios.add(new Beneficio(BeneficioTipo.PBF,valorBolsa.getText()
+					.isEmpty()? 0.0:Double.parseDouble(valorBolsa.getText()
+							.replace(".","").replace(",",".")), null));	
 		}else {
 			beneficios.add(new Beneficio());
 		}
 		if(bpci == true) {
-			beneficios.add(new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty()? 0.0:Double.parseDouble(valorBpci.getText().replace(".","")), null));	
+			beneficios.add(new Beneficio(BeneficioTipo.BPCI, valorBpci.getText()
+					.isEmpty()? 0.0:Double.parseDouble(valorBpci.getText()
+							.replace(".","")), null));	
 		}else {
 			beneficios.add(new Beneficio());
 		
 		}
 		if(bpcd == true) {
-			beneficios.add(new Beneficio(BeneficioTipo.BPCDEF, valorBpcd.getText().isEmpty()? 0.0:Double.parseDouble(valorBpcd.getText()), null));	
+			beneficios.add(new Beneficio(BeneficioTipo.BPCDEF, valorBpcd.getText()
+					.isEmpty()? 0.0:Double.parseDouble(valorBpcd.getText()
+							.replace(".","").replace(",",".")), null));	
 		}else {
 			beneficios.add(new Beneficio());
 		}
 		if(nv == true) {
-			beneficios.add(new Beneficio(BeneficioTipo.NV, valorNv.getText().isEmpty()? 0.0:Double.parseDouble(valorNv.getText()), null));	
+			beneficios.add(new Beneficio(BeneficioTipo.NV, valorNv.getText()
+					.isEmpty()? 0.0:Double.parseDouble(valorNv.getText()
+							.replace(".","").replace(",",".")), null));	
 		}else {
 			beneficios.add(new Beneficio());
 			
 		}
 		if(outro== true) {
-			beneficios.add(new Beneficio(BeneficioTipo.O, valorOutro.getText().isEmpty()? 0.0:Double.parseDouble(valorOutro.getText()), null));	
+			beneficios.add(new Beneficio(BeneficioTipo.O, valorOutro.getText()
+					.isEmpty()? 0.0:Double.parseDouble(valorOutro.getText()
+							.replace(".","").replace(",",".")), null));	
 		}else {
 			beneficios.add(new Beneficio());
 			
@@ -363,7 +402,6 @@ public class FormularioPessoaControlador implements Initializable{
 	
 	public void salvarPessoa() {
 		
-		System.out.println(dataNasc.getText());
 		
 		List<Beneficio> b = criarListaBeneficio();
 		
@@ -380,6 +418,8 @@ public class FormularioPessoaControlador implements Initializable{
 		}
 		DAO<Pessoa> dao = new DAO<>(Pessoa.class);
 		Pessoa p = new Pessoa();
+		p.setNome_pes(nome.getText());
+		
 		p.setNome_pes(nome.getText());
 		cpf.textProperty().addListener((observable, ovalue, nvalue)->{
 				if(cpf.getText().isEmpty()) {
@@ -410,21 +450,12 @@ public class FormularioPessoaControlador implements Initializable{
 			}
 		});
 		renda.textProperty().addListener((observable, ovalue, nvalue)->{
-//			CurrencyField cur = new CurrencyField(new Locale("pt", "BR"));
-//			cur.amountProperty().addListener(new ChangeListener<Number>() {
-//
-//				@Override
-//				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-//					System.out.println(newValue.doubleValue());
-//					
-//				}
-//				
-//			});
+
 			if(renda.getText().isEmpty()) {
 				p.setRenda(0.0);
 			}else {
 				
-				p.setRenda(Double.parseDouble(renda.getText()));
+				p.setRenda(Double.parseDouble(renda.getText().replace(".","").replace(",",".")));
 			}
 			
 		});
@@ -459,5 +490,7 @@ public class FormularioPessoaControlador implements Initializable{
 		dao.fecharTransacao();
 		dao.fechar();
 	}
+	
+
 
 }
