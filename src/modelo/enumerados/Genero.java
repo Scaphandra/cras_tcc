@@ -1,7 +1,7 @@
 package modelo.enumerados;
 
 public enum Genero {
-	M("Masculino"), F("Feminino"), O("Outro");
+	F("Feminino"), M("Masculino"), O("Outro");
 	
 	private String descricao;
 	

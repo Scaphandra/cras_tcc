@@ -1,7 +1,7 @@
 package modelo.enumerados;
 
 public enum CorRaca {
-	PRETA("Preta"), BRANCA("Branca"), PARDA("Parda"), INDIGENA("Indígena"), AMARELA("Amarela"), NAODECLARADA("Não declarada");
+	NAODECLARADA("Não declarada"), PRETA("Preta"), BRANCA("Branca"), PARDA("Parda"), INDIGENA("Indígena"), AMARELA("Amarela");
 	
 private String descricao;
 	

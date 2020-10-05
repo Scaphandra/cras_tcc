@@ -14,7 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
+import modelo.enumerados.BeneficioTipo;
 import modelo.enumerados.CorRaca;
 import modelo.enumerados.Escolaridade;
 import modelo.enumerados.Genero;
@@ -32,6 +34,7 @@ public class Pessoa {
 	@ManyToOne
 	private GrupoSCFV grupo_pes;
 	
+	@NotNull
 	private String nome_pes;
 	
 	private String cpf_pes;
@@ -40,15 +43,19 @@ public class Pessoa {
 	
 	private String nis;
 	
+
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
 	
+
 	private Sexo sexo;
 	
+
 	private Genero genero;
 	
 	private String nomeMae;
 	
+
 	private CorRaca cor;
 	
 	private Escolaridade escolaridade_pes;
@@ -366,11 +373,22 @@ public class Pessoa {
 
 
 	public List<Beneficio> getBeneficios_pes() {
+		
 		return beneficios_pes;
+	}
+	
+	public double retornarValorBeneficio(BeneficioTipo tipo) {
+		for(Beneficio b: beneficios_pes) {
+			if(b.getNome_beneficio() == tipo) {
+				return b.getValor_beneficio();
+			}
+		}
+		return 0.0;
 	}
 
 
 	public void setBeneficios_pes(List<Beneficio> beneficios_pes) {
+		
 		this.beneficios_pes = beneficios_pes;
 	}
 

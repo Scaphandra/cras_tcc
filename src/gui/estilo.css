@@ -18,5 +18,10 @@
 	
 }
 
+.botao-cancela{
+	-fx-border-color: linear-gradient(#c21500,#ffc500);
+	-fx-font-weight: bold;
+}
+
 
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
@@ -31,12 +32,12 @@
             <RowConstraints maxHeight="42.666656494140625" minHeight="10.0" prefHeight="28.666666666666657" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="Nome:" />
-            <Label text="Data de Nasc.:" GridPane.rowIndex="1" />
+            <Label text="Nome: *" />
+            <Label text="Data de Nasc.: *" GridPane.rowIndex="1" />
             <Label text="R.G.:" GridPane.rowIndex="2" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <TextField fx:id="dataNasc" promptText="*">
+                  <TextField fx:id="dataNasc">
                      <HBox.margin>
                         <Insets top="2.0" />
                      </HBox.margin>
@@ -53,7 +54,7 @@
                   </TextField>
                </children>
             </HBox>
-            <TextField fx:id="nome" prefHeight="25.0" prefWidth="463.0" promptText="*" GridPane.columnIndex="1">
+            <TextField fx:id="nome" prefHeight="25.0" prefWidth="463.0" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets right="5.0" />
                </GridPane.margin>
@@ -87,30 +88,33 @@
                   </TextField>
                </children>
             </HBox>
-            <Label text="Cor/Raça:" GridPane.rowIndex="3" />
+            <Label text="Cor/Raça: *" GridPane.rowIndex="3" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <ComboBox fx:id="boxCor" onAction="#clicarBoxCor" prefHeight="25.0" prefWidth="119.0" promptText="*">
+                  <ComboBox fx:id="boxCor" onAction="#clicarBoxCor" prefHeight="25.0" prefWidth="119.0">
                      <HBox.margin>
                         <Insets top="3.0" />
                      </HBox.margin>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
                   </ComboBox>
-                  <Label text="Sexo:">
+                  <Label text="Sexo: *">
                      <HBox.margin>
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="boxSexo" onAction="#clicarBoxSexo" prefHeight="25.0" prefWidth="119.0" promptText="*">
+                  <ComboBox fx:id="boxSexo" onAction="#clicarBoxSexo" prefHeight="25.0" prefWidth="119.0">
                      <HBox.margin>
                         <Insets left="5.0" top="3.0" />
                      </HBox.margin>
                   </ComboBox>
-                  <Label text="Gênero:">
+                  <Label text="Gênero: *">
                      <HBox.margin>
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="boxGenero" onAction="#clicarBoxGenero" prefHeight="25.0" prefWidth="143.0" promptText="*">
+                  <ComboBox fx:id="boxGenero" onAction="#clicarBoxGenero" prefHeight="25.0" prefWidth="125.0">
                      <HBox.margin>
                         <Insets left="5.0" top="3.0" />
                      </HBox.margin>
@@ -130,7 +134,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </Label>
-                  <ComboBox fx:id="boxEscolaridade" onAction="#clicarBoxEscolaridade" prefHeight="25.0" prefWidth="149.0" promptText="*">
+                  <ComboBox fx:id="boxEscolaridade" onAction="#clicarBoxEscolaridade" prefHeight="25.0" prefWidth="149.0">
                      <HBox.margin>
                         <Insets left="5.0" top="3.0" />
                      </HBox.margin>

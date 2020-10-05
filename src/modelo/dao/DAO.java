@@ -59,7 +59,7 @@ public class DAO <E> {
 		return this.abrirTransacao().incluir(entidade).fecharTransacao();
 	}
 	//estava Object id ao invés de Long id
-	public E obterPorID(Long id) {
+	public E obterPorID(Object id) {
 		return em.find(classe, id);
 	}
 	

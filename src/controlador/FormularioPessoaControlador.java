@@ -8,7 +8,8 @@ import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.ResourceBundle;
-
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
 import gui.DataChangeListener;
 import gui.util.Constraints;
 import gui.util.MaskFieldUtil;
@@ -180,9 +181,9 @@ public class FormularioPessoaControlador implements Initializable{
 	}
 
 	@FXML
-	public void clicarCancelar() {
+	public void clicarCancelar(ActionEvent evento) {
 		
-		System.out.println(pbf_b.selectedProperty().getValue());
+		Util.atual(evento).close();
 	}
 	
 	@Override
@@ -306,18 +307,22 @@ public class FormularioPessoaControlador implements Initializable{
 		EnumSet<CorRaca> cores = EnumSet.allOf(CorRaca.class);
 		obsCor = FXCollections.observableArrayList(cores);
 		boxCor.setItems(obsCor);
+		boxCor.getSelectionModel().selectFirst();boxCor.getSelectionModel().selectFirst();
 		
 		EnumSet<Sexo> sexos = EnumSet.allOf(Sexo.class);
 		obsSexo = FXCollections.observableArrayList(sexos);
 		boxSexo.setItems(obsSexo);
+		boxSexo.getSelectionModel().selectFirst();
 		
 		EnumSet<Genero> gens = EnumSet.allOf(Genero.class);
 		obsGenero = FXCollections.observableArrayList(gens);
 		boxGenero.setItems(obsGenero);
+		boxGenero.getSelectionModel().selectFirst();
 		
 		EnumSet<Escolaridade> esc = EnumSet.allOf(Escolaridade.class);
 		obsEscolaridade = FXCollections.observableArrayList(esc);
 		boxEscolaridade.setItems(obsEscolaridade);
+		boxEscolaridade.getSelectionModel().selectFirst();
 		
 
 	}
@@ -395,14 +400,36 @@ public class FormularioPessoaControlador implements Initializable{
 		renda.setText(String.valueOf(entidade.getCpf_pes()));
 		ocupacao.setText(entidade.getOcupacao());
 		parentesco.setText(entidade.getParentesco());
-	
+		
+		boxSexo.getSelectionModel().select(entidade.getSexo());
+		boxCor.getSelectionModel().select(entidade.getCor());
+		boxGenero.getSelectionModel().select(entidade.getGenero());
+		boxEscolaridade.getSelectionModel().select(entidade.getEscolaridade_pes());
+		
+		deficiencia.setSelected(entidade.isComDeficiencia());
+		gestante.setSelected(entidade.isGestante());
+		prioritario.setSelected(entidade.isPrioritarioSCFV());
+		scfv.setSelected(entidade.isNoSCFV());
+		
+		pbf_b.setSelected(pbf);
+		bpci_b.setSelected(bpci);
+		bpcd_b.setSelected(bpcd);
+		nova_b.setSelected(nv);
+		outro_b.setSelected(outro);
+		
+		valorBolsa.setText(String.valueOf(entidade.retornarValorBeneficio(BeneficioTipo.PBF)));
+		valorBpci.setText(String.valueOf(entidade.retornarValorBeneficio(BeneficioTipo.BPCI)));
+		valorBpcd.setText(String.valueOf(entidade.retornarValorBeneficio(BeneficioTipo.BPCDEF)));
+		valorNv.setText(String.valueOf(entidade.retornarValorBeneficio(BeneficioTipo.NV)));
+		valorOutro.setText(String.valueOf(entidade.retornarValorBeneficio(BeneficioTipo.O)));
 		
 	}
 	
 	
 	public void salvarPessoa() {
 		
-		
+		ValidationSupport validarTxt = new ValidationSupport();
+		validarTxt.registerValidator(nome, Validator.createEmptyValidator("Campo Obrigatório"));
 		List<Beneficio> b = criarListaBeneficio();
 		
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -419,61 +446,13 @@ public class FormularioPessoaControlador implements Initializable{
 		DAO<Pessoa> dao = new DAO<>(Pessoa.class);
 		Pessoa p = new Pessoa();
 		p.setNome_pes(nome.getText());
-		
-		p.setNome_pes(nome.getText());
-		cpf.textProperty().addListener((observable, ovalue, nvalue)->{
-				if(cpf.getText().isEmpty()) {
-					p.setCpf_pes("Não informado");
-				}else {
-					p.setCpf_pes(cpf.getText());
-				}
-			});
-		rg.textProperty().addListener((observable, ovalue, nvalue)->{
-			if(rg.getText().isEmpty()) {
-				p.setRg("Não informado");
-			}else {
-				p.setRg(rg.getText());
-			}
-		});
-		nis.textProperty().addListener((observable, ovalue, nvalue)->{
-			if(nis.getText().isEmpty()) {
-				p.setNis("Não informado");
-			}else {
-				p.setNis(nis.getText());
-			}
-		});
-		nomeMae.textProperty().addListener((observable, ovalue, nvalue)->{
-			if(nomeMae.getText().isEmpty()) {
-				p.setNomeMae("Não informado");
-			}else {
-				p.setNomeMae(nomeMae.getText());
-			}
-		});
-		renda.textProperty().addListener((observable, ovalue, nvalue)->{
-
-			if(renda.getText().isEmpty()) {
-				p.setRenda(0.0);
-			}else {
-				
-				p.setRenda(Double.parseDouble(renda.getText().replace(".","").replace(",",".")));
-			}
-			
-		});
-		ocupacao.textProperty().addListener((observable, ovalue, nvalue)->{
-			if(ocupacao.getText().isEmpty()) {
-				p.setOcupacao("Sem ocupação");
-			}else {
-				p.setOcupacao(ocupacao.getText());
-			}
-		});
-		parentesco.textProperty().addListener((observable, ovalue, nvalue)->{
-			if(parentesco.getText().isEmpty()) {
-				p.setParentesco("Não informado");
-			}else {
-				p.setParentesco(parentesco.getText());
-			}
-		});
-			
+		p.setCpf_pes(cpf.getText().isEmpty()?"Não informado":cpf.getText());
+		p.setRg(rg.getText().isEmpty()?"Não informado":rg.getText());
+		p.setNis(nis.getText().isEmpty()?"Não informado":nis.getText());
+		p.setNomeMae(nomeMae.getText().isEmpty()?"Não informado":nomeMae.getText());
+		p.setRenda(renda.getText().isEmpty()?0.0:Double.parseDouble(renda.getText().replace(".","").replace(",",".")));
+		p.setOcupacao(ocupacao.getText().isEmpty()?"Não informado":ocupacao.getText());
+		p.setParentesco(parentesco.getText().isEmpty()?"Não informado":parentesco.getText());
 		p.setDataNascimento(data);
 		p.setSexo(sexo); 
 		p.setGenero(genero);

@@ -1,15 +1,9 @@
 package teste.basico;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
-import modelo.basico.Endereco;
 import modelo.basico.Pessoa;
 import modelo.dao.DAO;
-import modelo.enumerados.CorRaca;
-import modelo.enumerados.EnderecoTipo;
-import modelo.enumerados.Genero;
-import modelo.enumerados.Sexo;
 
 public class Teste {
 	/*
@@ -22,10 +16,22 @@ public class Teste {
 	
 	public static void main(String[] args) {
 		
+		Pessoa pes = new Pessoa();
 		
-		DAO <Pessoa> dao = new DAO<>(Pessoa.class);
+		DAO <Pessoa> dao = new DAO <> (Pessoa.class);
+		
+		pes = dao.obterPorID(4L);
 		
 		
+			
+			System.out.println(pes);
+		
+		
+		//Pessoa p = dao.obterPorID(4L);
+		
+		
+
+		/*
 		Endereco end = new Endereco(EnderecoTipo.RUA, "Francisco Portela", 500, "Sobrado", "Botafogo", "24435-200");
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		String dataStr = "10/10/1979";
@@ -51,7 +57,7 @@ public class Teste {
 		dao.processarTudo(p);
 		dao.fechar();
 		
-		/*
+		
 		 * 
 		 * Tecnico coo = new Tecnico();
 		daoTec.abrirTransacao();

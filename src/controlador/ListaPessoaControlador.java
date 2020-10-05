@@ -14,6 +14,8 @@ import aplicacao.App;
 import gui.DataChangeListener;
 import gui.util.Alerta;
 import gui.util.Util;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,17 +26,22 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
+import modelo.dao.DAO;
 
 public class ListaPessoaControlador implements Initializable, DataChangeListener{
 
 	private Pessoa pessoa;
+	
+	private Object valor;
 	
 	@FXML
 	private TableView <Pessoa> tabelaPessoa;
@@ -60,7 +67,7 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 	private ObservableList<Pessoa> obsPessoa;
 	
 	@FXML
-	public void clicarSelecionar() {
+	public void clicarEditar() {
 		System.out.println("selecionei");
 	}
 	
@@ -73,15 +80,18 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 	}
 	public void clicarEditar(ActionEvent evento) {
 		Stage parentStage = Util.atual(evento);
-		Pessoa obj = new Pessoa();
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("cras_tcc");
+		EntityManager em = emf.createEntityManager();
+		
+		Pessoa obj = (Pessoa) valor;
+		pessoa = em.find(Pessoa.class, obj.getId_pessoa());
+		System.out.println(obj);
+		
 		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
 		
 	}
 
-	
-	
-	
-	
 	public void setPessoa(Pessoa pessoa) {
 				
 		this.pessoa = pessoa;
@@ -102,6 +112,22 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		
 		Stage cena = (Stage) App.getCena().getWindow();
 		tabelaPessoa.prefHeightProperty().bind(cena.heightProperty());
+		tabelaPessoa.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+				TableViewSelectionModel selectionModel = tabelaPessoa.getSelectionModel();
+		        Object item = selectionModel.getSelectedItem();
+		   //     TablePosition tablePosition = (TablePosition) item;
+		  //      Object val = tablePosition.getTableColumn().getCellData(newValue);
+		        System.out.println("Selected Value" + item);
+		        int id = selectionModel.getSelectedIndex();
+		        System.out.println(item.toString().substring(18,19));
+		        valor = item;
+				
+			}
+			
+		});
 		
 	}
 	

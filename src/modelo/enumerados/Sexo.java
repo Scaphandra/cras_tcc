@@ -2,7 +2,7 @@ package modelo.enumerados;
 
 public enum Sexo {
 	
-	M("Masculino"), F("Feminino");
+	F("Feminino"), M("Masculino");
 	
 	private String descricao;
 	
