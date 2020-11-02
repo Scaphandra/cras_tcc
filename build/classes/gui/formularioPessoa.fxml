@@ -35,6 +35,11 @@
             <Label text="Nome: *" />
             <Label text="Data de Nasc.: *" GridPane.rowIndex="1" />
             <Label text="R.G.:" GridPane.rowIndex="2" />
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <TextField fx:id="nome" prefHeight="25.0" prefWidth="484.0" />
+               </children>
+            </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                   <TextField fx:id="dataNasc">
@@ -54,11 +59,6 @@
                   </TextField>
                </children>
             </HBox>
-            <TextField fx:id="nome" prefHeight="25.0" prefWidth="463.0" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets right="5.0" />
-               </GridPane.margin>
-            </TextField>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <TextField fx:id="rg" prefHeight="25.0" prefWidth="106.0">

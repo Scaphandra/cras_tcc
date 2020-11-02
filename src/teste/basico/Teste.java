@@ -1,6 +1,6 @@
 package teste.basico;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 import modelo.basico.Pessoa;
 import modelo.dao.DAO;
@@ -20,11 +20,13 @@ public class Teste {
 		
 		DAO <Pessoa> dao = new DAO <> (Pessoa.class);
 		
-		pes = dao.obterPorID(4L);
+		pes = dao.obterPorID(Pessoa.class, 4L);
 		
 		
 			
 			System.out.println(pes);
+			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+			System.out.println(form.format(pes.getDataNascimento()).toString());
 		
 		
 		//Pessoa p = dao.obterPorID(4L);

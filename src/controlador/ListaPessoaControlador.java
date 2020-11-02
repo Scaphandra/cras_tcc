@@ -26,7 +26,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -35,7 +34,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
-import modelo.dao.DAO;
+import modelo.enumerados.CorRaca;
+import modelo.enumerados.Genero;
+import modelo.enumerados.Sexo;
+
+//observer
 
 public class ListaPessoaControlador implements Initializable, DataChangeListener{
 
@@ -62,22 +65,24 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 	private Button selecionar;
 	
 	@FXML
-	private Button nova;
-	
-	private ObservableList<Pessoa> obsPessoa;
+	private Button inserir;
 	
 	@FXML
-	public void clicarEditar() {
-		System.out.println("selecionei");
-	}
+	private Button excluir;
+	
+	private ObservableList<Pessoa> obsPessoa;
 	
 	@FXML
 	public void clicarNova(ActionEvent evento) {
 		Stage parentStage = Util.atual(evento);
 		Pessoa obj = new Pessoa();
+		obj.setCor(CorRaca.NAODECLARADA);
+		obj.setSexo(Sexo.F);
+		obj.setGenero(Genero.F);
 		criarFormularioAviso(obj, "/gui/formularioPessoa.fxml", parentStage);
 		
 	}
+	@FXML
 	public void clicarEditar(ActionEvent evento) {
 		Stage parentStage = Util.atual(evento);
 		EntityManagerFactory emf = Persistence
@@ -87,10 +92,33 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		Pessoa obj = (Pessoa) valor;
 		pessoa = em.find(Pessoa.class, obj.getId_pessoa());
 		System.out.println(obj);
-		
 		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
 		
 	}
+	
+	@FXML
+	public void clicarExcluir(ActionEvent evento) {
+		Stage parentStage = Util.atual(evento);
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("cras_tcc");
+		EntityManager em = emf.createEntityManager();
+		
+		Pessoa obj = (Pessoa) valor;
+		pessoa = em.find(Pessoa.class, obj.getId_pessoa());
+		em.getTransaction().begin();
+		System.out.println(obj);
+		//criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
+		System.out.println("clicou excluir");
+		Alerta.showAlert("Exclusão de Pessoa",null, "Esta operação exclui a pessoa do banco de dados",
+				AlertType.CONFIRMATION);
+		em.remove(pessoa);
+		em.getTransaction().commit();
+		em.close();
+		emf.close();
+		carregarPessoas();
+		
+	}
+	
 
 	public void setPessoa(Pessoa pessoa) {
 				
@@ -112,16 +140,14 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		
 		Stage cena = (Stage) App.getCena().getWindow();
 		tabelaPessoa.prefHeightProperty().bind(cena.heightProperty());
-		tabelaPessoa.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+		tabelaPessoa.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
 
 			@Override
 			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 				TableViewSelectionModel selectionModel = tabelaPessoa.getSelectionModel();
 		        Object item = selectionModel.getSelectedItem();
-		   //     TablePosition tablePosition = (TablePosition) item;
-		  //      Object val = tablePosition.getTableColumn().getCellData(newValue);
-		        System.out.println("Selected Value" + item);
-		        int id = selectionModel.getSelectedIndex();
+		        int id = selectionModel.getSelectedIndex();//pega o id da TableList
+		        System.out.println("Selected Value " + item + " "+ id);
 		        System.out.println(item.toString().substring(18,19));
 		        valor = item;
 				
@@ -152,6 +178,7 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 			FormularioPessoaControlador controlador = loader.getController();
 			controlador.setPessoa(obj);
 			controlador.preencherPessoa();
+			controlador.inscreverDataChangeListener(this);
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Digite os dados para inclusão de pessoa");

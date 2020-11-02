@@ -17,7 +17,6 @@
       </Label>
       <Label layoutX="330.0" layoutY="58.0" />
       <Label layoutX="20.0" layoutY="50.0" text="Nome:" />
-      <TextField fx:id="txtNome" layoutX="58.0" layoutY="46.0" prefHeight="25.0" prefWidth="531.0" />
       <Label layoutX="20.0" layoutY="85.0" text="Data de Nascimento:" />
       <Label layoutX="20.0" layoutY="194.0" text="CPF:" />
       <Label layoutX="404.0" layoutY="194.0" text="NIS:" />
@@ -31,7 +30,8 @@
       <Label layoutX="407.0" layoutY="232.0" text="Renda:    R$" />
       <Button fx:id="cancelar" layoutX="134.0" layoutY="344.0" mnemonicParsing="false" text="Cancelar" />
       <Button fx:id="salvar" layoutX="394.0" layoutY="344.0" mnemonicParsing="false" text="Salvar" />
-      <TextField fx:id="txtDn" layoutX="142.0" layoutY="81.0" prefHeight="25.0" prefWidth="133.0" />
+      <TextField fx:id="txtDn" layoutX="136.0" layoutY="81.0" prefHeight="25.0" prefWidth="144.0" />
+      <TextField fx:id="txtNome" layoutX="68.0" layoutY="46.0" prefHeight="25.0" prefWidth="516.0" />
       <TextField fx:id="txtNomeMae" layoutX="107.0" layoutY="116.0" prefHeight="25.0" prefWidth="482.0" />
       <TextField fx:id="txtCpf" layoutX="46.0" layoutY="190.0" />
       <TextField fx:id="txtRg" layoutX="234.0" layoutY="190.0" />

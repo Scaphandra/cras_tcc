@@ -32,7 +32,7 @@ public class Familia {
 	private Long id_familia;
 	
 	@OneToOne(cascade= {CascadeType.PERSIST})
-	@JoinColumn(name="id_pessoa")
+	@JoinColumn(name="id_pessoaFamilia")
 	private Pessoa referencia_familia;
 	
 	@Temporal(TemporalType.DATE)

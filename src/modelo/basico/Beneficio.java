@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import modelo.enumerados.BeneficioTipo;
@@ -22,6 +23,7 @@ public class Beneficio {
 	private double valor_beneficio;
 	
 	@ManyToOne
+	@JoinColumn(name="pessoa_beneficio")
 	private Pessoa pessoa_beneficio;
 	
 	@ManyToOne

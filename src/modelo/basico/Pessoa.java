@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,25 +38,29 @@ public class Pessoa {
 	@NotNull
 	private String nome_pes;
 	
+	@Column(name="cpf_pes")
 	private String cpf_pes;
 	
+	@Column(name="rg")
 	private String rg;
 	
+	@Column(name="nis")
 	private String nis;
 	
-
+	@NotNull
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
 	
-
+	@Column(name="sexo")
 	private Sexo sexo;
 	
-
+	@Column(name="genero")
 	private Genero genero;
 	
+	@Column(name="nomeMae")
 	private String nomeMae;
 	
-
+	@Column(name="cor")
 	private CorRaca cor;
 	
 	private Escolaridade escolaridade_pes;
@@ -69,7 +74,7 @@ public class Pessoa {
 	@Column(columnDefinition = "boolean default false")
 	private boolean prioritarioSCFV = false;
 	
-	@OneToMany(mappedBy="pessoa_beneficio")
+	@OneToMany(mappedBy="pessoa_beneficio", cascade=CascadeType.ALL)
 	private List <Beneficio> beneficios_pes = new ArrayList<>();
 	
 	@Column(columnDefinition = "boolean default false")
@@ -85,7 +90,7 @@ public class Pessoa {
 	private Acolhida acolhida_pes;
 	
 	@ManyToOne
-	@JoinColumn(name="id_familia")
+	@JoinColumn(name="id_pessoaFamilia")
 	private Familia familia;
 	
 	public Pessoa() {

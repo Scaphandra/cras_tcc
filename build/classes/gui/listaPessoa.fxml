@@ -19,8 +19,9 @@
       </Label>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button fx:id="nova" mnemonicParsing="false" onAction="#clicarNova" text="Nova" />
-            <Button fx:id="editar" mnemonicParsing="false" onAction="#clicarEditar" text="editar" />
+          <Button fx:id="inserir" mnemonicParsing="false" onAction="#clicarNova" text="Inserir" />
+            <Button fx:id="editar" mnemonicParsing="false" onAction="#clicarEditar" text="Editar" />
+            <Button fx:id="excluir" mnemonicParsing="false" onAction="#clicarExcluir" text="Excluir" />
         </items>
       </ToolBar>
       <TableView fx:id="tabelaPessoa" prefHeight="200.0" prefWidth="200.0">

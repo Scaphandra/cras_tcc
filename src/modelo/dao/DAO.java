@@ -48,7 +48,7 @@ public class DAO <E> {
 		em.getTransaction().commit();
 		return this;
 	}
-	
+	//substituido por incluirAtualizar
 	public DAO<E> incluir(E entidade){
 		em.persist(entidade);
 		return this;
@@ -59,8 +59,26 @@ public class DAO <E> {
 		return this.abrirTransacao().incluir(entidade).fecharTransacao();
 	}
 	//estava Object id ao invés de Long id
-	public E obterPorID(Object id) {
+	//public E obterPorID(Object id) {
+	public E obterPorID(Class<E> classe, Object id) { 
 		return em.find(classe, id);
+	}
+	
+	public void incluirAtualizar(E entidade) {
+		
+		if(entidade==null) {
+			em.persist(entidade);//cria uma nova linha
+			
+		}else {
+			em.merge(entidade);//atualiza a tabela
+		}
+	}
+	
+	public void atualizar(E entidade) {
+		em.merge(entidade);
+	}
+	public void remover(E entidade) {
+		em.remove(entidade);
 	}
 	
 	public List<E> obterTodos(){
@@ -80,6 +98,12 @@ public class DAO <E> {
 		query.setFirstResult(deslocamento);
 		
 		return query.getResultList();
+	}
+	
+	public void removerPorID(Class<E> classe, Object id) {
+		E entidade = obterPorID(classe, id);
+		em.remove(entidade);
+			
 	}
 	
 	public List<E> consultar(String nomeConsulta, Object... params){
