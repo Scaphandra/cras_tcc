@@ -61,6 +61,11 @@ public class FormularioPessoaControlador implements Initializable{
 	@FXML
 	private CheckBox outro_b;
 	
+	@FXML
+	private CheckBox homonimo;
+	
+	private boolean homo;
+	
 	private CorRaca cor;
 	
 	private Sexo sexo;
@@ -215,6 +220,11 @@ public class FormularioPessoaControlador implements Initializable{
 		initializeNodes();
 		
 			
+	}
+	
+	@FXML
+	public void clicarHomonimo() {
+		homo = homonimo.selectedProperty().getValue();
 	}
 	
 	@FXML
@@ -432,6 +442,7 @@ public class FormularioPessoaControlador implements Initializable{
 		
 		this.id = entidade.getId_pessoa();
 		nome.setText(entidade.getNome_pes());
+		homonimo.setSelected(entidade.isHomonimo()?true:entidade.isHomonimo());
 		cpf.setText(entidade.getCpf_pes());
 		rg.setText(entidade.getRg());
 		nis.setText(entidade.getNis());
@@ -495,6 +506,7 @@ public class FormularioPessoaControlador implements Initializable{
 		Pessoa p = new Pessoa();
 		
 		p.setNome_pes(nome.getText());
+		p.setHomonimo(homo);
 		p.setCpf_pes(cpf.getText().isEmpty()?"":cpf.getText());
 		p.setRg(rg.getText()==null?"":rg.getText());
 		p.setNis(nis.getText()==null?"":nis.getText());
@@ -556,6 +568,7 @@ public class FormularioPessoaControlador implements Initializable{
 		
 		
 		p.setNome_pes(nome.getText());
+		p.setHomonimo(homo);
 		p.setCpf_pes(cpf.getText().isEmpty()?"":cpf.getText());
 		p.setRg(rg.getText()==null?"":rg.getText());
 		p.setNis(nis.getText()==null?"":nis.getText());

@@ -3,6 +3,7 @@ package controlador;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javax.persistence.EntityManager;
@@ -23,8 +24,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
@@ -109,13 +112,25 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		System.out.println(obj);
 		//criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
 		System.out.println("clicou excluir");
-		Alerta.showAlert("Exclusão de Pessoa",null, "Esta operação exclui a pessoa do banco de dados",
-				AlertType.CONFIRMATION);
-		em.remove(pessoa);
-		em.getTransaction().commit();
-		em.close();
-		emf.close();
-		carregarPessoas();
+		Alert alerta = new Alert(AlertType.CONFIRMATION);
+		alerta.setTitle("Exclusão de pessoa do banco de dados");
+		alerta.setHeaderText("Tem certeza que deseja excluir esta pessoa do banco de dados?");
+		alerta.setContentText("Escolha o que deseja fazer.");
+		ButtonType btCancelar = new ButtonType("Cancelar");
+		ButtonType btProsseguir = new ButtonType("Prosseguir");
+		
+		alerta.getButtonTypes().setAll(btCancelar, btProsseguir);
+		Optional <ButtonType> result = alerta.showAndWait();
+		
+		if(result.get()==btProsseguir) {
+			em.remove(pessoa);
+			em.getTransaction().commit();
+			em.close();
+			emf.close();
+			carregarPessoas();
+		}
+		
+		
 		
 	}
 	
@@ -179,6 +194,7 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 			controlador.setPessoa(obj);
 			controlador.preencherPessoa();
 			controlador.inscreverDataChangeListener(this);
+			
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Digite os dados para inclusão de pessoa");

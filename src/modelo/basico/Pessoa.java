@@ -81,6 +81,9 @@ public class Pessoa {
 	private boolean gestante = false;
 	
 	@Column(columnDefinition = "boolean default false")
+	private boolean homonimo = false;
+
+	@Column(columnDefinition = "boolean default false")
 	private boolean comDeficiencia = false;
 	
 	@Column(columnDefinition = "boolean default false")
@@ -98,12 +101,13 @@ public class Pessoa {
 	}
 
 
-	public Pessoa(String nome, String cpf_pes, String rg, String nis, Date dataNascimento, Sexo sexo, Genero genero,
+	public Pessoa(String nome, boolean homonimo, String cpf_pes, String rg, String nis, Date dataNascimento, Sexo sexo, Genero genero,
 			String nomeMae, CorRaca cor, Escolaridade escolaridade_pes, double renda, String ocupacao,
 			boolean prioritarioSCFV, List<Beneficio> beneficios, boolean gestante, boolean comDeficiencia,
 			boolean noSCFV,Familia familia, String parentesco) {
 		super();
 		this.nome_pes = nome;
+		this.homonimo = homonimo;
 		this.cpf_pes = cpf_pes;
 		this.rg = rg;
 		this.nis = nis;
@@ -153,6 +157,17 @@ public class Pessoa {
 
 	public void setNome_pes(String nome) {
 		this.nome_pes = nome;
+	}
+
+	
+	
+	public boolean isHomonimo() {
+		return homonimo;
+	}
+
+
+	public void setHomonimo(boolean homonimo) {
+		this.homonimo = homonimo;
 	}
 
 
