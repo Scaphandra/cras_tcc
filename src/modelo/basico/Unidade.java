@@ -1,9 +1,14 @@
 package modelo.basico;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,7 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity 
+//@Entity 
 public class Unidade {
 
 	@Id
@@ -37,12 +42,16 @@ public class Unidade {
 	@OneToOne
 	private Funcionario coordenador;
 	
+	@ElementCollection(fetch = FetchType.LAZY)
+	@Column(name="abrangencia")
+	private List <String> areaAbrangencia = new ArrayList<>(); 
+	
 	public Unidade() {
 		
 	}
 
 	public Unidade(String id_CRAS, String nome, String telefone, Date dataImplement, int capacidade, String horarioFuncionamento,
-			Endereco enderecoUnidade, Funcionario coordenador) {
+			Endereco enderecoUnidade, Funcionario coordenador, List<String> abrangencia) {
 		super();
 		this.id_CRAS = id_CRAS;
 		this.nome_CRAS = nome;
@@ -52,6 +61,7 @@ public class Unidade {
 		this.horarioFuncionamento = horarioFuncionamento;
 		this.endereco_unidade = enderecoUnidade;
 		this.coordenador = coordenador;
+		this.areaAbrangencia = abrangencia;
 	}
 
 	public String getId_CRAS() {
@@ -120,6 +130,14 @@ public class Unidade {
 	@Override
 	public String toString() {
 		return "Unidade [nome_CRAS=" + nome_CRAS + "]";
+	}
+
+	public List<String> getAreaAbrangencia() {
+		return areaAbrangencia;
+	}
+
+	public void setAreaAbrangencia(List<String> areaAbrangencia) {
+		this.areaAbrangencia = areaAbrangencia;
 	}
 
 	

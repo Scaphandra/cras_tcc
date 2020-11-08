@@ -6,16 +6,23 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Transient;
 
 import modelo.enumerados.BeneficioTipo;
 import modelo.enumerados.CorRaca;
@@ -24,46 +31,45 @@ import modelo.enumerados.Genero;
 import modelo.enumerados.Sexo;
 
 @Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipo", length=2, discriminatorType=DiscriminatorType.STRING)
+@DiscriminatorValue("PE")
+@Table(name="pessoas")
 public class Pessoa {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id_pessoa;
+	@Column(name="id_pessoa")
+	private Long id;
 	
-	private double total_beneficios;
 	
-	@ManyToOne
-	private GrupoSCFV grupo_pes;
+//	@ManyToOne
+//	@Column(name="grupo_pessoa")
+//	private GrupoSCFV grupo;
 	
-	@NotNull
-	private String nome_pes;
+	@Column(name="nome_pessoa")
+	private String nome;
 	
-	@Column(name="cpf_pes")
-	private String cpf_pes;
-	
-	@Column(name="rg")
+	@Column(name="cpf_pessoa")
+	private String cpf;
+
 	private String rg;
-	
-	@Column(name="nis")
+
 	private String nis;
 	
-	@NotNull
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
-	
-	@Column(name="sexo")
+
 	private Sexo sexo;
-	
-	@Column(name="genero")
+
 	private Genero genero;
-	
-	@Column(name="nomeMae")
+
 	private String nomeMae;
-	
-	@Column(name="cor")
+
 	private CorRaca cor;
 	
-	private Escolaridade escolaridade_pes;
+	@Column(name="escolaridade_pessoa")
+	private Escolaridade escolaridade;
 	
 	private double renda;
 	
@@ -74,9 +80,11 @@ public class Pessoa {
 	@Column(columnDefinition = "boolean default false")
 	private boolean prioritarioSCFV = false;
 	
-	@OneToMany(mappedBy="pessoa_beneficio", cascade=CascadeType.ALL)
-	private List <Beneficio> beneficios_pes = new ArrayList<>();
+	@OneToMany(mappedBy="pessoa", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+	private List <Beneficio> beneficios = new ArrayList<>();
 	
+	private double totalBenef;
+
 	@Column(columnDefinition = "boolean default false")
 	private boolean gestante = false;
 	
@@ -88,75 +96,38 @@ public class Pessoa {
 	
 	@Column(columnDefinition = "boolean default false")
 	private boolean noSCFV = false;
+
+	@Column(columnDefinition = "boolean default false", name="pessoa_referencia")
+	private boolean pesReferencia = false;
 	
-	@ManyToOne
-	private Acolhida acolhida_pes;
-	
-	@ManyToOne
-	@JoinColumn(name="id_pessoaFamilia")
+//	@ManyToOne
+//	private Acolhida acolhida_pes;
+	//
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_familia")
 	private Familia familia;
 	
 	public Pessoa() {
 		
 	}
-
-
-	public Pessoa(String nome, boolean homonimo, String cpf_pes, String rg, String nis, Date dataNascimento, Sexo sexo, Genero genero,
-			String nomeMae, CorRaca cor, Escolaridade escolaridade_pes, double renda, String ocupacao,
-			boolean prioritarioSCFV, List<Beneficio> beneficios, boolean gestante, boolean comDeficiencia,
-			boolean noSCFV,Familia familia, String parentesco) {
-		super();
-		this.nome_pes = nome;
-		this.homonimo = homonimo;
-		this.cpf_pes = cpf_pes;
-		this.rg = rg;
-		this.nis = nis;
-		this.dataNascimento = dataNascimento;
-		this.sexo = sexo;
-		this.genero = genero;
-		this.nomeMae = nomeMae;
-		this.cor = cor;
-		this.escolaridade_pes = escolaridade_pes;
-		this.renda = renda;
-		this.ocupacao = ocupacao;
-		this.prioritarioSCFV = prioritarioSCFV;
-		this.beneficios_pes = beneficios;
-		this.gestante = gestante;
-		this.comDeficiencia = comDeficiencia;
-		this.noSCFV = noSCFV;
-		this.familia = familia;
-		this.parentesco = parentesco;
+	
+	public Long getId() {
+		return id;
 	}
 
 
-	public Pessoa(String nome, Date dataNascimento, Sexo sexo, Genero genero, String nomeMae, CorRaca cor) {
-		super();
-		this.nome_pes = nome;
-		this.dataNascimento = dataNascimento;
-		this.sexo = sexo;
-		this.genero = genero;
-		this.nomeMae = nomeMae;
-		this.cor = cor;
+	public void setId(Long id_pessoa) {
+		this.id = id_pessoa;
 	}
 
 
-	public Long getId_pessoa() {
-		return id_pessoa;
+	public String getNome() {
+		return nome;
 	}
 
 
-	public void setId_pessoa(Long id_pessoa) {
-		this.id_pessoa = id_pessoa;
-	}
-
-
-	public String getNome_pes() {
-		return nome_pes;
-	}
-
-
-	public void setNome_pes(String nome) {
-		this.nome_pes = nome;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	
@@ -169,15 +140,25 @@ public class Pessoa {
 	public void setHomonimo(boolean homonimo) {
 		this.homonimo = homonimo;
 	}
+	
+	
 
 
-	public String getCpf_pes() {
-		return cpf_pes;
+	public boolean isPesReferencia() {
+		return pesReferencia;
+	}
+
+	public void setPesReferencia(boolean pesReferencia) {
+		this.pesReferencia = pesReferencia;
+	}
+
+	public String getCpf() {
+		return cpf;
 	}
 
 
 	public void setCpf_pes(String cpf_pes) {
-		this.cpf_pes = cpf_pes;
+		this.cpf = cpf_pes;
 	}
 
 
@@ -251,13 +232,13 @@ public class Pessoa {
 	}
 
 
-	public Escolaridade getEscolaridade_pes() {
-		return escolaridade_pes;
+	public Escolaridade getEscolaridade() {
+		return escolaridade;
 	}
 
 
-	public void setEscolaridade_pes(Escolaridade escolaridade_pes) {
-		this.escolaridade_pes = escolaridade_pes;
+	public void setEscolaridade_pes(Escolaridade escolaridade) {
+		this.escolaridade = escolaridade;
 	}
 
 
@@ -292,18 +273,24 @@ public class Pessoa {
 
 
 	public List<Beneficio> getBeneficios() {
-		return beneficios_pes;
+		
+		return beneficios;
 	}
 
 
 	public void setBeneficios(List<Beneficio> beneficios) {
-		this.beneficios_pes = beneficios;
-		for(Beneficio b: beneficios) {
-			
-			this.total_beneficios += b.getValor_beneficio();
-		}
+		this.beneficios = beneficios;
+		
 	}
 
+	public double retornarValorBeneficio(BeneficioTipo tipo) {
+		for(Beneficio b: getBeneficios()) {
+			if(b.getNome() == tipo) {
+				return b.getValor();
+			}
+		}
+		return 0.0;
+	}
 
 	public boolean isGestante() {
 		return gestante;
@@ -329,35 +316,28 @@ public class Pessoa {
 		return noSCFV;
 	}
 
+public void setNoSCFV(boolean noSCFV) {
+	this.noSCFV = noSCFV;
+}
+//	public void setNoSCFV(boolean noSCFV) {
+//		if (!noSCFV) {
+//			this.grupo = null;
+//		}
+//		this.noSCFV = noSCFV;
+//	}
+//
 
-	public void setNoSCFV(boolean noSCFV) {
-		if (!noSCFV) {
-			this.grupo_pes = null;
-		}
-		this.noSCFV = noSCFV;
-	}
-
-
-	public double getTotal_beneficios_pes() {
-		return total_beneficios;
-	}
-	
 	
 
 
-	public void setBeneficios_pes(Beneficio beneficios_pes) {
-		this.beneficios_pes.add(beneficios_pes);
-	}
-
-
-	public Acolhida getAcolhida_pes() {
-		return acolhida_pes;
-	}
-
-
-	public void setAcolhida_pes(Acolhida acolhida) {
-		this.acolhida_pes = acolhida;
-	}
+//	public Acolhida getAcolhida_pes() {
+//		return acolhida_pes;
+//	}
+//
+//
+//	public void setAcolhida_pes(Acolhida acolhida) {
+//		this.acolhida_pes = acolhida;
+//	}
 
 	
 
@@ -372,45 +352,30 @@ public class Pessoa {
 
 	
 
-	public double getTotal_beneficios() {
-		return total_beneficios;
-	}
-
-
-	public void setTotal_beneficios(double total_beneficios) {
-		this.total_beneficios = total_beneficios;
-	}
-
-
-	public GrupoSCFV getGrupo_pes() {
-		return grupo_pes;
-	}
-
-
-	public void setGrupo_pes(GrupoSCFV grupo_pes) {
-		this.grupo_pes = grupo_pes;
-	}
-
-
-	public List<Beneficio> getBeneficios_pes() {
+	@Transient
+	public double getTotalBenef() {
 		
-		return beneficios_pes;
-	}
-	
-	public double retornarValorBeneficio(BeneficioTipo tipo) {
-		for(Beneficio b: beneficios_pes) {
-			if(b.getNome_beneficio() == tipo) {
-				return b.getValor_beneficio();
-			}
+		for(Beneficio b: getBeneficios()) {
+			
+			this.totalBenef += b.getValor();
 		}
-		return 0.0;
-	}
-
-
-	public void setBeneficios_pes(List<Beneficio> beneficios_pes) {
 		
-		this.beneficios_pes = beneficios_pes;
+		return totalBenef;
 	}
+
+
+//	public GrupoSCFV getGrupo_pes() {
+//		return grupo_pes;
+//	}
+//
+//
+//	public void setGrupo_pes(GrupoSCFV grupo_pes) {
+//		this.grupo_pes = grupo_pes;
+//	}
+
+
+	
+
 
 
 	public String getParentesco() {
@@ -426,7 +391,7 @@ public class Pessoa {
 
 	@Override
 	public String toString() {
-		return "Pessoa [id_pessoa=" + id_pessoa + ", nome_pes=" + nome_pes + "]";
+		return "Pessoa [id_pessoa=" + id + ", nome_pes=" + nome + "]";
 	}
 
 	

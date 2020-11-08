@@ -43,6 +43,11 @@ public class AppControlador implements Initializable{
 	@FXML
 	private void clicarMenuFamilia() {
 		System.out.println("familia");
+		rodarTela("../gui/listaFamilia.fxml",(ListaFamiliaControlador controlador)-> {
+			controlador.setPessoa(new Pessoa());
+			controlador.carregarFamilia();
+		});
+	
 	}
 	@FXML
 	private void clicarMenuAtendimento() {

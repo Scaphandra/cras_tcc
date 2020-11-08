@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 import modelo.enumerados.ReuniaoTipo;
 
-@Entity
+//@Entity
 @Table(name="reunioes")
 public class Reuniao {
 	

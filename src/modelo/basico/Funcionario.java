@@ -19,7 +19,7 @@ import modelo.enumerados.Escolaridade;
 import modelo.enumerados.NivelAcesso;
 import modelo.enumerados.Vinculo;
 
-@Entity
+//@Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 public class Funcionario {
 	

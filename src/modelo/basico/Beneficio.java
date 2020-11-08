@@ -1,8 +1,10 @@
 package modelo.basico;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,16 +20,15 @@ public class Beneficio {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id_beneficio;
 	
-	private BeneficioTipo nome_beneficio;
+	@Column(name="nome_beneficio")
+	private BeneficioTipo nome;
 	
-	private double valor_beneficio;
+	@Column(name="valor_beneficio")
+	private double valor;
 	
-	@ManyToOne
-	@JoinColumn(name="pessoa_beneficio")
-	private Pessoa pessoa_beneficio;
-	
-	@ManyToOne
-	private Familia familia_beneficio;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_pessoa")
+	private Pessoa pessoa;
 	
 	public Beneficio() {
 		
@@ -35,49 +36,45 @@ public class Beneficio {
 
 	public Beneficio(BeneficioTipo nome, double valor, Pessoa pessoa) {
 		super();
-		this.nome_beneficio = nome;
-		this.valor_beneficio = valor;
-		this.pessoa_beneficio = pessoa;
-	}
-	@Enumerated(EnumType.STRING)
-	public BeneficioTipo getNome_beneficio() {
-		return nome_beneficio;
-	}
-
-	public void setNome_beneficio(BeneficioTipo nome) {
-		this.nome_beneficio = nome;
-	}
-
-	public double getValor_beneficio() {
-		return valor_beneficio;
-	}
-
-	public void setValor_beneficio(double valor) {
-		this.valor_beneficio = valor;
-	}
-
-	public Pessoa getPessoa_beneficio() {
-		return pessoa_beneficio;
-	}
-
-	public void setPessoa_beneficio(Pessoa pessoa_beneficio) {
-		this.pessoa_beneficio = pessoa_beneficio;
-	}
-
-	public Familia getFamilia_beneficio() {
-		return familia_beneficio;
-	}
-
-	public void setFamilia_beneficio(Familia familia_beneficio) {
-		this.familia_beneficio = familia_beneficio;
+		this.nome = nome;
+		this.valor = valor;
+		this.pessoa = pessoa;
 	}
 	
+	@Enumerated(EnumType.STRING)
+	public BeneficioTipo getNome() {
+		return nome;
+	}
+
+	public void setNome(BeneficioTipo nome) {
+		this.nome = nome;
+	}
+
+	public double getValor() {
+		return valor;
+	}
+
+	public void setValor(double valor) {
+		this.valor = valor;
+	}
+
+	public Pessoa getPessoa() {
+		return pessoa;
+	}
+
+	public void setPessoa(Pessoa pessoa_beneficio) {
+		this.pessoa = pessoa_beneficio;
+	}
+
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		return "Beneficio [id_beneficio=" + id_beneficio + ", nome " + nome + ", pessoa "
+				+ pessoa + "]";
 	}
+	
+
+	
 	
 	
 

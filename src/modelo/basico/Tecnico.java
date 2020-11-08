@@ -10,14 +10,14 @@ import javax.persistence.OneToMany;
 import modelo.enumerados.NivelAcesso;
 import modelo.enumerados.TecnicoReferencia;
 
-@Entity
+//@Entity
 
 public class Tecnico  extends Funcionario{
 	
 	private TecnicoReferencia referencia_tecnico;
 	
-	@OneToMany(mappedBy="tecnicoRef_familia")
-	private List <Familia> acompanhadas_tecnico = new ArrayList<>();
+//	@OneToMany(mappedBy="tecnicoRef_familia")
+//	private List <Familia> acompanhadas_tecnico = new ArrayList<>();
 	
 	@OneToMany(mappedBy="funcionario_atendimento")
 	private List <Atendimento> atendimentos_tecnico = new ArrayList<>();
@@ -42,7 +42,7 @@ public class Tecnico  extends Funcionario{
 			Atendimento atendimento, Visita visita) {
 		super();
 		this.referencia_tecnico = referencia;
-		this.acompanhadas_tecnico.add(acompanhada);
+		//this.acompanhadas_tecnico.add(acompanhada);
 		this.atendimentos_tecnico.add(atendimento);
 		this.visitas_tecnico.add(visita);
 	}
@@ -55,13 +55,13 @@ public class Tecnico  extends Funcionario{
 		this.referencia_tecnico = referencia;
 	}
 
-	public List<Familia> getAcompanhadas_tecnico() {
-		return acompanhadas_tecnico;
-	}
-
-	public void setAcompanhadas_tecnico(Familia acompanhada) {
-		this.acompanhadas_tecnico.add(acompanhada);
-	}
+//	public List<Familia> getAcompanhadas_tecnico() {
+//		return acompanhadas_tecnico;
+//	}
+//
+//	public void setAcompanhadas_tecnico(Familia acompanhada) {
+//		this.acompanhadas_tecnico.add(acompanhada);
+//	}
 
 	public List<Atendimento> getAtendimentos_tecnico() {
 		return atendimentos_tecnico;

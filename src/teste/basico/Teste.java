@@ -1,9 +1,25 @@
 package teste.basico;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import modelo.basico.Beneficio;
+import modelo.basico.Endereco;
+import modelo.basico.Familia;
+import modelo.basico.PesReferencia;
 import modelo.basico.Pessoa;
-import modelo.dao.DAO;
+import modelo.enumerados.BeneficioTipo;
+import modelo.enumerados.CorRaca;
+import modelo.enumerados.EnderecoTipo;
+import modelo.enumerados.Genero;
+import modelo.enumerados.Sexo;
+import modelo.enumerados.SituacaoFamilia;
 
 public class Teste {
 	/*
@@ -16,17 +32,115 @@ public class Teste {
 	
 	public static void main(String[] args) {
 		
-		Pessoa pes = new Pessoa();
+		//Pessoa pes = new Pessoa();
+		EntityManagerFactory emf = Persistence
+				.createEntityManagerFactory("cras_tcc");
+		EntityManager em = emf.createEntityManager();
+		//DAO <Unidade> dao = new DAO <> (Unidade.class);
 		
-		DAO <Pessoa> dao = new DAO <> (Pessoa.class);
-		
-		pes = dao.obterPorID(Pessoa.class, 4L);
+		//pes = dao.obterPorID(Pessoa.class, 4L);
 		
 		
-			
-			System.out.println(pes);
-			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
-			System.out.println(form.format(pes.getDataNascimento()).toString());
+		Endereco end = new Endereco(EnderecoTipo.RUA, "Francisco Portela", 500, "Sobrado", "Botafogo", "24435-200");
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		String dataStr = "10/10/1979";
+		Date data = new Date();
+		try {
+			data = formato.parse(dataStr);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		em.getTransaction().begin();
+		
+
+		PesReferencia pes1 = new PesReferencia();
+		
+		pes1.setNome("MAria");
+		pes1.setDataNascimento(data);
+		pes1.setSexo(Sexo.F);
+		pes1.setGenero(Genero.F);
+		pes1.setNomeMae("Maria Ana");
+		pes1.setCor(CorRaca.NAODECLARADA);
+		
+		List<Beneficio> bList = new ArrayList<>();
+		
+		Beneficio pbf = new Beneficio(BeneficioTipo.PBF, 120.0, pes1);
+		bList.add(pbf);
+		Beneficio bpc = new Beneficio(BeneficioTipo.BPCDEF, 1045.0, pes1);
+		bList.add(bpc);
+		
+		pes1.setBeneficios(bList);
+		
+		System.out.println(pes1.getTotalBenef());
+		
+		Pessoa pes2 = new PesReferencia();
+		
+		pes2.setNome("Fulano");
+		pes2.setDataNascimento(data);
+		pes2.setSexo(Sexo.M);
+		pes2.setGenero(Genero.M);
+		pes2.setNomeMae("Ana");
+		pes2.setCor(CorRaca.BRANCA);
+		
+		List<Pessoa> lista = new ArrayList<>();
+		lista.add(pes1);
+		lista.add(pes2);
+
+//		Unidade unidade = em.find(Unidade.class, 1L);
+//		List <String> area = new ArrayList<>();
+//		area.add("Botafogo");
+//		area.add("Novo Botafogo");
+//		area.add("Malvina");
+//		area.add("Nova Malvina");
+//		area.add("Fora da abrangência");
+//		
+//		unidade.setAreaAbrangencia(area);
+//		em.merge(unidade);
+//		EntityManagerFactory emf2 = Persistence
+//				.createEntityManagerFactory("cras_tcc");
+//		EntityManager em2 = emf2.createEntityManager();
+//		em2.getTransaction().begin();
+		
+		Familia fam = new Familia();
+		
+		fam.setPesReferencia(pes1);
+		
+		String telefone = "(22) 998989898";
+		String telefone2 = "(22) 998980000";
+		fam.setEndereco_familia(end);
+		fam.setDataEntrada(data);
+		fam.setTelefones_familia(telefone);
+		fam.setTelefones_familia(telefone2);
+		fam.setPessoas_familia(lista);
+		fam.setSituacao_familia(SituacaoFamilia.ATEND);
+		
+		pes1.setFamilia(fam);
+		pes2.setFamilia(fam);
+		
+		em.persist(fam);
+		
+		System.out.println(fam.getPessoas_familia());
+//		em.merge(pes1);
+//		em.merge(pes2);
+//		em.merge(pes3);
+//		
+//		em.getTransaction().commit();
+//		em.close();
+//		emf.close();
+		em.getTransaction().commit();
+		em.close();
+		emf.close();
+		
+	
+		
+//		dao.atualizar(unidade);
+//		dao.fecharTransacao();
+//		dao.fechar();
+		
+//			System.out.println(pes);
+//			SimpleDateFormat form = new SimpleDateFormat("dd/MM/yyyy");
+//			System.out.println(form.format(pes.getDataNascimento()).toString());
 		
 		
 		//Pessoa p = dao.obterPorID(4L);

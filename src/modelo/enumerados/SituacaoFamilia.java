@@ -1,7 +1,7 @@
 package modelo.enumerados;
 
 public enum SituacaoFamilia {
-	REF("Referênciada"), ACOMP("Acompanhada"), ATEND("Atendida");
+	REF("Referenciada"), ACOMP("Acompanhada"), ATEND("Atendida");
 	
 	private String descricao;
 	

@@ -16,7 +16,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import modelo.enumerados.VisitaTipo;
-@Entity
+//@Entity
 @Table(name="visitas")
 public class Visita {
 	

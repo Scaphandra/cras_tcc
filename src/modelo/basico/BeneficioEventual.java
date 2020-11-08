@@ -6,7 +6,7 @@ import javax.persistence.Enumerated;
 
 import modelo.enumerados.BEventualTipo;
 
-@Embeddable
+//@Embeddable
 public class BeneficioEventual {
 	
 	private BEventualTipo tipo_beneficioE;

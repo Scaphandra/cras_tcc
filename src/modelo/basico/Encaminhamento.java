@@ -13,7 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-@Entity
+//@Entity
 public class Encaminhamento {
 	
 	@Id
@@ -23,8 +23,8 @@ public class Encaminhamento {
 	@ManyToOne
 	private Tecnico tecnico_encaminhamento;
 	
-	@ManyToOne
-	private Familia familia_encaminhamento;
+//	@ManyToOne
+//	private Familia familia_encaminhamento;
 	
 	@Temporal(TemporalType.DATE)
 	private Date data_encaminhamento;
@@ -40,7 +40,7 @@ public class Encaminhamento {
 	public Encaminhamento(Tecnico tecnico, Familia familia, Date data, RedeReferenciada rede) {
 		super();
 		this.tecnico_encaminhamento = tecnico;
-		this.familia_encaminhamento = familia;
+	//	this.familia_encaminhamento = familia;
 		this.data_encaminhamento = data;
 		this.rede_encaminhamento = rede;
 	}
@@ -61,13 +61,13 @@ public class Encaminhamento {
 		this.tecnico_encaminhamento = tecnico;
 	}
 
-	public Familia getFamilia_encaminhamento() {
-		return familia_encaminhamento;
-	}
-
-	public void setFamilia_encaminhamento(Familia familia) {
-		this.familia_encaminhamento = familia;
-	}
+//	public Familia getFamilia_encaminhamento() {
+//		return familia_encaminhamento;
+//	}
+//
+//	public void setFamilia_encaminhamento(Familia familia) {
+//		this.familia_encaminhamento = familia;
+//	}
 
 	public Date getData_encaminhamento() {
 		return data_encaminhamento;
@@ -84,11 +84,11 @@ public class Encaminhamento {
 	public void setRede_encaminhamento(RedeReferenciada rede) {
 		this.rede_encaminhamento = rede;
 	}
-
+//+ familia_encaminhamento.toString()
 	@Override
 	public String toString() {
 		return "Encaminhamento [id_encaminhamento=" + id_encaminhamento + ", tecnico_encaminhamento="
-				+ tecnico_encaminhamento.toString() + ", familia_encaminhamento=" + familia_encaminhamento.toString()
+				+ tecnico_encaminhamento.toString() + ", familia_encaminhamento=" 
 				+ ", data_encaminhamento=" + data_encaminhamento.toString() + ", rede_encaminhamento=" + rede_encaminhamento.toString() + "]";
 	}
 

@@ -16,7 +16,7 @@ import javax.persistence.Table;
 
 import modelo.enumerados.RedeTipo;
 
-@Entity
+//@Entity
 @Table(name="rede_referenciada")
 public class RedeReferenciada {
 	
@@ -37,8 +37,8 @@ public class RedeReferenciada {
 	@Column(name="telefones_familia")
 	private List <String> telefones_rede = new ArrayList<>();
 	
-	@OneToOne(mappedBy="encaminhada_familia")
-	private Familia familia_encaminhada;
+//	@OneToOne(mappedBy="encaminhada_familia")
+//	private Familia familia_encaminhada;
 	
 	
 	public RedeReferenciada() {
@@ -52,7 +52,7 @@ public class RedeReferenciada {
 		this.natureza = natureza;
 		this.endereco_rede = endereco;
 		this.telefones_rede.add(telefone);
-		this.familia_encaminhada = familia;
+//		this.familia_encaminhada = familia;
 	}
 
 
@@ -106,14 +106,14 @@ public class RedeReferenciada {
 	}
 
 
-	public Familia getFamilia_encaminhada() {
-		return familia_encaminhada;
-	}
-
-
-	public void setFamilia_encaminhada(Familia familia_encaminhada) {
-		this.familia_encaminhada = familia_encaminhada;
-	}
+//	public Familia getFamilia_encaminhada() {
+//		return familia_encaminhada;
+//	}
+//
+//
+//	public void setFamilia_encaminhada(Familia familia_encaminhada) {
+//		this.familia_encaminhada = familia_encaminhada;
+//	}
 
 	@Override
 	public String toString() {

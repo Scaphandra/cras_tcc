@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import modelo.enumerados.AtendimentoTipo;
 import modelo.enumerados.DemandaAtendimento;
 
-@Entity
+//@Entity
 @Table(name="atendimentos")
 public class Atendimento {
 
@@ -22,9 +22,9 @@ public class Atendimento {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id_atendimento;
 	
-	@ManyToOne
-	private Familia familia_atendimento;
-	
+//	@ManyToOne
+//	private Familia familia_atendimento;
+//	
 	@ManyToOne
 	private Pessoa pessoa_atendimento;
 	
@@ -51,7 +51,7 @@ public class Atendimento {
 	public Atendimento(Familia familia, Pessoa pessoa, Date data, AtendimentoTipo tipo, DemandaAtendimento demanda,
 			boolean relatorio, BeneficioEventual beneficioEventual, Funcionario funcionario) {
 		super();
-		this.familia_atendimento = familia;
+//		this.familia_atendimento = familia;
 		this.pessoa_atendimento = pessoa;
 		this.data_atendimento = data;
 		this.tipo_atendimento = tipo;
@@ -71,13 +71,13 @@ public class Atendimento {
 		this.id_atendimento = id;
 	}
 
-	public Familia getFamilia_atendimento() {
-		return familia_atendimento;
-	}
-
-	public void setFamilia_atendimento(Familia familia) {
-		this.familia_atendimento = familia;
-	}
+//	public Familia getFamilia_atendimento() {
+//		return familia_atendimento;
+//	}
+//
+//	public void setFamilia_atendimento(Familia familia) {
+//		this.familia_atendimento = familia;
+//	}
 
 	public Pessoa getPessoa_atendimento() {
 		return pessoa_atendimento;
@@ -134,11 +134,11 @@ public class Atendimento {
 	public void setBeneficioEventual_atendimento(BeneficioEventual beneficioEventual) {
 		this.beneficioEventual_atendimento = beneficioEventual;
 	}
-
+//+ familia_atendimento.toString()
 
 	@Override
 	public String toString() {
-		return "Atendimento [id_atendimento=" + id_atendimento + ", familia_atendimento=" + familia_atendimento.toString()
+		return "Atendimento [id_atendimento=" + id_atendimento + ", familia_atendimento=" 
 				+ ", pessoa_atendimento=" + pessoa_atendimento.toString() + ", data_atendimento=" + data_atendimento.toString()
 				+ ", tipo_atendimento=" + tipo_atendimento.toString() + ", demanda_atendimento=" + demanda_atendimento.toString()
 				+ "beneficioEventual_atendimento=" + beneficioEventual_atendimento.toString()
