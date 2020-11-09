@@ -71,6 +71,7 @@ public class Pessoa {
 	@Column(name="escolaridade_pessoa")
 	private Escolaridade escolaridade;
 	
+	@Column(precision=2, scale=2)
 	private double renda;
 	
 	private String ocupacao;

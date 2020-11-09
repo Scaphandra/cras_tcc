@@ -1,9 +1,9 @@
 package modelo.basico;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,25 +13,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import modelo.enumerados.Escolaridade;
 import modelo.enumerados.NivelAcesso;
 import modelo.enumerados.Vinculo;
 
-//@Entity
+@Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="tipo", length=2, discriminatorType=DiscriminatorType.STRING)
+@DiscriminatorValue("FU")
+@Table(name="funcionarios")
 public class Funcionario {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	protected Long id_funcionario;
+	@Column(name="id_funcionario")
+	protected Long id;
 	
-	protected String nome_funcionario;
+	@Column(name="nome_funcionario")
+	protected String nome;
 	
 	protected String funcao;
 
-	protected String cpf_funcionario;
+	@Column(name="cpf_funcionario")
+	protected String cpf;
 	
 	@Column(length=150)
 	private String email;
@@ -44,80 +50,42 @@ public class Funcionario {
 	protected NivelAcesso nivel;
 	
 	@Enumerated(EnumType.STRING)
-	protected Escolaridade escolaridade_funcionario;
+	@Column(name="escolaridade_funcionario")
+	protected Escolaridade escolaridade;
 	
 	protected int cargaHoraria;
 	
 	@Enumerated(EnumType.STRING)
 	protected Vinculo vinculo;
 	
-	@ManyToMany
-	private List <Reuniao> reunioes_funcionario = new ArrayList<>();
+	@Column(name="endereco_funcionario")
+	protected Endereco endereco = new Endereco();
 	
-	
-	protected Endereco enderecos_funcionario = new Endereco();
-	
-	
-	protected String telefones_funcionario;
+	@Column(name="telefone_funcionario")
+	protected String telefone;
 	
 	
 	public Funcionario() {
 		
 	}
 
-	public Funcionario(String nome, String funcao, String cpf, String senha, NivelAcesso nivel) {
-		super();
-		this.nome_funcionario = nome;
-		this.funcao = funcao;
-		this.cpf_funcionario = cpf;
-		this.senha = senha;
-		this.nivel = nivel;
+	public Long getId() {
+		return id;
 	}
 
 
-	public Funcionario(String nome, String funcao,String cpf,String email, String senha, NivelAcesso nivel, Escolaridade escolaridade, int cargaHoraria, Vinculo vinculo,
-			Endereco endereco, String telefone, Reuniao reuniao) {
-		super();
-		this.nome_funcionario = nome;
-		this.funcao = funcao;
-		this.cpf_funcionario = cpf;
-		this.email = email;
-		this.senha = senha;
-		this.nivel = nivel;
-		this.escolaridade_funcionario = escolaridade;
-		this.cargaHoraria = cargaHoraria;
-		this.vinculo = vinculo;
-		this.enderecos_funcionario = endereco;
-		this.telefones_funcionario = telefone;
-		this.reunioes_funcionario.add(reuniao);
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 
-	public Long getId_funcionario() {
-		return id_funcionario;
+	public String getNome() {
+		return nome;
 	}
 
 
-	public void setId_funcionario(Long id) {
-		this.id_funcionario = id;
-	}
-
-
-	public List<Reuniao> getReunioes_funcionario() {
-		return reunioes_funcionario;
-	}
-
-	public void setReunioes_funcionario(Reuniao reuniao) {
-		this.reunioes_funcionario.add(reuniao);
-	}
-
-	public String getNome_funcionario() {
-		return nome_funcionario;
-	}
-
-
-	public void setNome_funcionario(String nome) {
-		this.nome_funcionario = nome;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 
@@ -131,13 +99,13 @@ public class Funcionario {
 	}
 
 
-	public String getCpf_funcionario() {
-		return cpf_funcionario;
+	public String getCpf() {
+		return cpf;
 	}
 
 
-	public void setCpf_funcionario(String cpf) {
-		this.cpf_funcionario = cpf;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 
@@ -171,13 +139,13 @@ public class Funcionario {
 	}
 
 
-	public Escolaridade getEscolaridade_funcionario() {
-		return escolaridade_funcionario;
+	public Escolaridade getEscolaridade() {
+		return escolaridade;
 	}
 
 
-	public void setEscolaridade_funcionario(Escolaridade escolaridade) {
-		this.escolaridade_funcionario = escolaridade;
+	public void setEscolaridade(Escolaridade escolaridade) {
+		this.escolaridade = escolaridade;
 	}
 
 
@@ -201,27 +169,27 @@ public class Funcionario {
 	}
 
 	@Embedded
-	public Endereco getEndereco_funcionario() {
-		return enderecos_funcionario;
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
 
-	public void setEndereco_funcionario(Endereco endereco) {
-		this.enderecos_funcionario = endereco;
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
 	}
 
-	public String getTelefone_funcionario() {
-		return telefones_funcionario;
+	public String getTelefone() {
+		return telefone;
 	}
 
 
-	public void setTelefone_funcionario(String telefone) {
-		this.telefones_funcionario = telefone;
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
 	}
 
 	@Override
 	public String toString() {
-		return "Funcionario [id_funcionario=" + id_funcionario + ", nome_funcionario=" + nome_funcionario + "]";
+		return "Funcionario [id_funcionario=" + id + ", nome_funcionario=" + nome + "]";
 	}
 	
 	

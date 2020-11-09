@@ -16,18 +16,19 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-//@Entity 
+@Entity 
 public class Unidade {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id_unidade;
+	@Column(name="id_unidade")
+	private Long id;
 
-	private String id_CRAS;
+	private String idCRAS;
 	
-	private String nome_CRAS;
+	private String nomeCRAS;
 	
-	private String tel_CRAS;
+	private String telCRAS;
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataImplement;
@@ -37,10 +38,10 @@ public class Unidade {
 	private String horarioFuncionamento;
 	
 	@Embedded
-	private Endereco endereco_unidade;
+	private Endereco endereco;
 	
 	@OneToOne
-	private Funcionario coordenador;
+	private Coordenador coordenador;
 	
 	@ElementCollection(fetch = FetchType.LAZY)
 	@Column(name="abrangencia")
@@ -50,41 +51,28 @@ public class Unidade {
 		
 	}
 
-	public Unidade(String id_CRAS, String nome, String telefone, Date dataImplement, int capacidade, String horarioFuncionamento,
-			Endereco enderecoUnidade, Funcionario coordenador, List<String> abrangencia) {
-		super();
-		this.id_CRAS = id_CRAS;
-		this.nome_CRAS = nome;
-		this.tel_CRAS = telefone;
-		this.dataImplement = dataImplement;
-		this.capacidade = capacidade;
-		this.horarioFuncionamento = horarioFuncionamento;
-		this.endereco_unidade = enderecoUnidade;
-		this.coordenador = coordenador;
-		this.areaAbrangencia = abrangencia;
+
+	public String getIdCRAS() {
+		return idCRAS;
 	}
 
-	public String getId_CRAS() {
-		return id_CRAS;
+	public void setIdCRAS(String idCRAS) {
+		this.idCRAS = idCRAS;
 	}
 
-	public void setId_CRAS(String id_CRAS) {
-		this.id_CRAS = id_CRAS;
+	public String getNomeCRAS() {
+		return nomeCRAS;
 	}
 
-	public String getNome_CRAS() {
-		return nome_CRAS;
-	}
-
-	public void setNome_CRAS(String nome) {
-		this.nome_CRAS = nome;
+	public void setNomeCRAS(String nome) {
+		this.nomeCRAS = nome;
 	}
 	
-	public String getTel_CRAS() {
-		return tel_CRAS;
+	public String getTelCRAS() {
+		return telCRAS;
 	}
-	public void setTel_CRAS(String telefone) {
-		this.tel_CRAS = telefone;
+	public void setTelCRAS(String telefone) {
+		this.telCRAS = telefone;
 	}
 
 	public Date getDataImplement() {
@@ -111,25 +99,25 @@ public class Unidade {
 		this.horarioFuncionamento = horarioFuncionamento;
 	}
 	
-	public Endereco getEnderecoUnidade() {
-		return endereco_unidade;
+	public Endereco getEndereco() {
+		return endereco;
 	}
 
-	public void setEnderecoUnidade(Endereco enderecoUnidade) {
-		this.endereco_unidade = enderecoUnidade;
+	public void setEndereco(Endereco enderecoUnidade) {
+		this.endereco = enderecoUnidade;
 	}
 
 	public Funcionario getCoordenador() {
 		return coordenador;
 	}
 
-	public void setCoordenador(Funcionario coordenador) {
+	public void setCoordenador(Coordenador coordenador) {
 		this.coordenador = coordenador;
 	}
 
 	@Override
 	public String toString() {
-		return "Unidade [nome_CRAS=" + nome_CRAS + "]";
+		return "Unidade [nome_CRAS=" + nomeCRAS + "]";
 	}
 
 	public List<String> getAreaAbrangencia() {

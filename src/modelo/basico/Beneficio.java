@@ -23,7 +23,7 @@ public class Beneficio {
 	@Column(name="nome_beneficio")
 	private BeneficioTipo nome;
 	
-	@Column(name="valor_beneficio")
+	@Column(name="valor_beneficio", precision=2, scale=2)
 	private double valor;
 	
 	@ManyToOne(fetch = FetchType.EAGER)

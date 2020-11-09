@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -17,71 +20,78 @@ import javax.persistence.TemporalType;
 
 import modelo.enumerados.ReuniaoTipo;
 
-//@Entity
+@Entity
 @Table(name="reunioes")
 public class Reuniao {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id_reuniao;
+	@Column(name="id_reuniao")
+	private Long id;
 	
 	@Enumerated(EnumType.STRING)
-	private ReuniaoTipo tipo_reuniao;
+	@Column(name="tipo_reuniao")
+	private ReuniaoTipo tipo;
 	
-	private String motivo_reuniao;
+	@Column(name="motivo_reuniao", columnDefinition="VARCHAR(200)")
+	private String motivo;
 	
-	@ManyToMany(mappedBy="reunioes_funcionario")
-	private List<Funcionario> funcionarios_reuniao = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name="funcionarios_reuniao",
+	joinColumns= {@JoinColumn(name="id_reuniao")},
+	inverseJoinColumns= {@JoinColumn(name="id_funcionario")})
+	private List<Funcionario> funcionarios = new ArrayList<>();
 	
 	@Temporal(TemporalType.DATE)
-	private Date data_reuniao;
+	@Column(name="data_reuniao")
+	private Date data;
 	
-	//TODO esse campo precisa estar disponível na interface gráfica com espaço como campo de texto longo
+	@Column(columnDefinition="LONGTEXT")
 	private String ata;
 	
 	public Reuniao() {
 		
 	}
 
-	public Long getId_reuniao() {
-		return id_reuniao;
+	public Long getId() {
+		return id;
 	}
 
-	public void setId_reuniao(Long id) {
-		this.id_reuniao = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 	@Enumerated(EnumType.STRING)
-	public ReuniaoTipo getTipo_reuniao() {
-		return tipo_reuniao;
+	public ReuniaoTipo getTipo() {
+		return tipo;
 	}
 
-	public void setTipo_reuniao(ReuniaoTipo tipo) {
-		this.tipo_reuniao = tipo;
+	public void setTipo(ReuniaoTipo tipo) {
+		this.tipo = tipo;
 	}
 
-	public String getMotivo_reuniao() {
-		return motivo_reuniao;
+	public String getMotivo() {
+		return motivo;
 	}
 
-	public void setMotivo_reuniao(String motivo) {
-		this.motivo_reuniao = motivo;
+	public void setMotivo(String motivo) {
+		this.motivo = motivo;
 	}
 
-	public List<Funcionario> getFuncionarios_reuniao() {
-		return funcionarios_reuniao;
+	public List<Funcionario> getFuncionarios() {
+		return funcionarios;
 	}
 
-	public void setFuncionarios_reuniao(Funcionario funcionario) {
-		this.funcionarios_reuniao.add(funcionario);
+	public void setFuncionarios(List<Funcionario> funcionarios) {
+		this.funcionarios = funcionarios;
 	}
 
-	public Date getData_reuniao() {
-		return data_reuniao;
+	public Date getData() {
+		return data;
 	}
 
-	public void setData_reuniao(Date data) {
-		this.data_reuniao = data;
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 	public String getAta() {
@@ -92,18 +102,10 @@ public class Reuniao {
 		this.ata = ata;
 	}
 
-	public Reuniao(ReuniaoTipo tipo, String motivo, List<Funcionario> funcionarios, Date data, String ata) {
-		super();
-		this.tipo_reuniao = tipo;
-		this.motivo_reuniao = motivo;
-		this.funcionarios_reuniao = funcionarios;
-		this.data_reuniao = data;
-		this.ata = ata;
-	}
 
 	@Override
 	public String toString() {
-		return "Reuniao [id_reuniao=" + id_reuniao + ", tipo_reuniao=" + tipo_reuniao.toString() + "]";
+		return "Reuniao [id_reuniao=" + id + ", tipo_reuniao=" + tipo.toString() + "]";
 	}
 	
 	

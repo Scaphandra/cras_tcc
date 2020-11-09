@@ -11,10 +11,13 @@
 		<class>modelo.basico.Endereco</class>
 		<class>modelo.basico.PesReferencia</class>
 		<class>modelo.basico.Beneficio</class>
-		
-		<!--
 		<class>modelo.basico.Funcionario</class>
 		<class>modelo.basico.Tecnico</class>
+		<class>modelo.basico.Coordenador</class>
+		<class>modelo.basico.Unidade</class>
+		<class>modelo.basico.Reuniao</class>
+		
+		<!--
 		<class>modelo.basico.Acolhida</class>
 		<class>modelo.basico.Acompanhamento</class>
 		<class>modelo.basico.Atendimento</class>
@@ -22,8 +25,6 @@
 		<class>modelo.basico.Encaminhamento</class>
 		<class>modelo.basico.GrupoSCFV</class>
 		<class>modelo.basico.RedeReferenciada</class>
-		<class>modelo.basico.Reuniao</class>
-		<class>modelo.basico.Unidade</class>
 		<class>modelo.basico.Visita</class>-->
 		
 		<properties>
