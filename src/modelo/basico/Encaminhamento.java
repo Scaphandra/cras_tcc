@@ -2,94 +2,93 @@ package modelo.basico;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-//@Entity
+import modelo.enumerados.EncaminhamentoTipo;
+
+@Entity
 public class Encaminhamento {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id_encaminhamento;
+	@Column(name="id_encaminhamento")
+	private Long id;
 	
 	@ManyToOne
-	private Tecnico tecnico_encaminhamento;
+	@JoinColumn(name="id_tecnico")
+	private Tecnico tecnico;
 	
-//	@ManyToOne
-//	private Familia familia_encaminhamento;
+	@ManyToOne
+	@JoinColumn(name="id_pessoa")
+	private Pessoa pessoa;
 	
 	@Temporal(TemporalType.DATE)
-	private Date data_encaminhamento;
+	@Column(name="data_encaminhamento")
+	private Date data;
 	
-	@OneToOne (cascade= {CascadeType.PERSIST})
-	@JoinColumn(name="id_rede")
-	private RedeReferenciada rede_encaminhamento;
+	@Enumerated(EnumType.STRING)
+	@Column(name="tipo_encaminhamento")
+	private EncaminhamentoTipo tipo;
 	
 	public Encaminhamento() {
 		
 	}
 
-	public Encaminhamento(Tecnico tecnico, Familia familia, Date data, RedeReferenciada rede) {
-		super();
-		this.tecnico_encaminhamento = tecnico;
-	//	this.familia_encaminhamento = familia;
-		this.data_encaminhamento = data;
-		this.rede_encaminhamento = rede;
+	public Long getId() {
+		return id;
 	}
 
-	public Long getId_encaminhamento() {
-		return id_encaminhamento;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setId_encaminhamento(Long id) {
-		this.id_encaminhamento = id;
+	public Tecnico getTecnico() {
+		return tecnico;
 	}
 
-	public Tecnico getTecnico_encaminhamento() {
-		return tecnico_encaminhamento;
+	public void setTecnico(Tecnico tecnico) {
+		this.tecnico = tecnico;
 	}
 
-	public void setTecnico_encaminhamento(Tecnico tecnico) {
-		this.tecnico_encaminhamento = tecnico;
+	public Pessoa getPessoa() {
+		return pessoa;
 	}
 
-//	public Familia getFamilia_encaminhamento() {
-//		return familia_encaminhamento;
-//	}
-//
-//	public void setFamilia_encaminhamento(Familia familia) {
-//		this.familia_encaminhamento = familia;
-//	}
-
-	public Date getData_encaminhamento() {
-		return data_encaminhamento;
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
-	public void setData_encaminhamento(Date data) {
-		this.data_encaminhamento = data;
+	public Date getData() {
+		return data;
 	}
 
-	public RedeReferenciada getRede_encaminhamento() {
-		return rede_encaminhamento;
+	public void setData(Date data) {
+		this.data = data;
+	}
+	
+	public EncaminhamentoTipo getTipo() {
+		return tipo;
 	}
 
-	public void setRede_encaminhamento(RedeReferenciada rede) {
-		this.rede_encaminhamento = rede;
+	public void setTipo(EncaminhamentoTipo tipo) {
+		this.tipo = tipo;
 	}
-//+ familia_encaminhamento.toString()
+
 	@Override
 	public String toString() {
-		return "Encaminhamento [id_encaminhamento=" + id_encaminhamento + ", tecnico_encaminhamento="
-				+ tecnico_encaminhamento.toString() + ", familia_encaminhamento=" 
-				+ ", data_encaminhamento=" + data_encaminhamento.toString() + ", rede_encaminhamento=" + rede_encaminhamento.toString() + "]";
+		return "Encaminhamento [id=" + id + ", tecnico="
+				+ tecnico.toString() + ", familia=" + pessoa.toString()
+				+ ", data=" + data.toString() + ", tipo =" + tipo.toString() + "]";
 	}
 
 	

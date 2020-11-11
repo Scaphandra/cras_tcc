@@ -1,109 +1,104 @@
 package modelo.basico;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-//@Entity
+@Entity
 @Table(name= "acompanhamento")
 public class Acompanhamento {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id_acompanhamento;
+	@Column(name="id_acompanhamento")
+	private Long id;
 	
-	@OneToMany(mappedBy="acompanhamento")
-	private List<Familia> familias_acompanhamento = new ArrayList<>();
+	@OneToOne
+	@JoinColumn(name="familia_acompanhamento")
+	private Familia familia;
 	
 	@Temporal(TemporalType.DATE)
-	private Date dataEntrada_acompanhamento;
+	@Column(name="data_entrada_acom")
+	private Date dataEntrada;
 	
 	@Temporal(TemporalType.DATE)
-	private Date dataSaida_acompanhamento;
+	@Column(name="data_saida_acom")
+	private Date dataSaida;
 	
-	private String motivoSaida_acompanhamento;
+	@Column(name="motivo_saida_acom")
+	private String motivoSaida;
 	
-	@ManyToOne
-	private Tecnico tecnico_acompanhamento;
+	@OneToOne
+	@JoinColumn(name="tecnico_acompanhamento")
+	private Tecnico tecnico;
 	
 	public Acompanhamento() {
 		
 	}
 
-	public Acompanhamento(Date dataEntrada, Date dataSaida, String motivoSaida, Tecnico tecnico) {
-		super();
-//		this.familia_acompanhamento = familia;
-		this.dataEntrada_acompanhamento = dataEntrada;
-		this.dataSaida_acompanhamento = dataSaida;
-		this.motivoSaida_acompanhamento = motivoSaida;
-		this.tecnico_acompanhamento = tecnico;
+	public Long getId() {
+		return id;
 	}
 
-	public Long getId_acompanhamento() {
-		return id_acompanhamento;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setId_acompanhamento(Long id) {
-		this.id_acompanhamento = id;
+	public Familia getFamilia() {
+		return familia;
 	}
 
-//	public Familia getFamilia() {
-//		return familia_acompanhamento;
-//	}
-//
-//	public void setFamilia(Familia familia) {
-//		this.familia_acompanhamento = familia;
-//	}
-
-	public Date getDataEntrada_acompanhamento() {
-		return dataEntrada_acompanhamento;
+	public void setFamilia(Familia familia) {
+		this.familia = familia;
 	}
 
-	public void setDataEntrada_acompanhamento(Date dataEntrada) {
-		this.dataEntrada_acompanhamento = dataEntrada;
+	public Date getDataEntrada() {
+		return dataEntrada;
 	}
 
-	public Date getDataSaida_acompanhamento() {
-		return dataSaida_acompanhamento;
+	public void setDataEntrada(Date dataEntrada) {
+		this.dataEntrada = dataEntrada;
 	}
 
-	public void setDataSaida_acompanhamento(Date dataSaida) {
-		this.dataSaida_acompanhamento = dataSaida;
+	public Date getDataSaida() {
+		return dataSaida;
 	}
 
-	public String getMotivoSaida_acompanhamento() {
-		return motivoSaida_acompanhamento;
+	public void setDataSaida(Date dataSaida) {
+		this.dataSaida = dataSaida;
 	}
 
-	public void setMotivoSaida_acompanhamento(String motivoSaida) {
-		this.motivoSaida_acompanhamento = motivoSaida;
+	public String getMotivoSaida() {
+		return motivoSaida;
 	}
 
-	public Tecnico getTecnico_acompanhamento() {
-		return tecnico_acompanhamento;
+	public void setMotivoSaida(String motivoSaida) {
+		this.motivoSaida = motivoSaida;
 	}
 
-	public void setTecnico_acompanhamento(Tecnico tecnico) {
-		this.tecnico_acompanhamento = tecnico;
+	public Tecnico getTecnico() {
+		return tecnico;
+	}
+
+	public void setTecnico(Tecnico tecnico) {
+		this.tecnico = tecnico;
 	}
 
 	@Override
 	public String toString() {
-		return "Acompanhamento [id_acompanhamento=" + id_acompanhamento + ", dataEntrada_acompanhamento="
-				+ dataEntrada_acompanhamento.toString() + ", dataSaida_acompanhamento=" + dataSaida_acompanhamento.toString()
-				+ ", motivoSaida_acompanhamento=" + motivoSaida_acompanhamento + ", tecnico_acompanhamento="
-				+ tecnico_acompanhamento.toString() + "]";
+		return "Acompanhamento [id_acompanhamento=" + id + ", dataEntrada_acompanhamento="
+				+ dataEntrada.toString() + ", dataSaida_acompanhamento=" + dataSaida.toString()
+				+ ", motivoSaida_acompanhamento=" + motivoSaida + ", tecnico_acompanhamento="
+				+ tecnico.toString() + "]";
 	}
 
 	

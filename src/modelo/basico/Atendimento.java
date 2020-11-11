@@ -2,11 +2,16 @@ package modelo.basico;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -14,33 +19,40 @@ import javax.persistence.TemporalType;
 import modelo.enumerados.AtendimentoTipo;
 import modelo.enumerados.DemandaAtendimento;
 
-//@Entity
+@Entity
 @Table(name="atendimentos")
 public class Atendimento {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id_atendimento;
+	@Column(name="id_atendimento")
+	private Long id;
 	
-//	@ManyToOne
-//	private Familia familia_atendimento;
-//	
-	@ManyToOne
-	private Pessoa pessoa_atendimento;
+	@OneToOne
+	@JoinColumn(name="id_pessoa")
+	private Pessoa pessoa;
 	
 	@Temporal(TemporalType.DATE)
-	private Date data_atendimento;
+	@Column(name="data_atendimento")
+	private Date data;
 	
-	private AtendimentoTipo tipo_atendimento;
+	@Enumerated(EnumType.STRING)
+	@Column(name="tipo_atendimento")
+	private AtendimentoTipo tipo;
 	
-	private DemandaAtendimento demanda_atendimento;
+	@Enumerated(EnumType.STRING)
+	@Column(name="demanda_atendimento")
+	private DemandaAtendimento demanda;
 	
+	@Column(name="relatorio_atendimento")
 	private boolean relatorio;
 	
-	private BeneficioEventual beneficioEventual_atendimento;
+//	@Column(name="beneficioEventual_atendimento")
+//	private BeneficioEventual beneficioEventual;
 	
 	@ManyToOne
-	private Funcionario funcionario_atendimento;
+	@JoinColumn(name="funcionario_atendimento")
+	private Funcionario funcionario;
 	
 
 	public Atendimento() {
@@ -48,75 +60,56 @@ public class Atendimento {
 	}
 
 
-	public Atendimento(Familia familia, Pessoa pessoa, Date data, AtendimentoTipo tipo, DemandaAtendimento demanda,
-			boolean relatorio, BeneficioEventual beneficioEventual, Funcionario funcionario) {
-		super();
-//		this.familia_atendimento = familia;
-		this.pessoa_atendimento = pessoa;
-		this.data_atendimento = data;
-		this.tipo_atendimento = tipo;
-		this.demanda_atendimento = demanda;
-		this.relatorio = relatorio;
-		this.beneficioEventual_atendimento = beneficioEventual;
-		this.funcionario_atendimento = funcionario;
+	public Long getId() {
+		return id;
 	}
 
-
-
-	public Long getId_atendimento() {
-		return id_atendimento;
-	}
-
-	public void setId_atendimento(Long id) {
-		this.id_atendimento = id;
-	}
-
-//	public Familia getFamilia_atendimento() {
-//		return familia_atendimento;
-//	}
-//
-//	public void setFamilia_atendimento(Familia familia) {
-//		this.familia_atendimento = familia;
-//	}
-
-	public Pessoa getPessoa_atendimento() {
-		return pessoa_atendimento;
-	}
-
-	public void setPessoa_atendimento(Pessoa pessoa) {
-		this.pessoa_atendimento = pessoa;
-	}
-
-	public Date getData_atendimento() {
-		return data_atendimento;
-	}
-
-	public void setData_atendimento(Date data) {
-		this.data_atendimento = data;
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
-	public Funcionario getFuncionario_atendimento() {
-		return funcionario_atendimento;
+	
+
+	public Pessoa getPessoa() {
+		return pessoa;
 	}
 
-	public void setFuncionario_atendimento(Funcionario funcionario) {
-		this.funcionario_atendimento = funcionario;
+
+	public void setPessoa(Pessoa pessoa) {
+		this.pessoa = pessoa;
 	}
 
-	public AtendimentoTipo getTipo_atendimento() {
-		return tipo_atendimento;
+
+	public Date getData() {
+		return data;
+	}
+
+	public void setData(Date data) {
+		this.data = data;
+	}
+	
+	public Funcionario getFuncionario() {
+		return funcionario;
+	}
+
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public AtendimentoTipo getTipo() {
+		return tipo;
 	}
 
 	public void setTipo_atendimento(AtendimentoTipo tipo) {
-		this.tipo_atendimento = tipo;
+		this.tipo = tipo;
 	}
 
-	public DemandaAtendimento getDemanda_atendimento() {
-		return demanda_atendimento;
+	public DemandaAtendimento getDemanda() {
+		return demanda;
 	}
 
-	public void setDemanda_atendimento(DemandaAtendimento demanda) {
-		this.demanda_atendimento = demanda;
+	public void setDemanda(DemandaAtendimento demanda) {
+		this.demanda = demanda;
 	}
 
 	public boolean isRelatorio() {
@@ -127,22 +120,25 @@ public class Atendimento {
 		this.relatorio = relatorio;
 	}
 
-	public BeneficioEventual getBeneficioEventual_atendimento() {
-		return beneficioEventual_atendimento;
-	}
+//	public BeneficioEventual getBeneficioEventual() {
+//		return beneficioEventual;
+//	}
+//
+//	public void setBeneficioEventual(BeneficioEventual beneficioEventual) {
+//		this.beneficioEventual = beneficioEventual;
+//	}
 
-	public void setBeneficioEventual_atendimento(BeneficioEventual beneficioEventual) {
-		this.beneficioEventual_atendimento = beneficioEventual;
-	}
-//+ familia_atendimento.toString()
-
+// + beneficioEventual.toString()
+	
+	
+	
 	@Override
 	public String toString() {
-		return "Atendimento [id_atendimento=" + id_atendimento + ", familia_atendimento=" 
-				+ ", pessoa_atendimento=" + pessoa_atendimento.toString() + ", data_atendimento=" + data_atendimento.toString()
-				+ ", tipo_atendimento=" + tipo_atendimento.toString() + ", demanda_atendimento=" + demanda_atendimento.toString()
-				+ "beneficioEventual_atendimento=" + beneficioEventual_atendimento.toString()
-				+ ", funcionario_atendimento=" + funcionario_atendimento.toString() + "]";
+		return "Atendimento [id_atendimento=" + id
+				+ ", data_atendimento=" + data.toString() + ",pessoa= "+ pessoa.toString()
+				+ ", tipo_atendimento=" + tipo.toString() + ", demanda_atendimento=" + demanda.toString()
+				+ "beneficioEventual_atendimento="
+				+ ", funcionario_atendimento=" + funcionario.toString() + "]";
 	}
 	
 	

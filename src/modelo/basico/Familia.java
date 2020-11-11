@@ -16,12 +16,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import modelo.enumerados.EncaminhamentoTipo;
 import modelo.enumerados.SituacaoFamilia;
 
 @Entity
@@ -35,7 +37,7 @@ public class Familia {
 	//private double valorBeneficios;
 	
 	@OneToOne(cascade=CascadeType.ALL)
-//	@JoinColumn(name="pessoa_referencia_familia")
+	@JoinColumn(name="id_pessoa")
 	private PesReferencia pesReferencia;
 	
 	@Temporal(TemporalType.DATE)
@@ -53,35 +55,28 @@ public class Familia {
 	@Column(name="telefones_familia")
 	private List <String> telefones_familia = new ArrayList<>();
 	
-	
+	@Enumerated(EnumType.STRING)
 	private SituacaoFamilia situacao_familia;
+		
+	@Column(columnDefinition = "boolean default false", name="familia_acompanhamento")
+	private Boolean acompanhada = this.situacao_familia==SituacaoFamilia.ACOMP?true:false;
 	
-//	@OneToMany(mappedBy="familia_atendimento")
-//	private List<Atendimento> atendimentos_familia = new ArrayList<>();
-//	
-//	@OneToMany(mappedBy="familia_encaminhamento")
-//	private List<Encaminhamento> encaminhamentos_familia = new ArrayList<>();
-	
-	
-//	@Column(columnDefinition = "boolean default false", name="familia_acompanhamento")
-//	private Boolean acompanhada = this.situacao_familia==SituacaoFamilia.ACOMP?true:false;
-	
-//	@ManyToOne
-//	private Acompanhamento acompanhamento;
+	@OneToOne
+	private Acompanhamento acompanhamento;
 	
 	@Column(columnDefinition = "boolean default false")
 	private Boolean perfilCreas;
 	
-//	@OneToOne (cascade= {CascadeType.PERSIST})
-//	@JoinColumn(name="id_rede")
-//	private RedeReferenciada encaminhada_familia;
+	@Enumerated(EnumType.STRING)
+	private EncaminhamentoTipo encaminhada;
 	
 	private double totalRenda;
 	
 	private double totalBeneficio;
 	
-//	@ManyToOne
-//	private Tecnico tecnicoRef_familia;
+	@ManyToOne
+	@JoinColumn(name="id_tecnico")
+	private Tecnico tecnico;
 	
 	@Temporal(TemporalType.DATE)
 	@Column
@@ -129,7 +124,6 @@ public class Familia {
 	public void setDataEntrada(Date dataEntrada) {
 		this.dataEntrada = dataEntrada;
 	}
-
 	
 		//valorBeneficios += pessoa.getTotal_beneficios();
 //		for(Beneficio b: pessoa.getBeneficios_pes()) {
@@ -179,22 +173,15 @@ public class Familia {
 		this.situacao_familia = situacao;
 	}
 
-//	public List<Encaminhamento> getEncaminhamentos_familia() {
-//		return encaminhamentos_familia;
-//	}
-//
-//	public void setEncaminhamentos_familia(Encaminhamento encaminhamento) {
-//		this.encaminhamentos_familia.add(encaminhamento);
-//	}
-//
-//	public List<Atendimento> getAtendimentos_familia() {
-//		return atendimentos_familia;
-//	}
-//
-//	public void setAtendimentos_familia(Atendimento atendimento) {
-//		this.atendimentos_familia.add(atendimento);
-//	}
-//
+	public EncaminhamentoTipo getEncaminhada() {
+		return encaminhada;
+	}
+
+	public void setEncaminhada(EncaminhamentoTipo encaminhada) {
+		this.encaminhada = encaminhada;
+	}
+
+	//
 //	public boolean isAcompanhada() {
 //		return acompanhada;
 //	}
@@ -209,6 +196,7 @@ public class Familia {
 	public boolean isPerfilCreas() {
 		return perfilCreas;
 	}
+
 
 	public void setPerfilCreas(boolean perfilCreas) {
 		this.perfilCreas = perfilCreas;
@@ -282,15 +270,15 @@ public class Familia {
 //		this.numero_pessoas = this.pessoas_familia.size();
 //	}
 
-	@Transient
-	public double getTotalBeneficio() {
-
-		for(Pessoa pes: pessoas_familia) {
-			this.totalBeneficio += pes.getTotalBenef();
-		}
-		
-		return totalBeneficio;
-	}
+//	@Transient
+//	public double getTotalBeneficio() {
+//
+//		for(Pessoa pes: pessoas_familia) {
+//			this.totalBeneficio += pes.getTotalBenef();
+//		}
+//		
+//		return totalBeneficio;
+//	}
 
 	@Override
 	public String toString() {

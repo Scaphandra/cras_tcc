@@ -1,8 +1,12 @@
 package modelo.basico;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 import modelo.enumerados.Escolaridade;
 import modelo.enumerados.NivelAcesso;
@@ -15,8 +19,11 @@ public class Tecnico  extends Funcionario{
 	@Column(name="referencia_tecnico")
 	private TecnicoReferencia referencia;
 	
-//	@OneToMany(mappedBy="tecnicoRef_familia")
-//	private List <Familia> acompanhadas_tecnico = new ArrayList<>();
+	@OneToMany(mappedBy="tecnico")
+	private List <Familia> acompanhadas_tecnico = new ArrayList<>();
+	
+	@OneToMany(mappedBy="tecnico")
+	private List <Familia> encaminhamentos = new ArrayList<>();
 	
 //	@OneToMany(mappedBy="funcionario_atendimento")
 //	private List <Atendimento> atendimentos_tecnico = new ArrayList<>();
@@ -39,6 +46,7 @@ public class Tecnico  extends Funcionario{
 		this.referencia = referencia;
 	}
 
+	
 //	public List<Familia> getAcompanhadas_tecnico() {
 //		return acompanhadas_tecnico;
 //	}
@@ -62,6 +70,16 @@ public class Tecnico  extends Funcionario{
 //	public void setVisitas_tecnico(Visita visita) {
 //		this.visitas_tecnico.add(visita);
 //	}
+
+	public List<Familia> getEncaminhamentos() {
+		return encaminhamentos;
+	}
+
+	//adicionará um por vez
+	public void setEncaminhamentos(Familia encaminhamentos) {
+		this.encaminhamentos.add(encaminhamentos);
+	}
+
 
 	@Override
 	public String toString() {

@@ -101,6 +101,9 @@ public class Pessoa {
 	@Column(columnDefinition = "boolean default false", name="pessoa_referencia")
 	private boolean pesReferencia = false;
 	
+	@OneToMany(mappedBy="pessoa")
+	private List <Encaminhamento> encaminhamentos = new ArrayList<>();
+	
 //	@ManyToOne
 //	private Acolhida acolhida_pes;
 	//
@@ -273,25 +276,25 @@ public class Pessoa {
 	}
 
 
-	public List<Beneficio> getBeneficios() {
-		
-		return beneficios;
-	}
-
-
-	public void setBeneficios(List<Beneficio> beneficios) {
-		this.beneficios = beneficios;
-		
-	}
-
-	public double retornarValorBeneficio(BeneficioTipo tipo) {
-		for(Beneficio b: getBeneficios()) {
-			if(b.getNome() == tipo) {
-				return b.getValor();
-			}
-		}
-		return 0.0;
-	}
+//	public List<Beneficio> getBeneficios() {
+//		
+//		return beneficios;
+//	}
+//
+//
+//	public void setBeneficios(List<Beneficio> beneficios) {
+//		this.beneficios = beneficios;
+//		
+//	}
+//
+//	public double retornarValorBeneficio(BeneficioTipo tipo) {
+//		for(Beneficio b: getBeneficios()) {
+//			if(b.getNome() == tipo) {
+//				return b.getValor();
+//			}
+//		}
+//		return 0.0;
+//	}
 
 	public boolean isGestante() {
 		return gestante;
@@ -353,16 +356,16 @@ public void setNoSCFV(boolean noSCFV) {
 
 	
 
-	@Transient
-	public double getTotalBenef() {
-		
-		for(Beneficio b: getBeneficios()) {
-			
-			this.totalBenef += b.getValor();
-		}
-		
-		return totalBenef;
-	}
+//	@Transient
+//	public double getTotalBenef() {
+//		
+//		for(Beneficio b: getBeneficios()) {
+//			
+//			this.totalBenef += b.getValor();
+//		}
+//		
+//		return totalBenef;
+//	}
 
 
 //	public GrupoSCFV getGrupo_pes() {
@@ -375,14 +378,19 @@ public void setNoSCFV(boolean noSCFV) {
 //	}
 
 
-	
-
-
 
 	public String getParentesco() {
 		return parentesco;
 	}
 
+
+	public List<Encaminhamento> getEncaminhamentos() {
+		return encaminhamentos;
+	}
+
+	public void setEncaminhamentos(List<Encaminhamento> encaminhamentos) {
+		this.encaminhamentos = encaminhamentos;
+	}
 
 	public void setParentesco(String parentesco) {
 		this.parentesco = parentesco;
