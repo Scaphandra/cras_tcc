@@ -19,13 +19,12 @@
 		<class>modelo.basico.Acompanhamento</class>
 		<class>modelo.basico.Atendimento</class>
 		<class>modelo.basico.Encaminhamento</class>
-		
-		<!--
 		<class>modelo.basico.Acolhida</class>
 		<class>modelo.basico.BeneficioEventual</class>
 		<class>modelo.basico.GrupoSCFV</class>
+		<class>modelo.basico.Visita</class>
 		<class>modelo.basico.RedeReferenciada</class>
-		<class>modelo.basico.Visita</class>-->
+	
 		
 		<properties>
 			<property name= "javax.persistence.jdbc.driver" 

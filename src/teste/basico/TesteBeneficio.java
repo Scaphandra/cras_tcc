@@ -21,7 +21,7 @@ import modelo.enumerados.Genero;
 import modelo.enumerados.Sexo;
 import modelo.enumerados.SituacaoFamilia;
 
-public class Teste {
+public class TesteBeneficio {
 	/*
 	 * Toda classe que faz o CRUD tem que ter um main
 	 * O EntityManager é um gerente das entidades -> faz o CRUD-> recebe o objeto, lê seu mapeamento 
@@ -124,10 +124,7 @@ public class Teste {
 //		em.merge(pes1);
 //		em.merge(pes2);
 //		em.merge(pes3);
-//		
-//		em.getTransaction().commit();
-//		em.close();
-//		emf.close();
+
 		em.getTransaction().commit();
 		em.close();
 		emf.close();

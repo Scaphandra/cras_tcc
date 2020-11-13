@@ -1,5 +1,7 @@
 package modelo.basico;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import modelo.enumerados.Escolaridade;
@@ -63,6 +66,9 @@ public class Funcionario {
 	
 	@Column(name="telefone_funcionario")
 	protected String telefone;
+	
+	@OneToMany(mappedBy="funcionario")
+	private List<Atendimento> atendimentos;
 	
 	
 	public Funcionario() {
@@ -185,6 +191,14 @@ public class Funcionario {
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
+	}
+
+	public List<Atendimento> getAtendimentos() {
+		return atendimentos;
+	}
+
+	public void setAtendimentos(Atendimento atendimento) {
+		this.atendimentos.add(atendimento);
 	}
 
 	@Override

@@ -47,18 +47,17 @@ public class Atendimento {
 	@Column(name="relatorio_atendimento")
 	private boolean relatorio;
 	
-//	@Column(name="beneficioEventual_atendimento")
-//	private BeneficioEventual beneficioEventual;
+	@Column(name="beneficioEventual_atendimento")
+	private BeneficioEventual beneficioEventual;
 	
 	@ManyToOne
 	@JoinColumn(name="funcionario_atendimento")
 	private Funcionario funcionario;
 	
-
+	
 	public Atendimento() {
 		
 	}
-
 
 	public Long getId() {
 		return id;
@@ -68,7 +67,6 @@ public class Atendimento {
 		this.id = id;
 	}
 	
-	
 
 	public Pessoa getPessoa() {
 		return pessoa;
@@ -77,6 +75,7 @@ public class Atendimento {
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+		pessoa.setAtendimentos(this);
 	}
 
 
@@ -94,14 +93,17 @@ public class Atendimento {
 
 	public void setFuncionario(Funcionario funcionario) {
 		this.funcionario = funcionario;
+		funcionario.setAtendimentos(this);
 	}
 
 	public AtendimentoTipo getTipo() {
 		return tipo;
 	}
 
-	public void setTipo_atendimento(AtendimentoTipo tipo) {
+	//adicionar atualização do cad
+	public void setTipo(AtendimentoTipo tipo) {
 		this.tipo = tipo;
+
 	}
 
 	public DemandaAtendimento getDemanda() {
@@ -120,15 +122,13 @@ public class Atendimento {
 		this.relatorio = relatorio;
 	}
 
-//	public BeneficioEventual getBeneficioEventual() {
-//		return beneficioEventual;
-//	}
-//
-//	public void setBeneficioEventual(BeneficioEventual beneficioEventual) {
-//		this.beneficioEventual = beneficioEventual;
-//	}
+	public BeneficioEventual getBeneficioEventual() {
+		return beneficioEventual;
+	}
 
-// + beneficioEventual.toString()
+	public void setBeneficioEventual(BeneficioEventual beneficioEventual) {
+		this.beneficioEventual = beneficioEventual;
+	}
 	
 	
 	
@@ -137,7 +137,7 @@ public class Atendimento {
 		return "Atendimento [id_atendimento=" + id
 				+ ", data_atendimento=" + data.toString() + ",pessoa= "+ pessoa.toString()
 				+ ", tipo_atendimento=" + tipo.toString() + ", demanda_atendimento=" + demanda.toString()
-				+ "beneficioEventual_atendimento="
+				+ "beneficioEventual_atendimento="+ beneficioEventual.toString()
 				+ ", funcionario_atendimento=" + funcionario.toString() + "]";
 	}
 	

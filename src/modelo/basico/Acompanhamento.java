@@ -59,6 +59,7 @@ public class Acompanhamento {
 
 	public void setFamilia(Familia familia) {
 		this.familia = familia;
+		familia.setAcompanhada(true);
 	}
 
 	public Date getDataEntrada() {
@@ -89,8 +90,10 @@ public class Acompanhamento {
 		return tecnico;
 	}
 
+	//Técnico só pode ser incluído depois de família
 	public void setTecnico(Tecnico tecnico) {
 		this.tecnico = tecnico;
+		tecnico.setAcompanhadas_tecnico(this.familia);
 	}
 
 	@Override

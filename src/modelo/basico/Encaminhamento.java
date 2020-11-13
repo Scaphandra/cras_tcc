@@ -58,6 +58,7 @@ public class Encaminhamento {
 
 	public void setTecnico(Tecnico tecnico) {
 		this.tecnico = tecnico;
+		tecnico.setEncaminhamentos(this);
 	}
 
 	public Pessoa getPessoa() {
@@ -66,6 +67,7 @@ public class Encaminhamento {
 
 	public void setPessoa(Pessoa pessoa) {
 		this.pessoa = pessoa;
+		pessoa.setEncaminhamentos(this);
 	}
 
 	public Date getData() {

@@ -1,6 +1,7 @@
 package modelo.basico;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,8 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,7 +36,7 @@ import modelo.enumerados.Sexo;
 @Entity
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="tipo", length=2, discriminatorType=DiscriminatorType.STRING)
-@DiscriminatorValue("PE")
+@DiscriminatorValue("P")
 @Table(name="pessoas")
 public class Pessoa {
 	
@@ -41,11 +44,6 @@ public class Pessoa {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_pessoa")
 	private Long id;
-	
-	
-//	@ManyToOne
-//	@Column(name="grupo_pessoa")
-//	private GrupoSCFV grupo;
 	
 	@Column(name="nome_pessoa")
 	private String nome;
@@ -59,15 +57,21 @@ public class Pessoa {
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataNascimento;
-
+	
+	private int idade;
+	
+	@Enumerated(EnumType.STRING)
 	private Sexo sexo;
 
+	@Enumerated(EnumType.STRING)
 	private Genero genero;
 
 	private String nomeMae;
 
+	@Enumerated(EnumType.STRING)
 	private CorRaca cor;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name="escolaridade_pessoa")
 	private Escolaridade escolaridade;
 	
@@ -84,7 +88,7 @@ public class Pessoa {
 	@OneToMany(mappedBy="pessoa", fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	private List <Beneficio> beneficios = new ArrayList<>();
 	
-	private double totalBenef;
+	private double totalBeneficio;
 
 	@Column(columnDefinition = "boolean default false")
 	private boolean gestante = false;
@@ -104,9 +108,17 @@ public class Pessoa {
 	@OneToMany(mappedBy="pessoa")
 	private List <Encaminhamento> encaminhamentos = new ArrayList<>();
 	
-//	@ManyToOne
-//	private Acolhida acolhida_pes;
-	//
+	@OneToMany(mappedBy="pessoa")
+	private List <Atendimento> atendimentos = new ArrayList<>();
+	
+	@ManyToOne
+	@JoinColumn(name="pessoas_acolhida")
+	private Acolhida acolhida;
+	
+	@ManyToOne
+	@JoinColumn(name="grupo_pessoas")
+	private GrupoSCFV grupo;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_familia")
 	private Familia familia;
@@ -145,8 +157,6 @@ public class Pessoa {
 		this.homonimo = homonimo;
 	}
 	
-	
-
 
 	public boolean isPesReferencia() {
 		return pesReferencia;
@@ -161,7 +171,7 @@ public class Pessoa {
 	}
 
 
-	public void setCpf_pes(String cpf_pes) {
+	public void setCpf(String cpf_pes) {
 		this.cpf = cpf_pes;
 	}
 
@@ -193,6 +203,38 @@ public class Pessoa {
 
 	public void setDataNascimento(Date dataNascimento) {
 		this.dataNascimento = dataNascimento;
+		setIdade();
+	}
+	
+	public int getIdade() {
+		return idade;
+	}
+
+	public void setIdade() {
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.dataNascimento);
+		int dia = cal.get(Calendar.DAY_OF_MONTH);
+		//o mês entra como um vetor de 12 posições incluindo o 0, por isso precisamos somar com 1
+		int mes = cal.get(Calendar.MONTH)+1;
+		int ano = cal.get(Calendar.YEAR);
+		
+		int diaHoje = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+		int mesHoje = Calendar.getInstance().get(Calendar.MONTH)+1;
+		int anoHoje = Calendar.getInstance().get(Calendar.YEAR);
+		
+		//cálculo da idade
+		
+		this.idade = anoHoje - ano;
+		
+		if(mesHoje == mes) {	
+			if(diaHoje < dia) {				
+				this.idade -= 1;
+			}
+		}else if(mesHoje < mes) {
+			
+			this.idade -= 1;
+		}
 	}
 
 
@@ -276,25 +318,26 @@ public class Pessoa {
 	}
 
 
-//	public List<Beneficio> getBeneficios() {
-//		
-//		return beneficios;
-//	}
-//
-//
-//	public void setBeneficios(List<Beneficio> beneficios) {
-//		this.beneficios = beneficios;
-//		
-//	}
-//
-//	public double retornarValorBeneficio(BeneficioTipo tipo) {
-//		for(Beneficio b: getBeneficios()) {
-//			if(b.getNome() == tipo) {
-//				return b.getValor();
-//			}
-//		}
-//		return 0.0;
-//	}
+	public List<Beneficio> getBeneficios() {
+		
+		return beneficios;
+	}
+
+
+	public void setBeneficios(List<Beneficio> beneficios) {
+		this.beneficios = beneficios;
+		
+	}
+
+	@Transient
+	public double getValorBeneficio(BeneficioTipo tipo) {
+		for(Beneficio b: getBeneficios()) {
+			if(b.getNome() == tipo) {
+				return b.getValor();
+			}
+		}
+		return 0.0;
+	}
 
 	public boolean isGestante() {
 		return gestante;
@@ -317,31 +360,24 @@ public class Pessoa {
 
 
 	public boolean isNoSCFV() {
+
 		return noSCFV;
 	}
 
-public void setNoSCFV(boolean noSCFV) {
-	this.noSCFV = noSCFV;
-}
-//	public void setNoSCFV(boolean noSCFV) {
-//		if (!noSCFV) {
-//			this.grupo = null;
-//		}
-//		this.noSCFV = noSCFV;
-//	}
-//
+	public void setNoSCFV(boolean noSCFV) {
+		
+		this.noSCFV = noSCFV;
+		
+	}
 
-	
+	public Acolhida getAcolhida() {
+		return acolhida;
+	}
 
 
-//	public Acolhida getAcolhida_pes() {
-//		return acolhida_pes;
-//	}
-//
-//
-//	public void setAcolhida_pes(Acolhida acolhida) {
-//		this.acolhida_pes = acolhida;
-//	}
+	public void setAcolhida(Acolhida acolhida) {
+		this.acolhida = acolhida;
+	}
 
 	
 
@@ -356,26 +392,30 @@ public void setNoSCFV(boolean noSCFV) {
 
 	
 
-//	@Transient
-//	public double getTotalBenef() {
-//		
-//		for(Beneficio b: getBeneficios()) {
-//			
-//			this.totalBenef += b.getValor();
-//		}
-//		
-//		return totalBenef;
-//	}
+	@Transient
+	public double getTotalBeneficio() {
+		totalBeneficio = 0;
+		
+		if(beneficios != null) {
+
+			for(Beneficio b: getBeneficios()) {
+				
+				this.totalBeneficio += b.getValor();
+			}
+		}
+		return totalBeneficio;
+	}
 
 
-//	public GrupoSCFV getGrupo_pes() {
-//		return grupo_pes;
-//	}
-//
-//
-//	public void setGrupo_pes(GrupoSCFV grupo_pes) {
-//		this.grupo_pes = grupo_pes;
-//	}
+	public GrupoSCFV getGrupo() {
+		return grupo;
+	}
+
+
+	public void setGrupo(GrupoSCFV grupo_pes) {
+		this.grupo = grupo_pes;
+		this.setNoSCFV(true);
+	}
 
 
 
@@ -387,9 +427,18 @@ public void setNoSCFV(boolean noSCFV) {
 	public List<Encaminhamento> getEncaminhamentos() {
 		return encaminhamentos;
 	}
+	//colocado um encaminhamento por vez
+	public void setEncaminhamentos(Encaminhamento encaminhamentos) {
+		this.encaminhamentos.add(encaminhamentos);
+	}
+	
 
-	public void setEncaminhamentos(List<Encaminhamento> encaminhamentos) {
-		this.encaminhamentos = encaminhamentos;
+	public List<Atendimento> getAtendimentos() {
+		return atendimentos;
+	}
+
+	public void setAtendimentos(Atendimento atendimento) {
+		this.atendimentos.add(atendimento);
 	}
 
 	public void setParentesco(String parentesco) {

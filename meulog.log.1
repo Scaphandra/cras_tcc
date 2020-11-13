@@ -1,116 +1,4 @@
-2020-11-05 21:38:33,652 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Pessoa 
-       add constraint FK8canlglqd4dvfbstir0c5glhe 
-       foreign key (id_pessoaFamilia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Pessoa 
-       add constraint FK8canlglqd4dvfbstir0c5glhe 
-       foreign key (id_pessoaFamilia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:58)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK8canlglqd4dvfbstir0c5glhe' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:39:06,741 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2020-11-05 21:39:08,347 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table atendimentos 
-       add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
-       foreign key (familia_atendimento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table atendimentos 
-       add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
-       foreign key (familia_atendimento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:29)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK5ob8e4qh8g67h8h3pym33ukj4' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:39:08,377 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Beneficio 
-       add constraint FK85ul1qg6djb4fobobfeuwd5a7 
-       foreign key (familia_beneficio_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Beneficio 
-       add constraint FK85ul1qg6djb4fobobfeuwd5a7 
-       foreign key (familia_beneficio_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:29)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK85ul1qg6djb4fobobfeuwd5a7' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:39:08,403 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-05 21:46:33,737 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Encaminhamento 
        add constraint FKhi4okm1i5716x6ntyehj68j2x 
        foreign key (familia_encaminhamento_id_familia) 
@@ -147,7 +35,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:39:08,458 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-05 21:46:33,793 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Familia_telefones_familia 
        add constraint FKc2igqixteafoxhsisoxnltcea 
        foreign key (Familia_id_familia) 
@@ -184,7 +72,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:39:08,495 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-05 21:46:33,832 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Pessoa 
        add constraint FK8canlglqd4dvfbstir0c5glhe 
        foreign key (id_pessoaFamilia) 
@@ -221,194 +109,10 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:39:08,700 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2020-11-05 21:39:08,996 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table atendimentos 
-       add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
-       foreign key (familia_atendimento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table atendimentos 
-       add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
-       foreign key (familia_atendimento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:58)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK5ob8e4qh8g67h8h3pym33ukj4' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:39:09,010 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Beneficio 
-       add constraint FK85ul1qg6djb4fobobfeuwd5a7 
-       foreign key (familia_beneficio_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Beneficio 
-       add constraint FK85ul1qg6djb4fobobfeuwd5a7 
-       foreign key (familia_beneficio_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:58)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK85ul1qg6djb4fobobfeuwd5a7' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:39:09,022 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Encaminhamento 
-       add constraint FKhi4okm1i5716x6ntyehj68j2x 
-       foreign key (familia_encaminhamento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Encaminhamento 
-       add constraint FKhi4okm1i5716x6ntyehj68j2x 
-       foreign key (familia_encaminhamento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:58)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKhi4okm1i5716x6ntyehj68j2x' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:39:09,053 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Familia_telefones_familia 
-       add constraint FKc2igqixteafoxhsisoxnltcea 
-       foreign key (Familia_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Familia_telefones_familia 
-       add constraint FKc2igqixteafoxhsisoxnltcea 
-       foreign key (Familia_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:58)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKc2igqixteafoxhsisoxnltcea' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:39:09,084 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Pessoa 
-       add constraint FK8canlglqd4dvfbstir0c5glhe 
-       foreign key (id_pessoaFamilia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Pessoa 
-       add constraint FK8canlglqd4dvfbstir0c5glhe 
-       foreign key (id_pessoaFamilia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:58)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK8canlglqd4dvfbstir0c5glhe' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:40:56,122 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2020-11-05 21:40:57,575 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-05 21:46:35,668 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-05 21:46:35,669 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'id_familia' doesn't have a default value
+2020-11-05 21:47:35,542 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-05 21:47:37,028 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table atendimentos 
        add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
        foreign key (familia_atendimento_id_familia) 
@@ -445,7 +149,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:40:57,598 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-05 21:47:37,050 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Beneficio 
        add constraint FK85ul1qg6djb4fobobfeuwd5a7 
        foreign key (familia_beneficio_id_familia) 
@@ -482,7 +186,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:40:57,618 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-05 21:47:37,072 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Encaminhamento 
        add constraint FKhi4okm1i5716x6ntyehj68j2x 
        foreign key (familia_encaminhamento_id_familia) 
@@ -519,7 +223,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:40:57,672 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-05 21:47:37,123 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Familia_telefones_familia 
        add constraint FKc2igqixteafoxhsisoxnltcea 
        foreign key (Familia_id_familia) 
@@ -556,7 +260,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:40:57,713 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-05 21:47:37,157 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Pessoa 
        add constraint FK8canlglqd4dvfbstir0c5glhe 
        foreign key (id_pessoaFamilia) 
@@ -593,194 +297,10 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:40:57,901 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2020-11-05 21:40:58,226 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table atendimentos 
-       add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
-       foreign key (familia_atendimento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table atendimentos 
-       add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
-       foreign key (familia_atendimento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK5ob8e4qh8g67h8h3pym33ukj4' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:40:58,247 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Beneficio 
-       add constraint FK85ul1qg6djb4fobobfeuwd5a7 
-       foreign key (familia_beneficio_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Beneficio 
-       add constraint FK85ul1qg6djb4fobobfeuwd5a7 
-       foreign key (familia_beneficio_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK85ul1qg6djb4fobobfeuwd5a7' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:40:58,264 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Encaminhamento 
-       add constraint FKhi4okm1i5716x6ntyehj68j2x 
-       foreign key (familia_encaminhamento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Encaminhamento 
-       add constraint FKhi4okm1i5716x6ntyehj68j2x 
-       foreign key (familia_encaminhamento_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKhi4okm1i5716x6ntyehj68j2x' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:40:58,301 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Familia_telefones_familia 
-       add constraint FKc2igqixteafoxhsisoxnltcea 
-       foreign key (Familia_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Familia_telefones_familia 
-       add constraint FKc2igqixteafoxhsisoxnltcea 
-       foreign key (Familia_id_familia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKc2igqixteafoxhsisoxnltcea' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:40:58,336 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Pessoa 
-       add constraint FK8canlglqd4dvfbstir0c5glhe 
-       foreign key (id_pessoaFamilia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Pessoa 
-       add constraint FK8canlglqd4dvfbstir0c5glhe 
-       foreign key (id_pessoaFamilia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK8canlglqd4dvfbstir0c5glhe' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:45:01,977 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2020-11-05 21:45:03,591 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-05 21:47:37,336 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-05 21:47:37,337 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'id_familia' doesn't have a default value
+2020-11-07 18:47:21,674 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-07 18:47:23,561 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table atendimentos 
        add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
        foreign key (familia_atendimento_id_familia) 
@@ -817,7 +337,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:45:03,620 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 18:47:23,583 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Beneficio 
        add constraint FK85ul1qg6djb4fobobfeuwd5a7 
        foreign key (familia_beneficio_id_familia) 
@@ -854,7 +374,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:45:03,645 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 18:47:23,600 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Encaminhamento 
        add constraint FKhi4okm1i5716x6ntyehj68j2x 
        foreign key (familia_encaminhamento_id_familia) 
@@ -891,7 +411,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:45:03,688 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 18:47:23,673 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Familia_telefones_familia 
        add constraint FKc2igqixteafoxhsisoxnltcea 
        foreign key (Familia_id_familia) 
@@ -928,7 +448,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:45:03,900 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 18:47:23,740 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Pessoa 
        add constraint FK8canlglqd4dvfbstir0c5glhe 
        foreign key (id_pessoaFamilia) 
@@ -965,8 +485,11 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:45:04,212 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2020-11-05 21:45:04,518 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 18:47:24,002 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-07 18:47:24,002 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'id_familia' doesn't have a default value
+2020-11-07 18:51:39,656 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-07 18:53:35,622 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-07 18:53:37,330 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table atendimentos 
        add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
        foreign key (familia_atendimento_id_familia) 
@@ -990,7 +513,7 @@ org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
 	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
+	at teste.basico.Teste2.main(Teste2.java:18)
 Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK5ob8e4qh8g67h8h3pym33ukj4' in the referenced table 'familia'
 	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
 	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
@@ -1003,7 +526,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:45:04,536 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 18:53:37,354 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Beneficio 
        add constraint FK85ul1qg6djb4fobobfeuwd5a7 
        foreign key (familia_beneficio_id_familia) 
@@ -1027,7 +550,7 @@ org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
 	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
+	at teste.basico.Teste2.main(Teste2.java:18)
 Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK85ul1qg6djb4fobobfeuwd5a7' in the referenced table 'familia'
 	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
 	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
@@ -1040,7 +563,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:45:04,557 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 18:53:37,372 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Encaminhamento 
        add constraint FKhi4okm1i5716x6ntyehj68j2x 
        foreign key (familia_encaminhamento_id_familia) 
@@ -1064,7 +587,7 @@ org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
 	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
+	at teste.basico.Teste2.main(Teste2.java:18)
 Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKhi4okm1i5716x6ntyehj68j2x' in the referenced table 'familia'
 	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
 	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
@@ -1077,7 +600,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:45:04,700 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 18:53:37,437 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Familia_telefones_familia 
        add constraint FKc2igqixteafoxhsisoxnltcea 
        foreign key (Familia_id_familia) 
@@ -1101,7 +624,7 @@ org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
 	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
 	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
+	at teste.basico.Teste2.main(Teste2.java:18)
 Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKc2igqixteafoxhsisoxnltcea' in the referenced table 'familia'
 	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
 	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
@@ -1114,45 +637,8 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:45:04,737 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
-    alter table Pessoa 
-       add constraint FK8canlglqd4dvfbstir0c5glhe 
-       foreign key (id_pessoaFamilia) 
-       references Familia (id_familia)" via JDBC Statement
-org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
-    alter table Pessoa 
-       add constraint FK8canlglqd4dvfbstir0c5glhe 
-       foreign key (id_pessoaFamilia) 
-       references Familia (id_familia)" via JDBC Statement
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
-	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
-	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
-	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
-	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
-	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
-	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
-	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
-	at teste.basico.Teste.main(Teste.java:55)
-Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK8canlglqd4dvfbstir0c5glhe' in the referenced table 'familia'
-	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
-	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
-	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
-	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
-	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
-	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
-	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
-	... 14 more
-2020-11-05 21:46:32,220 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
-2020-11-05 21:46:33,691 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 20:29:29,352 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-07 20:29:30,984 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table atendimentos 
        add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
        foreign key (familia_atendimento_id_familia) 
@@ -1189,7 +675,7 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
-2020-11-05 21:46:33,712 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+2020-11-07 20:29:31,003 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
     alter table Beneficio 
        add constraint FK85ul1qg6djb4fobobfeuwd5a7 
        foreign key (familia_beneficio_id_familia) 
@@ -1226,3 +712,395 @@ Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Miss
 	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
 	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
 	... 14 more
+2020-11-07 20:29:31,021 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table Encaminhamento 
+       add constraint FKhi4okm1i5716x6ntyehj68j2x 
+       foreign key (familia_encaminhamento_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table Encaminhamento 
+       add constraint FKhi4okm1i5716x6ntyehj68j2x 
+       foreign key (familia_encaminhamento_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
+	at teste.basico.Teste.main(Teste.java:29)
+Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKhi4okm1i5716x6ntyehj68j2x' in the referenced table 'familia'
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
+	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
+	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 14 more
+2020-11-07 20:29:31,065 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table Familia_telefones_familia 
+       add constraint FKc2igqixteafoxhsisoxnltcea 
+       foreign key (Familia_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table Familia_telefones_familia 
+       add constraint FKc2igqixteafoxhsisoxnltcea 
+       foreign key (Familia_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
+	at teste.basico.Teste.main(Teste.java:29)
+Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKc2igqixteafoxhsisoxnltcea' in the referenced table 'familia'
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
+	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
+	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 14 more
+2020-11-07 20:29:31,112 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table Pessoa 
+       add constraint FK8canlglqd4dvfbstir0c5glhe 
+       foreign key (id_pessoaFamilia) 
+       references Familia (id_familia)" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table Pessoa 
+       add constraint FK8canlglqd4dvfbstir0c5glhe 
+       foreign key (id_pessoaFamilia) 
+       references Familia (id_familia)" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
+	at teste.basico.Teste.main(Teste.java:29)
+Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK8canlglqd4dvfbstir0c5glhe' in the referenced table 'familia'
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
+	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
+	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 14 more
+2020-11-07 20:29:31,382 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-07 20:29:31,382 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'id_familia' doesn't have a default value
+2020-11-07 20:30:24,766 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-07 20:30:29,248 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-07 20:30:29,249 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'id_familia' doesn't have a default value
+2020-11-07 20:32:22,137 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-07 20:32:23,871 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table atendimentos 
+       add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
+       foreign key (familia_atendimento_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table atendimentos 
+       add constraint FK5ob8e4qh8g67h8h3pym33ukj4 
+       foreign key (familia_atendimento_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
+	at teste.basico.Teste.main(Teste.java:29)
+Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK5ob8e4qh8g67h8h3pym33ukj4' in the referenced table 'familia'
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
+	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
+	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 14 more
+2020-11-07 20:32:23,898 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table Beneficio 
+       add constraint FK85ul1qg6djb4fobobfeuwd5a7 
+       foreign key (familia_beneficio_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table Beneficio 
+       add constraint FK85ul1qg6djb4fobobfeuwd5a7 
+       foreign key (familia_beneficio_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
+	at teste.basico.Teste.main(Teste.java:29)
+Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FK85ul1qg6djb4fobobfeuwd5a7' in the referenced table 'familia'
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
+	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
+	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 14 more
+2020-11-07 20:32:23,919 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table Encaminhamento 
+       add constraint FKhi4okm1i5716x6ntyehj68j2x 
+       foreign key (familia_encaminhamento_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table Encaminhamento 
+       add constraint FKhi4okm1i5716x6ntyehj68j2x 
+       foreign key (familia_encaminhamento_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
+	at teste.basico.Teste.main(Teste.java:29)
+Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKhi4okm1i5716x6ntyehj68j2x' in the referenced table 'familia'
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
+	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
+	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 14 more
+2020-11-07 20:32:23,983 [main]  WARN org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl:27 - GenerationTarget encountered exception accepting command : Error executing DDL "
+    alter table Familia_telefones_familia 
+       add constraint FKc2igqixteafoxhsisoxnltcea 
+       foreign key (Familia_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "
+    alter table Familia_telefones_familia 
+       add constraint FKc2igqixteafoxhsisoxnltcea 
+       foreign key (Familia_id_familia) 
+       references Familia (id_familia)" via JDBC Statement
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:67)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:559)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:504)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applyForeignKeys(AbstractSchemaMigrator.java:433)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:249)
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:114)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:184)
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:73)
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:316)
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:469)
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1259)
+	at org.hibernate.jpa.HibernatePersistenceProvider.createEntityManagerFactory(HibernatePersistenceProvider.java:56)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:79)
+	at javax.persistence.Persistence.createEntityManagerFactory(Persistence.java:54)
+	at teste.basico.Teste.main(Teste.java:29)
+Caused by: java.sql.SQLException: Failed to add the foreign key constraint. Missing index for constraint 'FKc2igqixteafoxhsisoxnltcea' in the referenced table 'familia'
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:965)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3933)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3869)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2524)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2675)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2465)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2439)
+	at com.mysql.jdbc.StatementImpl.executeInternal(StatementImpl.java:829)
+	at com.mysql.jdbc.StatementImpl.execute(StatementImpl.java:729)
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:54)
+	... 14 more
+2020-11-07 20:32:24,238 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-07 20:32:24,239 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'id_familia' doesn't have a default value
+2020-11-07 20:44:45,040 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-07 22:13:27,938 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-07 22:13:28,589 [main]  WARN org.hibernate.engine.jdbc.env.internal.JdbcEnvironmentInitiator:132 - HHH000342: Could not obtain connection to query metadata : null
+2020-11-07 22:13:28,629 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1049, SQLState: 42000
+2020-11-07 22:13:28,629 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Unknown database 'cras'
+2020-11-07 22:14:54,746 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:21:10,681 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:22:56,947 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:24:59,535 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:26:30,476 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:30:06,332 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:32:02,682 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:39:05,644 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:45:04,143 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:45:06,446 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1048, SQLState: 23000
+2020-11-08 11:45:06,446 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Column 'dataNascimento' cannot be null
+2020-11-08 11:46:52,916 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:49:04,369 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:49:54,457 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:52:18,661 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:53:12,518 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:53:16,394 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-08 11:53:16,395 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'tipo' doesn't have a default value
+2020-11-08 11:55:28,262 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:55:30,492 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-08 11:55:30,492 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'tipo' doesn't have a default value
+2020-11-08 11:56:17,236 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:57:26,262 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 11:59:57,371 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:01:07,894 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:02:44,490 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:03:48,106 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:06:41,873 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:14:35,534 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:17:25,225 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:18:42,390 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:21:02,268 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:24:51,151 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:24:54,614 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-08 12:24:54,628 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'id_pessoa' doesn't have a default value
+2020-11-08 12:25:21,706 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:25:25,992 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-08 12:25:25,993 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'id_pessoa' doesn't have a default value
+2020-11-08 12:30:50,164 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:31:12,699 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:31:54,332 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:41:27,472 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:42:00,491 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:46:58,878 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:48:01,042 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 12:58:21,380 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 13:01:06,674 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 13:17:58,911 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 13:19:06,804 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 17:33:48,196 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 19:59:21,524 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-08 20:02:23,746 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-09 18:29:54,117 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-09 18:34:44,969 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-09 18:35:32,496 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-09 19:16:12,669 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-09 19:23:26,355 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-09 19:30:28,703 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-09 19:34:30,632 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-09 19:52:07,203 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-09 19:55:03,484 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-10 19:36:26,058 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-10 19:37:46,159 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-11 19:20:43,005 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-11 19:21:36,057 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-11 19:35:26,580 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-11 19:37:00,877 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-11 19:38:09,564 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-11 19:47:50,202 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-11 19:51:25,832 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-11 19:57:13,314 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 15:54:48,398 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:05:49,736 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:07:57,692 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:09:06,497 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:09:54,444 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:35:50,046 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:35:53,840 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-12 16:35:53,840 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'totalBenef' doesn't have a default value
+2020-11-12 16:38:18,701 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:38:21,716 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-12 16:38:21,717 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'totalBenef' doesn't have a default value
+2020-11-12 16:43:06,370 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:43:09,486 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-12 16:43:09,487 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'totalRenda' doesn't have a default value
+2020-11-12 16:45:36,153 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:45:38,996 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-12 16:45:38,996 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'totalRenda' doesn't have a default value
+2020-11-12 16:49:05,221 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:49:07,980 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-12 16:49:07,980 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'totalRenda' doesn't have a default value
+2020-11-12 16:50:37,554 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:50:40,524 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-12 16:50:40,526 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'totalRenda' doesn't have a default value
+2020-11-12 16:50:56,942 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:50:59,896 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-12 16:50:59,896 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'totalRenda' doesn't have a default value
+2020-11-12 16:54:15,136 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:54:18,167 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1364, SQLState: HY000
+2020-11-12 16:54:18,167 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Field 'totalRenda' doesn't have a default value
+2020-11-12 16:54:51,856 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 16:54:54,724 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2020-11-12 16:54:54,726 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Duplicate entry '17' for key 'familia_beneficio.UK_ouasqwijr3udspdb67l6m8fep'
+2020-11-12 17:33:31,242 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 17:33:32,824 [main]  WARN org.hibernate.engine.jdbc.spi.SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2020-11-12 17:33:32,825 [main] ERROR org.hibernate.engine.jdbc.spi.SqlExceptionHelper:142 - Duplicate entry '19' for key 'familia_beneficio.UK_ouasqwijr3udspdb67l6m8fep'
+2020-11-12 18:17:36,330 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 18:20:24,713 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 18:23:21,653 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 18:30:21,561 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 18:34:50,037 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 18:36:00,231 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 18:36:59,760 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 18:47:15,214 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 19:10:59,163 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 19:13:05,557 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 19:16:30,744 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 19:17:21,221 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 19:19:28,490 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)
+2020-11-12 19:20:35,595 [main]  WARN org.hibernate.orm.connections.pooling:72 - HHH10001002: Using Hibernate built-in connection pool (not for production use!)

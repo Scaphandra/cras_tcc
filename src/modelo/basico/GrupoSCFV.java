@@ -3,71 +3,69 @@ package modelo.basico;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-//@Entity
+import modelo.enumerados.TecnicoReferencia;
+
+@Entity
 @Table(name="grupos_scfv")
 public class GrupoSCFV {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id_grupo;
+	@Column(name="id_grupo")
+	private Long id;
 	
-	private String nome_grupo;
+	@Column(name="nome_grupo")
+	private String nome;
 	
 	@OneToOne
-	private Tecnico tecnicoReferencia_grupo;
+	@JoinColumn(name="tecnico_grupo")
+	private Tecnico tecnico;
 	
 	@OneToOne
 	private Funcionario orientador;
 	
 	private int quantidadeMax;
 	
-	@OneToMany(mappedBy="grupo_pes")
-	private List<Pessoa> pessoas_grupo = new ArrayList<>();
+	@OneToMany(mappedBy="grupo")
+	private List<Pessoa> pessoas = new ArrayList<>();
 	
 	public GrupoSCFV() {
 		
 	}
 
-	public GrupoSCFV(String nome, Tecnico tecnicoReferencia, Funcionario orientador, int quantidadeMax,
-			Pessoa pessoa) {
-		super();
-		this.nome_grupo = nome;
-		this.tecnicoReferencia_grupo = tecnicoReferencia;
-		this.orientador = orientador;
-		this.quantidadeMax = quantidadeMax;
-		this.pessoas_grupo.add(pessoa);
+	public Long getId() {
+		return id;
 	}
 
-	public Long getId_grupo() {
-		return id_grupo;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setId_grupo(Long id) {
-		this.id_grupo = id;
+	public String getNome() {
+		return nome;
 	}
 
-	public String getNome_grupo() {
-		return nome_grupo;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public void setNome_grupo(String nome) {
-		this.nome_grupo = nome;
+	public Tecnico getTecnico() {
+		return tecnico;
 	}
 
-	public Tecnico getTecnicoReferencia_grupo() {
-		return tecnicoReferencia_grupo;
-	}
-
-	public void setTecnicoReferencia_grupo(Tecnico tecnicoReferencia) {
-		this.tecnicoReferencia_grupo = tecnicoReferencia;
+	public void setTecnico(Tecnico tecnicoReferencia) {
+		this.tecnico = tecnicoReferencia;
+		tecnicoReferencia.setReferencia(TecnicoReferencia.SCFV);
 	}
 
 	public Funcionario getOrientador() {
@@ -86,17 +84,17 @@ public class GrupoSCFV {
 		this.quantidadeMax = quantidadeMax;
 	}
 
-	public List<Pessoa> getPessoas_grupo() {
-		return pessoas_grupo;
+	public List<Pessoa> getPessoas() {
+		return pessoas;
 	}
 
-	public void setPessoas_grupo(Pessoa pessoa) {
-		this.pessoas_grupo.add(pessoa);
+	public void setPessoas(Pessoa pessoa) {
+		this.pessoas.add(pessoa);
 	}
 
 	@Override
 	public String toString() {
-		return "GrupoSCFV [id_grupo=" + id_grupo + ", nome_grupo=" + nome_grupo + "]";
+		return "GrupoSCFV [id_grupo=" + id + ", nome_grupo=" + nome + "]";
 	}
 	
 	

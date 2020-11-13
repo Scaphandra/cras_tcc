@@ -6,9 +6,10 @@ import javax.persistence.Enumerated;
 
 import modelo.enumerados.BEventualTipo;
 
-//@Embeddable
+@Embeddable
 public class BeneficioEventual {
 	
+	@Enumerated(EnumType.STRING)
 	private BEventualTipo tipo_beneficioE;
 	
 	public BeneficioEventual() {
@@ -20,7 +21,6 @@ public class BeneficioEventual {
 		this.tipo_beneficioE = tipo;
 	}
 
-	@Enumerated(EnumType.STRING)
 	public BEventualTipo getTipo_beneficioE() {
 		return tipo_beneficioE;
 	}
@@ -31,8 +31,8 @@ public class BeneficioEventual {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return super.toString();
+		
+		return "Benefício Eventual: " + tipo_beneficioE.toString();
 	}
 
 	

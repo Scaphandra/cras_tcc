@@ -4,80 +4,79 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-//@Entity
+@Entity
 @Table(name="acolhidas")
 public class Acolhida {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id_acolhida;
+	@Column(name="id_acolhida")
+	private Long id;
 	
 	@Temporal(TemporalType.DATE)
-	private Date dataPrevista_adolhida;
+	@Column(name="dataPrevista_acolhida")
+	private Date dataPrevista;
 	
-	@OneToMany(mappedBy="acolhida_pes")
-	private List <Pessoa> pes_acolhida = new ArrayList<>();
+	@OneToMany(mappedBy="acolhida")
+	private List <Pessoa> pessoas = new ArrayList<>();
 	
 	@ManyToOne
-	private Tecnico tecnico_acolhida;
+	@JoinColumn(name="tecnico_acolhida")
+	private Tecnico tecnico;
 	
 	public Acolhida() {
 		
 	}
 
-	public Acolhida(Date dataPrevista, Pessoa pessoas, Tecnico tecnico) {
-		super();
-		this.dataPrevista_adolhida = dataPrevista;
-		this.pes_acolhida.add(pessoas);
-		this.tecnico_acolhida = tecnico;
+	public Long getId() {
+		return id;
 	}
 
-	public Long getId_acolhida() {
-		return id_acolhida;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setId_acolhida(Long id) {
-		this.id_acolhida = id;
+	public Date getDataPrevista() {
+		return dataPrevista;
 	}
 
-	public Date getDataPrevista_acolhida() {
-		return dataPrevista_adolhida;
+	public void setDataPrevista(Date dataPrevista) {
+		this.dataPrevista = dataPrevista;
 	}
 
-	public void setDataPrevista_acolhida(Date dataPrevista) {
-		this.dataPrevista_adolhida = dataPrevista;
+	public List<Pessoa> getPessoas() {
+		return pessoas;
 	}
 
-	public List<Pessoa> getPes_acolhida() {
-		return pes_acolhida;
+	public void setPessoas(Pessoa pessoa) {
+		this.pessoas.add(pessoa);
+		pessoa.setAcolhida(this);
 	}
 
-	public void setPes_acolhida(Pessoa pessoa) {
-		this.pes_acolhida.add(pessoa);
+	public Tecnico getTecnico() {
+		return tecnico;
 	}
 
-	public Tecnico getTecnico_acolhida() {
-		return tecnico_acolhida;
-	}
-
-	public void setTecnico_acolhida(Tecnico tecnico) {
-		this.tecnico_acolhida = tecnico;
+	public void setTecnico(Tecnico tecnico) {
+		this.tecnico = tecnico;
 	}
 
 	@Override
 	public String toString() {
-		return "Acolhida [id_acolhida=" + id_acolhida + ", dataPrevista_adolhida=" + dataPrevista_adolhida.toString()
-				+ ", pes_acolhida=" + pes_acolhida.toString() + ", tecnico_acolhida=" + tecnico_acolhida.toString() + "]";
+		return "Acolhida [id_acolhida=" + id + ", dataPrevista_adolhida=" + dataPrevista.toString()
+				+ ", pes_acolhida=" + pessoas.toString() + ", tecnico_acolhida=" + tecnico.toString() + "]";
 	}
 
 	

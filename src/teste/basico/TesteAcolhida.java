@@ -7,11 +7,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import modelo.basico.Acompanhamento;
-import modelo.basico.Familia;
+import modelo.basico.Acolhida;
+import modelo.basico.Pessoa;
 import modelo.basico.Tecnico;
 
-public class TesteAcompanhamento {
+public class TesteAcolhida {
 	public static void main(String[] args) {
 		
 		
@@ -20,7 +20,7 @@ public class TesteAcompanhamento {
 		em.getTransaction().begin();
 		
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		String dataStr = "10/10/1979";
+		String dataStr = "10/10/2020";
 		Date data = new Date();
 		try {
 			data = formato.parse(dataStr);
@@ -31,15 +31,30 @@ public class TesteAcompanhamento {
 
 		Tecnico t = em.find(Tecnico.class, 3L);
 		
-		Familia f = em.find(Familia.class, 4L);
+		Pessoa p = em.find(Pessoa.class, 5L);
+		Pessoa p2 = em.find(Pessoa.class, 1L);
+		Pessoa p3 = em.find(Pessoa.class, 21L);
 		
-		Acompanhamento a = new Acompanhamento();
-		a.setFamilia(f);
-		a.setDataEntrada(data);
+		Acolhida a = new Acolhida();
+		
+		a.setDataPrevista(data);
 		a.setTecnico(t);
+		a.setPessoas(p);
+		a.setPessoas(p2);
+		a.setPessoas(p3);
+
+//		
+//		Acolhida a = em.find(Acolhida.class, 1L);
+//		
+//		List<Pessoa> pes = new ArrayList<>();
+//		pes = a.getPessoas();
+//		if(pes == null) {
+//			System.out.println("Lista vazia");
+//		}
+//		for(Pessoa p: pes) {
+//			System.out.println(p);
+//		}
 		
-		f.setAcompanhamento(a);
-	
 		em.persist(a);
 		em.getTransaction().commit();
 		em.close();

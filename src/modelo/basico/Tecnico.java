@@ -3,9 +3,12 @@ package modelo.basico;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import modelo.enumerados.Escolaridade;
@@ -16,20 +19,18 @@ import modelo.enumerados.TecnicoReferencia;
 @DiscriminatorValue("TC")
 public class Tecnico  extends Funcionario{
 	
-	@Column(name="referencia_tecnico")
+	@Enumerated(EnumType.STRING)
 	private TecnicoReferencia referencia;
 	
 	@OneToMany(mappedBy="tecnico")
 	private List <Familia> acompanhadas_tecnico = new ArrayList<>();
 	
 	@OneToMany(mappedBy="tecnico")
-	private List <Familia> encaminhamentos = new ArrayList<>();
+	private List <Encaminhamento> encaminhamentos = new ArrayList<>();
 	
-//	@OneToMany(mappedBy="funcionario_atendimento")
-//	private List <Atendimento> atendimentos_tecnico = new ArrayList<>();
-//	
-//	@ManyToMany(mappedBy="tecnicos_visita")
-//	private List <Visita> visitas_tecnico = new ArrayList<>();
+	@ManyToMany
+	@JoinTable(name="tecnicos_visita")
+	private List <Visita> visitas = new ArrayList<>();
 	
 	public Tecnico() {
 		
@@ -47,36 +48,28 @@ public class Tecnico  extends Funcionario{
 	}
 
 	
-//	public List<Familia> getAcompanhadas_tecnico() {
-//		return acompanhadas_tecnico;
-//	}
-//
-//	public void setAcompanhadas_tecnico(Familia acompanhada) {
-//		this.acompanhadas_tecnico.add(acompanhada);
-//	}
+	public List<Familia> getAcompanhadas_tecnico() {
+		return acompanhadas_tecnico;
+	}
 
-//	public List<Atendimento> getAtendimentos_tecnico() {
-//		return atendimentos_tecnico;
-//	}
-//
-//	public void setAtendimentos_tecnico(Atendimento atendimento) {
-//		this.atendimentos_tecnico.add(atendimento);
-//	}
-//
-//	public List<Visita> getVisitas_tecnico() {
-//		return visitas_tecnico;
-//	}
-//
-//	public void setVisitas_tecnico(Visita visita) {
-//		this.visitas_tecnico.add(visita);
-//	}
+	public void setAcompanhadas_tecnico(Familia acompanhada) {
+		this.acompanhadas_tecnico.add(acompanhada);
+	}
 
-	public List<Familia> getEncaminhamentos() {
+	public List<Visita> getVisitas() {
+		return visitas;
+	}
+
+	public void setVisitas(Visita visita) {
+		this.visitas.add(visita);
+	}
+
+	public List<Encaminhamento> getEncaminhamentos() {
 		return encaminhamentos;
 	}
 
 	//adicionará um por vez
-	public void setEncaminhamentos(Familia encaminhamentos) {
+	public void setEncaminhamentos(Encaminhamento encaminhamentos) {
 		this.encaminhamentos.add(encaminhamentos);
 	}
 

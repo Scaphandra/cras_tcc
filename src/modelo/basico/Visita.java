@@ -4,105 +4,114 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import modelo.enumerados.VisitaTipo;
-//@Entity
+@Entity
 @Table(name="visitas")
 public class Visita {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id_visita;
+	@Column(name="id_visita")
+	private Long id;
 	
-	
-	private VisitaTipo tipo_visita;
+	@Enumerated(EnumType.STRING)
+	@Column(name="tipo_visita")
+	private VisitaTipo tipo;
 	
 	@Temporal(TemporalType.DATE)
-	private Date data_visita;
+	@Column(name="data_visita")
+	private Date data;
 	
-	private String motivo_visita;
+	@Column(name="motivo_visita", columnDefinition="VARCHAR(200)")
+	private String motivo;
 	
-	@ManyToMany
+	@ManyToMany(mappedBy="visitas")
 	private List <Tecnico> tecnicos_visita = new ArrayList<>();
 	
+	@OneToOne
+	@JoinColumn(name="familia_visita")
+	private Familia familia;
 
 	public Visita() {
 		
 	}
 
-
-	public Visita(VisitaTipo tipo, Date data, String motivo, Tecnico tecnico) {
-		super();
-		this.tipo_visita = tipo;
-		this.data_visita = data;
-		this.motivo_visita = motivo;
-		this.tecnicos_visita.add(tecnico);
+	public Long getId() {
+		return id;
 	}
 
 
-	public Long getId_visita() {
-		return id_visita;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public VisitaTipo getTipo() {
+		return tipo;
 	}
 
 
-	public void setId_visita(Long id) {
-		this.id_visita = id;
-	}
-
-	@Enumerated(EnumType.STRING)
-	public VisitaTipo getTipo_visita() {
-		return tipo_visita;
+	public void setTipo(VisitaTipo tipo) {
+		this.tipo = tipo;
 	}
 
 
-	public void setTipo_visita(VisitaTipo tipo) {
-		this.tipo_visita = tipo;
+	public Date getData() {
+		return data;
 	}
 
 
-	public Date getData_visita() {
-		return data_visita;
+	public void setData(Date data) {
+		this.data = data;
 	}
 
 
-	public void setData_visita(Date data) {
-		this.data_visita = data;
+	public String getMotivo() {
+		return motivo;
 	}
 
 
-	public String getMotivo_visita() {
-		return motivo_visita;
+	public void setMotivo(String motivo) {
+		this.motivo = motivo;
 	}
 
 
-	public void setMotivo_visita(String motivo) {
-		this.motivo_visita = motivo;
-	}
-
-
-	public List<Tecnico> getTecnicos_visita() {
+	public List<Tecnico> getTecnicos() {
 		return tecnicos_visita;
 	}
 
 
-	public void setTecnicos_visita(Tecnico tecnico) {
+	public void setTecnicos(Tecnico tecnico) {
 		this.tecnicos_visita.add(tecnico);
+		tecnico.setVisitas(this);
+	}
+	
+
+	public Familia getFamilia() {
+		return familia;
 	}
 
+	public void setFamilia(Familia familia) {
+		this.familia = familia;
+		familia.setVisita(this);
+	}
 
 	@Override
 	public String toString() {
-		return "Visita [id_visita=" + id_visita + ", tipo_visita=" + tipo_visita.toString() + "]";
+		return "Visita [id_visita=" + id + ", tipo_visita=" + tipo.toString() + "]";
 	}
 	
 	
