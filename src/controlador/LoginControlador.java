@@ -39,7 +39,7 @@ public class LoginControlador {
 		List<Funcionario> lista = dao.obterTodos();	 
 		
 		for(Funcionario f: lista) {
-			if(campoCpf.getText() == f.getCpf_funcionario() && campoSenha.getText()== f.getSenha()) {
+			if(campoCpf.getText() == f.getCpf() && campoSenha.getText()== f.getSenha()) {
 				
 			}
 		}

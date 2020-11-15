@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import modelo.enumerados.FaixaEtaria;
 import modelo.enumerados.TecnicoReferencia;
 
 @Entity
@@ -27,6 +30,9 @@ public class GrupoSCFV {
 	@Column(name="nome_grupo")
 	private String nome;
 	
+	@Enumerated(EnumType.STRING)
+	private FaixaEtaria faixa;
+	
 	@OneToOne
 	@JoinColumn(name="tecnico_grupo")
 	private Tecnico tecnico;
@@ -38,6 +44,9 @@ public class GrupoSCFV {
 	
 	@OneToMany(mappedBy="grupo")
 	private List<Pessoa> pessoas = new ArrayList<>();
+	
+	@Column(columnDefinition="TEXT")
+	private String observacoes;
 	
 	public GrupoSCFV() {
 		
@@ -90,6 +99,29 @@ public class GrupoSCFV {
 
 	public void setPessoas(Pessoa pessoa) {
 		this.pessoas.add(pessoa);
+		pessoa.setNoSCFV(true);
+	}	
+	
+	public void excluirPessoa(Pessoa pessoa) {
+		this.pessoas.remove(pessoa);
+		pessoa.setNoSCFV(false);
+	}
+
+
+	public FaixaEtaria getFaixa() {
+		return faixa;
+	}
+
+	public void setFaixa(FaixaEtaria faixa) {
+		this.faixa = faixa;
+	}
+
+	public String getObservacoes() {
+		return observacoes;
+	}
+
+	public void setObservacoes(String observacoes) {
+		this.observacoes = observacoes;
 	}
 
 	@Override

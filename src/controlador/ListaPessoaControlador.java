@@ -93,7 +93,7 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		EntityManager em = emf.createEntityManager();
 		
 		Pessoa obj = (Pessoa) valor;
-		pessoa = em.find(Pessoa.class, obj.getId_pessoa());
+		pessoa = em.find(Pessoa.class, obj.getId());
 		System.out.println(obj);
 		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
 		
@@ -107,7 +107,7 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		EntityManager em = emf.createEntityManager();
 		
 		Pessoa obj = (Pessoa) valor;
-		pessoa = em.find(Pessoa.class, obj.getId_pessoa());
+		pessoa = em.find(Pessoa.class, obj.getId());
 		em.getTransaction().begin();
 		System.out.println(obj);
 		//criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
@@ -149,8 +149,8 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 
 	private void iniciarComponentes() {
 		
-		colunaId.setCellValueFactory(new PropertyValueFactory<Pessoa, Long>("id_pessoa"));
-		colunaNome.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("nome_pes"));
+		colunaId.setCellValueFactory(new PropertyValueFactory<Pessoa, Long>("id"));
+		colunaNome.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("nome"));
 		colunaIdFamilia.setCellValueFactory(new PropertyValueFactory<>("familia"));
 		
 		Stage cena = (Stage) App.getCena().getWindow();

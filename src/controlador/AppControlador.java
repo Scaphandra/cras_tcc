@@ -33,6 +33,10 @@ public class AppControlador implements Initializable{
 	@FXML
 	private MenuItem menuAjuda;
 	@FXML
+	
+	private MenuItem menuRegistro;
+	@FXML
+	
 	private void clicarMenuPessoa() {
 		//Utilizando a mesma funcão rodarTela vamos incluir um novo parâmetro que é uma função lambda
 		rodarTela("../gui/listaPessoa.fxml",(ListaPessoaControlador controlador)-> {

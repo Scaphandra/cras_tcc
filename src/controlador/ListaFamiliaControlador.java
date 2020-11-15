@@ -45,7 +45,7 @@ import modelo.enumerados.Sexo;
 
 public class ListaFamiliaControlador implements Initializable, DataChangeListener{
 
-	private Pessoa pessoa;
+	private Familia familia;
 	
 	private Object valor;
 	
@@ -92,8 +92,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 				.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
 		
-		Pessoa obj = (Pessoa) valor;
-		pessoa = em.find(Pessoa.class, obj.getId_pessoa());
+		Familia obj = (Familia) valor;
+		familia = em.find(Familia.class, obj.getId());
 		System.out.println(obj);
 		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
 		
@@ -106,8 +106,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 				.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
 		
-		Pessoa obj = (Pessoa) valor;
-		pessoa = em.find(Pessoa.class, obj.getId_pessoa());
+		Familia obj = (Familia) valor;
+		familia = em.find(Familia.class, obj.getId());
 		em.getTransaction().begin();
 		System.out.println(obj);
 		//criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
@@ -123,7 +123,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		Optional <ButtonType> result = alerta.showAndWait();
 		
 		if(result.get()==btProsseguir) {
-			em.remove(pessoa);
+			em.remove(familia);
 			em.getTransaction().commit();
 			em.close();
 			emf.close();
@@ -135,9 +135,9 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	}
 	
 
-	public void setPessoa(Pessoa pessoa) {
+	public void setPessoa(Familia familia) {
 				
-		this.pessoa = pessoa;
+		this.familia = familia;
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	private void iniciarComponentes() {
 		
 		colunaId.setCellValueFactory(new PropertyValueFactory<Familia, Long>("id_familia"));
-		colunaResponsavel.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("id_pessoaFamilia"));
+		colunaResponsavel.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("pesReferencia"));
 		colunaNum.setCellValueFactory(new PropertyValueFactory<>("numero_pessoas"));
 		
 		Stage cena = (Stage) App.getCena().getWindow();
@@ -162,8 +162,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 				TableViewSelectionModel selectionModel = tabelaFamilia.getSelectionModel();
 		        Object item = selectionModel.getSelectedItem();
 		        int id = selectionModel.getSelectedIndex();//pega o id da TableList
+		        Familia f = (Familia) item;
 		        System.out.println("Selected Value " + item + " "+ id);
-		        System.out.println(item.toString().substring(18,19));
 		        valor = item;
 				
 			}
@@ -177,20 +177,20 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		String jpql = "select p from Pessoa p";
+		String jpql = "select f from Familia f";
 		TypedQuery <Familia> query = em.createQuery(jpql, Familia.class);
 		List<Familia> pessoas = query.getResultList();
 		obsFamilia = FXCollections.observableArrayList(pessoas);
 		tabelaFamilia.setItems(obsFamilia);
 	}
 	
-	private void criarFormularioAviso(Pessoa obj, String nomeView, Stage parentStage) {
+	private void criarFormularioAviso(Familia obj, String nomeView, Stage parentStage) {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
 			Pane pane = loader.load();
 			
-			FormularioPessoaControlador controlador = loader.getController();
+			FormularioFamiliaControlador controlador = loader.getController();
 			controlador.setPessoa(obj);
 			controlador.preencherPessoa();
 			controlador.inscreverDataChangeListener(this);

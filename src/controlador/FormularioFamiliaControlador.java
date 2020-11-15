@@ -37,7 +37,7 @@ import modelo.enumerados.Escolaridade;
 import modelo.enumerados.Genero;
 import modelo.enumerados.Sexo;
 
-public class FormularioPessoaControlador implements Initializable{
+public class FormularioFamiliaControlador implements Initializable{
 
 	private Pessoa entidade;
 	

@@ -152,6 +152,18 @@ public class Familia {
 			}
 		}
 	}
+	
+	public void excluirPessoa(Pessoa pessoa) {
+		if(pessoa instanceof PesReferencia) {
+			this.pesReferencia = null;
+		}
+		for(Beneficio b: pessoa.getBeneficios()) {
+			this.beneficios.remove(b);
+			this.totalBeneficio -= pessoa.getTotalBeneficio();
+		}
+		this.pessoas_familia.remove(pessoa);
+		pessoa.setFamilia(null);
+	}
 
 	public Endereco getEndereco() {
 		return endereco_familia;
@@ -217,14 +229,6 @@ public class Familia {
 		this.perfilCreas = perfilCreas;
 	}
 
-//	public RedeReferenciada getEncaminhada_familia() {
-//		return encaminhada_familia;
-//	}
-//
-//	public void setEncaminhada_familia(RedeReferenciada encaminhada) {
-//		this.encaminhada_familia = encaminhada;
-//	}
-//
 	public Tecnico getTecnico() {
 		return tecnico;
 	}
@@ -317,7 +321,13 @@ public class Familia {
 
 	@Override
 	public String toString() {
-		return "Familia [id=" + id + ", referencia=" + pesReferencia.toString() + "]";
+		
+		if(this.pesReferencia == null) {
+			PesReferencia p = new PesReferencia();
+			p.setNome("Não possui");
+			this.pesReferencia = p;
+		}
+		return pesReferencia.getNome();
 	}
 	
 	

@@ -26,9 +26,9 @@
       </ToolBar>
       <TableView fx:id="tabelaPessoa" prefHeight="200.0" prefWidth="200.0">
         <columns>
-          <TableColumn fx:id="colunaId" prefWidth="85.33331286907196" text="Identificador" />
-          <TableColumn fx:id="colunaNome" prefWidth="428.66668701171875" text="Nome" />
-            <TableColumn fx:id="colunaIdFamilia" prefWidth="79.99996948242188" text="Família" />
+          <TableColumn fx:id="colunaId" prefWidth="45.99999988079071" text="código" />
+          <TableColumn fx:id="colunaNome" prefWidth="289.9999694824219" text="Nome" />
+            <TableColumn fx:id="colunaIdFamilia" prefWidth="261.3333740234375" text="Responsável Familiar (Pessoa de Referência)" />
         </columns>
       </TableView>
       <HBox prefHeight="47.0" prefWidth="595.0" />

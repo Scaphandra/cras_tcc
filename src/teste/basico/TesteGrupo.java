@@ -8,6 +8,7 @@ import modelo.basico.Funcionario;
 import modelo.basico.GrupoSCFV;
 import modelo.basico.Pessoa;
 import modelo.basico.Tecnico;
+import modelo.enumerados.FaixaEtaria;
 
 public class TesteGrupo {
 	public static void main(String[] args) {
@@ -33,7 +34,7 @@ public class TesteGrupo {
 		Funcionario f = em.find(Funcionario.class, 4L);
 
 		GrupoSCFV g = new GrupoSCFV();
-		g.setNome("Provida1");
+		g.setNome("Provida2");
 		g.setTecnico(t);
 		g.setOrientador(f);
 		g.setQuantidadeMax(30);
@@ -41,10 +42,15 @@ public class TesteGrupo {
 		g.setPessoas(pes2);
 		g.setPessoas(pes3);
 		
+		g.setFaixa(FaixaEtaria.CRIANCA);
+		g.setObservacoes("Grupo funciona a tarde no horário de 13:30 a 16:30");
+		
 		
 		pes1.setGrupo(g);
 		pes2.setGrupo(g);
 		pes3.setGrupo(g);
+		
+		g.excluirPessoa(pes1);
 		
 
 		em.persist(g);

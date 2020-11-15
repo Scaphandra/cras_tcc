@@ -382,6 +382,11 @@ public class Pessoa {
 	
 
 	public Familia getFamilia() {
+//		Familia f = new Familia();
+//		f.setId(0L);
+//		if(this.familia == null) {
+//			this.familia = f;
+//		}
 		return familia;
 	}
 
@@ -449,7 +454,7 @@ public class Pessoa {
 
 	@Override
 	public String toString() {
-		return "Pessoa [id_pessoa=" + id + ", nome_pes=" + nome + "]";
+		return nome + " - codigo " + id;
 	}
 
 	

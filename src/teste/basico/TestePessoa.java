@@ -34,12 +34,12 @@ public static void main(String[] args) {
 	em.getTransaction().begin();
 	Pessoa pes1 = new Pessoa();
 	
-	pes1.setNome("Fulana de Tal3");
+	pes1.setNome("Carla");
 	pes1.setDataNascimento(data);
 	pes1.setSexo(Sexo.F);
 	pes1.setGenero(Genero.F);
-	pes1.setNomeMae("Fenanda Maria3");
-	pes1.setCor(CorRaca.PARDA);
+	pes1.setNomeMae("Fenanda Carla");
+	pes1.setCor(CorRaca.BRANCA);
 //	pes1.setIdade();
 	
 //	List<Beneficio> bList = new ArrayList<>();
