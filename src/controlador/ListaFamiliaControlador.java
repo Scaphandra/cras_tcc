@@ -37,9 +37,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
-import modelo.enumerados.CorRaca;
-import modelo.enumerados.Genero;
-import modelo.enumerados.Sexo;
 
 //observer
 
@@ -59,7 +56,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	private TableColumn<Pessoa, String> colunaResponsavel;
 	
 	@FXML 
-	private TableColumn<Integer, Familia> colunaNum;
+	private TableColumn<Familia, Integer> colunaNum;
 	
 	@FXML 
 	private TableColumn <Familia, Familia> colunaSelecionar;
@@ -78,11 +75,11 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	@FXML
 	public void clicarNova(ActionEvent evento) {
 		Stage parentStage = Util.atual(evento);
-//		Pessoa obj = new Pessoa();
+		Familia obj = new Familia();
 //		obj.setCor(CorRaca.NAODECLARADA);
 //		obj.setSexo(Sexo.F);
 //		obj.setGenero(Genero.F);
-		//criarFormularioAviso(obj, "/gui/formularioPessoa.fxml", parentStage);
+		criarFormularioAviso(obj, "/gui/formularioPessoa.fxml", parentStage);
 		
 	}
 	@FXML
@@ -96,6 +93,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		familia = em.find(Familia.class, obj.getId());
 		System.out.println(obj);
 		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
+		em.close();
+		emf.close();
 		
 	}
 	
@@ -110,7 +109,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		familia = em.find(Familia.class, obj.getId());
 		em.getTransaction().begin();
 		System.out.println(obj);
-		//criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
+		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
 		System.out.println("clicou excluir");
 		Alert alerta = new Alert(AlertType.CONFIRMATION);
 		alerta.setTitle("Exclusão de pessoa do banco de dados");
@@ -135,7 +134,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	}
 	
 
-	public void setPessoa(Familia familia) {
+	public void setFamilia(Familia familia) {
 				
 		this.familia = familia;
 	}
@@ -149,7 +148,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 
 	private void iniciarComponentes() {
 		
-		colunaId.setCellValueFactory(new PropertyValueFactory<Familia, Long>("id_familia"));
+		colunaId.setCellValueFactory(new PropertyValueFactory<Familia, Long>("id"));
 		colunaResponsavel.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("pesReferencia"));
 		colunaNum.setCellValueFactory(new PropertyValueFactory<>("numero_pessoas"));
 		
@@ -177,7 +176,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		String jpql = "select f from Familia f";
+		String jpql = "select p from Familia p";
 		TypedQuery <Familia> query = em.createQuery(jpql, Familia.class);
 		List<Familia> pessoas = query.getResultList();
 		obsFamilia = FXCollections.observableArrayList(pessoas);
@@ -191,13 +190,13 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			Pane pane = loader.load();
 			
 			FormularioFamiliaControlador controlador = loader.getController();
-			controlador.setPessoa(obj);
-			controlador.preencherPessoa();
+			controlador.setFamilia(obj);
+			controlador.preencherFamilia();
 			controlador.inscreverDataChangeListener(this);
 			
 			
 			Stage avisoCena = new Stage();
-			avisoCena.setTitle("Digite os dados para inclusão de pessoa");
+			avisoCena.setTitle("Digite os dados para inclusão da Família");
 			avisoCena.setScene(new Scene(pane));
 			avisoCena.setResizable(false);
 			avisoCena.initOwner(parentStage);

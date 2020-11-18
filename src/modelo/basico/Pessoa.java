@@ -28,6 +28,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import modelo.enumerados.BeneficioTipo;
+import modelo.enumerados.Composicao;
 import modelo.enumerados.CorRaca;
 import modelo.enumerados.Escolaridade;
 import modelo.enumerados.Genero;
@@ -80,7 +81,8 @@ public class Pessoa {
 	
 	private String ocupacao;
 	
-	private String parentesco;
+	@Enumerated(EnumType.STRING)
+	private Composicao composicao;
 	
 	@Column(columnDefinition = "boolean default false")
 	private boolean prioritarioSCFV = false;
@@ -288,6 +290,14 @@ public class Pessoa {
 	}
 
 
+	public Composicao getComposicao() {
+		return composicao;
+	}
+
+	public void setComposicao(Composicao composicao) {
+		this.composicao = composicao;
+	}
+
 	public double getRenda() {
 		return renda;
 	}
@@ -423,12 +433,6 @@ public class Pessoa {
 	}
 
 
-
-	public String getParentesco() {
-		return parentesco;
-	}
-
-
 	public List<Encaminhamento> getEncaminhamentos() {
 		return encaminhamentos;
 	}
@@ -446,15 +450,11 @@ public class Pessoa {
 		this.atendimentos.add(atendimento);
 	}
 
-	public void setParentesco(String parentesco) {
-		this.parentesco = parentesco;
-	}
 	
-
 
 	@Override
 	public String toString() {
-		return nome + " - codigo " + id;
+		return this.nome + " código: "+this.id.toString();
 	}
 
 	

@@ -53,28 +53,27 @@ public class Teste {
 		}
 		em.getTransaction().begin();
 		
-
-		PesReferencia pes1 = new PesReferencia();
+		PesReferencia pes1 = em.find(PesReferencia.class, 25L);
 		
-		pes1.setNome("Daniele");
-		pes1.setDataNascimento(data);
-		pes1.setSexo(Sexo.F);
-		pes1.setGenero(Genero.F);
-		pes1.setNomeMae("Fenanda Maria");
-		pes1.setCor(CorRaca.PRETA);
+//		pes1.setNome("Daniele");
+//		pes1.setDataNascimento(data);
+//		pes1.setSexo(Sexo.F);
+//		pes1.setGenero(Genero.F);
+//		pes1.setNomeMae("Fenanda Maria");
+//		pes1.setCor(CorRaca.PRETA);
 		
-		List<Beneficio> bList = new ArrayList<>();
-		
-		Beneficio pbf = new Beneficio(BeneficioTipo.PBF, 120.0, pes1);
-		bList.add(pbf);
-		Beneficio bpc = new Beneficio(BeneficioTipo.BPCDEF, 1045.0, pes1);
-		bList.add(bpc);
-		
-		pes1.setBeneficios(bList);
+//		List<Beneficio> bList = new ArrayList<>();
+//		
+//		Beneficio pbf = new Beneficio(BeneficioTipo.PBF, 120.0, pes1);
+//		bList.add(pbf);
+//		Beneficio bpc = new Beneficio(BeneficioTipo.BPCDEF, 1045.0, pes1);
+//		bList.add(bpc);
+//		
+//		pes1.setBeneficios(bList);
 		
 		System.out.println(pes1.getTotalBeneficio());
 		
-		Pessoa pes2 = em.find(Pessoa.class, 2L);
+		Pessoa pes2 = em.find(Pessoa.class, 27L);
 //		
 //		pes2.setNome("Fulano");
 //		pes2.setDataNascimento(data);

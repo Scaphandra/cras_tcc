@@ -40,7 +40,10 @@ public class Familia {
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataEntrada;
-	//
+	
+	@Temporal(TemporalType.DATE)
+	private Date dataCad;
+	
 	@OneToMany(mappedBy= "familia", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List <Pessoa> pessoas_familia = new ArrayList<>();
 	
@@ -131,6 +134,15 @@ public class Familia {
 		this.dataEntrada = dataEntrada;
 	}
 	
+	
+	public Date getDataCad() {
+		return dataCad;
+	}
+
+	public void setDataCad(Date dataCad) {
+		this.dataCad = dataCad;
+	}
+
 	public double getTotalBeneficios() {
 		return totalBeneficio;
 	}
@@ -277,7 +289,6 @@ public class Familia {
 		return totalRenda;
 	}
 	
-	@Transient
 	public int getNumeroPessoas() {
 		return this.numero_pessoas;
 	}

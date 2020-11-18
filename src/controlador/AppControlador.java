@@ -16,6 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import modelo.basico.Familia;
 import modelo.basico.Pessoa;
 
 public class AppControlador implements Initializable{
@@ -48,7 +49,7 @@ public class AppControlador implements Initializable{
 	private void clicarMenuFamilia() {
 		System.out.println("familia");
 		rodarTela("../gui/listaFamilia.fxml",(ListaFamiliaControlador controlador)-> {
-			controlador.setPessoa(new Pessoa());
+			controlador.setFamilia(new Familia());
 			controlador.carregarFamilia();
 		});
 	

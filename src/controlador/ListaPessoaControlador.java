@@ -93,10 +93,12 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		EntityManager em = emf.createEntityManager();
 		
 		Pessoa obj = (Pessoa) valor;
+		System.out.println(obj.getId());
 		pessoa = em.find(Pessoa.class, obj.getId());
 		System.out.println(obj);
 		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
-		
+		em.close();
+		emf.close();
 	}
 	
 	@FXML
@@ -163,7 +165,7 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		        Object item = selectionModel.getSelectedItem();
 		        int id = selectionModel.getSelectedIndex();//pega o id da TableList
 		        System.out.println("Selected Value " + item + " "+ id);
-		        System.out.println(item.toString().substring(18,19));
+		        //System.out.println(item.toString().substring(18,19));
 		        valor = item;
 				
 			}
@@ -171,6 +173,8 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		});
 		
 	}
+	
+	
 	
 	public void carregarPessoas() {
 		
@@ -182,6 +186,8 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		List<Pessoa> pessoas = query.getResultList();
 		obsPessoa = FXCollections.observableArrayList(pessoas);
 		tabelaPessoa.setItems(obsPessoa);
+		em.close();
+		emf.close();
 	}
 	
 	private void criarFormularioAviso(Pessoa obj, String nomeView, Stage parentStage) {

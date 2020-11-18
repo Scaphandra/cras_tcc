@@ -32,6 +32,7 @@ import modelo.basico.Beneficio;
 import modelo.basico.Pessoa;
 import modelo.dao.DAO;
 import modelo.enumerados.BeneficioTipo;
+import modelo.enumerados.Composicao;
 import modelo.enumerados.CorRaca;
 import modelo.enumerados.Escolaridade;
 import modelo.enumerados.Genero;
@@ -65,6 +66,8 @@ public class FormularioPessoaControlador implements Initializable{
 	private CheckBox homonimo;
 	
 	private boolean homo;
+	
+	private Composicao compo;
 	
 	private CorRaca cor;
 	
@@ -104,9 +107,6 @@ public class FormularioPessoaControlador implements Initializable{
 	private TextField ocupacao;
 	
 	@FXML
-	private TextField parentesco;
-	
-	@FXML
 	private TextField renda;
 	
 	//deficiencia.selectdProperty().getValue(); -> retorna um boolean
@@ -122,10 +122,18 @@ public class FormularioPessoaControlador implements Initializable{
 	@FXML
 	private CheckBox prioritario;
 	
+	@FXML
+	private CheckBox responsavel;
+	
 	private boolean pri;
 	private boolean ges;
 	private boolean def;
 	private boolean scfvB;
+	private boolean resp;
+	
+	@FXML
+	private ComboBox<Composicao> boxCompo;
+	private ObservableList<Composicao> obsCompo;
 	
 	@FXML
 	private ComboBox<CorRaca> boxCor;
@@ -296,12 +304,25 @@ public class FormularioPessoaControlador implements Initializable{
 	public void clicarPrioritario() {
 		pri = prioritario.selectedProperty().getValue();
 	}
+	@FXML
+	public void clicarResponsavel() {
+		resp = responsavel.selectedProperty().getValue();
+		if(resp) {
+			
+			boxCompo.setDisable(true);
+		}else {
+			boxCompo.setDisable(false);
+			
+		}
+		
+	}
 	
 	@FXML
 	public void clicarBoxCor() {
 		 cor = (CorRaca) boxCor.getSelectionModel().getSelectedItem();
 		 
 	}
+	
 	@FXML
 	public void clicarBoxSexo() {
 	
@@ -324,6 +345,12 @@ public class FormularioPessoaControlador implements Initializable{
 		
 	}
 	
+	@FXML
+	public void clicarBoxCompo() {
+		compo = (Composicao) boxCompo.getSelectionModel().getSelectedItem();
+		
+	}
+	
 	private void initializeNodes() {
 		Constraints.setTextFieldMaxLength(this.nis, 11);
 		carregarComboBox();
@@ -338,6 +365,12 @@ public class FormularioPessoaControlador implements Initializable{
 	}
 	
 	private void carregarComboBox() {
+		
+		EnumSet<Composicao> compos = EnumSet.allOf(Composicao.class);
+		obsCompo = FXCollections.observableArrayList(compos);
+		boxCompo.setItems(obsCompo);
+		boxCompo.getSelectionModel().selectFirst();
+		
 		EnumSet<CorRaca> cores = EnumSet.allOf(CorRaca.class);
 		obsCor = FXCollections.observableArrayList(cores);
 		boxCor.setItems(obsCor);
@@ -450,9 +483,9 @@ public class FormularioPessoaControlador implements Initializable{
 		nomeMae.setText(entidade.getNomeMae());
 		renda.setText(String.valueOf(entidade.getRenda()*10));
 		ocupacao.setText(entidade.getOcupacao());
-		parentesco.setText(entidade.getParentesco());
 		
 		boxSexo.getSelectionModel().select(entidade.getSexo());
+		//boxCompo.getSelectionModel().select(entidade.getComposicao());
 		boxCor.getSelectionModel().select(entidade.getCor());
 		boxGenero.getSelectionModel().select(entidade.getGenero());
 		boxEscolaridade.getSelectionModel().select(entidade.getEscolaridade());
@@ -461,6 +494,7 @@ public class FormularioPessoaControlador implements Initializable{
 		gestante.setSelected(entidade.isGestante());
 		prioritario.setSelected(entidade.isPrioritarioSCFV());
 		scfv.setSelected(entidade.isNoSCFV());
+		responsavel.setSelected(entidade.isPesReferencia());
 		
 		pbf_b.setSelected(pbf);
 		bpci_b.setSelected(bpci);
@@ -495,14 +529,14 @@ public class FormularioPessoaControlador implements Initializable{
 			e.printStackTrace();
 		}
 		
-		DAO<Pessoa> dao = new DAO<>(Pessoa.class);
-		dao.abrirTransacao();
+//		DAO<Pessoa> dao = new DAO<>(Pessoa.class);
+//		dao.abrirTransacao();
 		
-//		EntityManagerFactory emf;
-//		EntityManager em;
-//		emf = Persistence.createEntityManagerFactory("cras_tcc");
-//		em = emf.createEntityManager();
-//		em.getTransaction().begin();
+		EntityManagerFactory emf;
+		EntityManager em;
+		emf = Persistence.createEntityManagerFactory("cras_tcc");
+		em = emf.createEntityManager();
+		em.getTransaction().begin();
 		Pessoa p = new Pessoa();
 		
 		p.setNome(nome.getText());
@@ -513,7 +547,7 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setNomeMae(nomeMae.getText()==null?"Não informado":nomeMae.getText());
 		p.setRenda(renda.getText()==null?0.0:Double.parseDouble(renda.getText().replace(".","").replace(",",".")));
 		p.setOcupacao(ocupacao.getText()==null?"Não informado":ocupacao.getText());
-		p.setParentesco(parentesco.getText()==null?"Não informado":parentesco.getText());
+		p.setComposicao(compo);
 		p.setDataNascimento(data);
 		p.setSexo(sexo); 
 		p.setGenero(genero);
@@ -524,15 +558,16 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setGestante(ges); 
 		p.setComDeficiencia(def); 
 		p.setNoSCFV(scfvB); 
+		p.setPesReferencia(resp);
 			
-//		em.persist(p);
-//		em.getTransaction().commit();
-//		em.close();
+		em.persist(p);
+		em.getTransaction().commit();
+		em.close();
 		
-		dao.incluirAtualizar(p);
-		dao.fecharTransacao();
-		dao.fechar();
-		notificar();
+//		dao.incluirAtualizar(p);
+//		dao.fecharTransacao();
+//		dao.fechar();
+//		notificar();
 	}
 	public void salvarPessoaEditado() {
 		
@@ -575,7 +610,7 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setNomeMae(nomeMae.getText()==null?"Não informado":nomeMae.getText());
 		p.setRenda(renda.getText()==null?0.0:Double.parseDouble(renda.getText().replace(".","").replace(",",".")));
 		p.setOcupacao(ocupacao.getText()==null?"Não informado":ocupacao.getText());
-		p.setParentesco(parentesco.getText()==null?"Não informado":parentesco.getText());
+		p.setComposicao(compo);
 		p.setDataNascimento(data);
 		p.setSexo(sexo); 
 		p.setGenero(genero);

@@ -76,7 +76,7 @@ public class Tecnico  extends Funcionario{
 
 	@Override
 	public String toString() {
-		return "Tecnico [id_funcionario=" + id + ", nome_funcionario=" + nome + "]";
+		return nome;
 	}
 
 	
