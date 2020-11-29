@@ -49,6 +49,8 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 	
 	private Object valor;
 	
+	private Long id;
+	
 	@FXML
 	private TableView <Pessoa> tabelaPessoa;
 	
@@ -96,23 +98,22 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		System.out.println(obj.getId());
 		pessoa = em.find(Pessoa.class, obj.getId());
 		System.out.println(obj);
-		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
 		em.close();
 		emf.close();
+		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
+		
 	}
 	
 	@FXML
 	public void clicarExcluir(ActionEvent evento) {
-		Stage parentStage = Util.atual(evento);
+		
 		EntityManagerFactory emf = Persistence
 				.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
 		
-		Pessoa obj = (Pessoa) valor;
-		pessoa = em.find(Pessoa.class, obj.getId());
-		em.getTransaction().begin();
-		System.out.println(obj);
-		//criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
+		Pessoa pessoa = (Pessoa) valor;
+		Pessoa pes = em.find(Pessoa.class, pessoa.getId());
+		System.out.println(pessoa.getId());
 		System.out.println("clicou excluir");
 		Alert alerta = new Alert(AlertType.CONFIRMATION);
 		alerta.setTitle("Exclusão de pessoa do banco de dados");
@@ -125,11 +126,15 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		Optional <ButtonType> result = alerta.showAndWait();
 		
 		if(result.get()==btProsseguir) {
-			em.remove(pessoa);
+			em.getTransaction().begin();
+			em.remove(pes);
 			em.getTransaction().commit();
 			em.close();
 			emf.close();
-			carregarPessoas();
+			//carregarPessoas();
+			onDataChanged();
+		
+			
 		}
 		
 		
@@ -149,6 +154,7 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void iniciarComponentes() {
 		
 		colunaId.setCellValueFactory(new PropertyValueFactory<Pessoa, Long>("id"));
@@ -163,10 +169,10 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 				TableViewSelectionModel selectionModel = tabelaPessoa.getSelectionModel();
 		        Object item = selectionModel.getSelectedItem();
-		        int id = selectionModel.getSelectedIndex();//pega o id da TableList
+		        id = Long.valueOf(selectionModel.getSelectedIndex());//pega o id da TableList
 		        System.out.println("Selected Value " + item + " "+ id);
 		        //System.out.println(item.toString().substring(18,19));
-		        valor = item;
+		       valor = item;
 				
 			}
 			
@@ -186,8 +192,10 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		List<Pessoa> pessoas = query.getResultList();
 		obsPessoa = FXCollections.observableArrayList(pessoas);
 		tabelaPessoa.setItems(obsPessoa);
+		em.getTransaction().commit();
 		em.close();
 		emf.close();
+		
 	}
 	
 	private void criarFormularioAviso(Pessoa obj, String nomeView, Stage parentStage) {

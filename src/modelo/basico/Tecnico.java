@@ -9,6 +9,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import modelo.enumerados.Escolaridade;
@@ -17,6 +19,10 @@ import modelo.enumerados.TecnicoReferencia;
 
 @Entity
 @DiscriminatorValue("TC")
+//cria uma consulta fixa guardada dentro da minha entidade
+@NamedQueries(
+		@NamedQuery(name="Tecnico.consultarTodos", query = "select e from Tecnico e")
+		)
 public class Tecnico  extends Funcionario{
 	
 	@Enumerated(EnumType.STRING)
@@ -72,7 +78,6 @@ public class Tecnico  extends Funcionario{
 	public void setEncaminhamentos(Encaminhamento encaminhamentos) {
 		this.encaminhamentos.add(encaminhamentos);
 	}
-
 
 	@Override
 	public String toString() {

@@ -1,5 +1,6 @@
 package controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,12 +24,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import modelo.basico.Beneficio;
+import modelo.basico.Familia;
+import modelo.basico.PesReferencia;
 import modelo.basico.Pessoa;
 import modelo.dao.DAO;
 import modelo.enumerados.BeneficioTipo;
@@ -42,6 +50,7 @@ public class FormularioPessoaControlador implements Initializable{
 
 	private Pessoa entidade;
 	
+	private Familia familia;
 	
 	Long id = null;
 	
@@ -177,29 +186,25 @@ public class FormularioPessoaControlador implements Initializable{
 	public void setPessoa(Pessoa entidade) {
 		this.entidade = entidade;
 	}
+	
+	public void setFamilia(Familia familia) {
+		this.familia = familia;
+	}
 
 
 	@FXML
 	public void clicarSalvar(ActionEvent evento) {
+
+		criarListaBeneficio();
 		
 		if(entidade == null) {
 			throw new IllegalStateException("Pessoa não está no banco");
 		}
-		
-		if(id!=null) {
-			
-			criarListaBeneficio();
-			salvarPessoaEditado();
+
+		else {
+			salvarPessoa();
 			notificar();
 			Util.atual(evento).close();
-			
-		}
-
-		if(id==null) {
-		criarListaBeneficio();
-		salvarPessoa();
-		notificar();
-		Util.atual(evento).close();
 		}
 		
 		
@@ -455,6 +460,7 @@ public class FormularioPessoaControlador implements Initializable{
 		}
 		em.getTransaction().commit();
 		em.close();
+		emf.close();
 		return beneficios;
 	}
 	
@@ -485,7 +491,7 @@ public class FormularioPessoaControlador implements Initializable{
 		ocupacao.setText(entidade.getOcupacao());
 		
 		boxSexo.getSelectionModel().select(entidade.getSexo());
-		//boxCompo.getSelectionModel().select(entidade.getComposicao());
+		boxCompo.getSelectionModel().select(entidade.getComposicao());
 		boxCor.getSelectionModel().select(entidade.getCor());
 		boxGenero.getSelectionModel().select(entidade.getGenero());
 		boxEscolaridade.getSelectionModel().select(entidade.getEscolaridade());
@@ -494,7 +500,13 @@ public class FormularioPessoaControlador implements Initializable{
 		gestante.setSelected(entidade.isGestante());
 		prioritario.setSelected(entidade.isPrioritarioSCFV());
 		scfv.setSelected(entidade.isNoSCFV());
-		responsavel.setSelected(entidade.isPesReferencia());
+		if(entidade.isPesReferencia()) {
+			responsavel.setSelected(true);
+			responsavel.setDisable(true);
+		}else {
+			
+			responsavel.setSelected(entidade.isPesReferencia());
+		}
 		
 		pbf_b.setSelected(pbf);
 		bpci_b.setSelected(bpci);
@@ -513,6 +525,8 @@ public class FormularioPessoaControlador implements Initializable{
 	
 	public void salvarPessoa() {
 		
+		
+		
 		ValidationSupport validarTxt = new ValidationSupport();
 		validarTxt.registerValidator(nome, Validator.createEmptyValidator("Campo Obrigatório"));
 		validarTxt.registerValidator(dataNasc, Validator.createEmptyValidator("Campo Obrigatório"));
@@ -528,16 +542,89 @@ public class FormularioPessoaControlador implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+//PRIMEIRA ETAPA DA CRIAÇÃO DA FAMÍLIA -> SÓ CRIAMOS NOVA FAMÍLIA DEPOIS DA CRIAÇÃO DE UM RESPONSÁVEL FAMILIAR
+		if(resp) {
+			DAO <Familia> daoFamilia = new DAO<>(Familia.class);
+			DAO <Pessoa> daoPessoa = new DAO<>(Pessoa.class);
+			
+			daoPessoa.abrirTransacao();
+			PesReferencia p = new PesReferencia();			
+			criarPessoa(p);
+			daoFamilia.abrirTransacao();
+			Familia f = new Familia();
+			f.setPesReferencia(p);
+			f.setNumero(1);
+			daoPessoa.incluir(p).fecharTransacao().fechar();			
+			daoFamilia.incluir(f).fecharTransacao().fechar();
+			Stage parentStage = new Stage();
+			chamarFormulario(p, f, "/gui/formularioFamilia.fxml", parentStage);
+			
+		}
+//SALVAR UMA PESSOA QUE JÁ EXISTE NO BANCO, NÃO CRIAREMOS NOVA PESSOA NO BANCO MAS FAREMOS UM MARGE		
+		else if(id != null) {
+			//IREMOS CONSIDERAR QUE A PESSOA EDITADA JÁ TEM UMA FAMÍLIA
+			DAO <Pessoa> dao = new DAO<>(Pessoa.class);
+			DAO <Familia> daoF = new DAO<>(Familia.class);
+			
+			dao.abrirTransacao();
+			
+			Pessoa p = dao.obterPorID(Pessoa.class, id);
+			
+			if(p instanceof PesReferencia) {
+			//SE A PESSOA EDITADA NÃO FOR UMA PESSOA DE REFERÊNCIA E RESPONSÁVEL FAMILIAR ESTIVER MARCADO
+				if(!p.isPesReferencia() && resp) {
+			//CRIAMOS UMA NOVA PESSOA DE REFERÊNCIA
+					PesReferencia ref = new PesReferencia();
+			//ATUALIZAMOS AS INFORMAÇÕES PARA A PESSOA DE REFERÊNCIA QUE CRIAMOS
+					ref = (PesReferencia) p;
+					daoF.abrirTransacao();
+					Familia f = daoF.obterPorID(Familia.class, p.getFamilia().getId());
+					f.setPesReferencia(ref);
+					daoF.atualizar(f);
+					daoF.fecharTransacao();
+					daoF.fechar();	
+			//RETIRAMOS A PESSOA ANTIGA DA FAMÍLIA -> ESSA AÇÃO É PARA O BANCO, POIS NO BANCO SERÁ UMA PESSOA NOVA
+			//SE TRANSFORMARMOS UMA PESSOA EM PESREFERENCIA NO CÓDIGO NÃO ACONTECE NO BANCO
+					p.sairFamilia();
+			//APAGAMOS A PESSOA DO BANCO, POIS AGORA ESTARÁ COMO PESREFERENCIA EM REF
+					p.apagarPessoa();
+					dao.remover(p);
+			//INCLUIMOS REF NO BANCO COM TODOS OS RELACIONAMENTOS DE P
+					criarPessoa(ref);
+					dao.incluir(ref);
+					dao.fecharTransacao().fechar();
+					setPessoa(ref);
+					setFamilia(f);
+				}
+			}
+			
+			criarPessoa(p);
+			dao.incluir(p).fecharTransacao().fechar();
+			
+		}else {
+			
+			DAO <Pessoa> dao = new DAO<>(Pessoa.class);
+			dao.abrirTransacao();
+			Pessoa p = new Pessoa();
+			criarPessoa(p);
+			dao.incluir(p).fecharTransacao().fechar();
+			
+		}
+	}
+	
+	public void criarPessoa(Pessoa p) {
 		
-//		DAO<Pessoa> dao = new DAO<>(Pessoa.class);
-//		dao.abrirTransacao();
+		List<Beneficio> b = criarListaBeneficio();
 		
-		EntityManagerFactory emf;
-		EntityManager em;
-		emf = Persistence.createEntityManagerFactory("cras_tcc");
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
-		Pessoa p = new Pessoa();
+		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+		String dataStr = dataNasc.getText();
+		Date data = new Date();
+		try {
+			data = formato.parse(dataStr);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		p.setNome(nome.getText());
 		p.setHomonimo(homo);
@@ -559,80 +646,43 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setComDeficiencia(def); 
 		p.setNoSCFV(scfvB); 
 		p.setPesReferencia(resp);
-			
-		em.persist(p);
-		em.getTransaction().commit();
-		em.close();
-		
-//		dao.incluirAtualizar(p);
-//		dao.fecharTransacao();
-//		dao.fechar();
-//		notificar();
 	}
-	public void salvarPessoaEditado() {
+	
+	private void chamarFormulario(Pessoa p, Familia f, String caminho, Stage parentStage) {
 		
-		ValidationSupport validarTxt = new ValidationSupport();
-		validarTxt.registerValidator(nome, Validator.createEmptyValidator("Campo Obrigatório"));
-		validarTxt.registerValidator(dataNasc, Validator.createEmptyValidator("Campo Obrigatório"));
-		
-		List<Beneficio> b = criarListaBeneficio();
-		
-		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-		String dataStr = dataNasc.getText();
-		Date data = new Date();
 		try {
-			data = formato.parse(dataStr);
-		} catch (Exception e) {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+			Pane pane = loader.load();
+			FormularioFamiliaControlador controlador = loader.getController();
+			controlador.preencherFamilia();
+			controlador.setFamilia(f);
+			controlador.setPessoa(p);
+			
+			Stage avisoCena = new Stage();
+			avisoCena.setTitle("Digite os dados para inclusão de pessoa");
+			avisoCena.setScene(new Scene(pane));
+			avisoCena.setResizable(false);
+			avisoCena.initOwner(parentStage);
+			avisoCena.initModality(Modality.WINDOW_MODAL);
+			avisoCena.showAndWait();
+			
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		DAO<Pessoa> dao = new DAO<>(Pessoa.class);
-		
-		dao.abrirTransacao();
-		
-		
-//		EntityManagerFactory emf;
-//		EntityManager em;
-//		emf = Persistence.createEntityManagerFactory("cras_tcc");
-//		em = emf.createEntityManager();
-//		em.getTransaction().begin();
-		
-		//Pessoa p = em.find(Pessoa.class, id);
-		Pessoa p = dao.obterPorID(Pessoa.class, id);
-		
-		
-		p.setNome(nome.getText());
-		p.setHomonimo(homo);
-		p.setCpf(cpf.getText().isEmpty()?"":cpf.getText());
-		p.setRg(rg.getText()==null?"":rg.getText());
-		p.setNis(nis.getText()==null?"":nis.getText());
-		p.setNomeMae(nomeMae.getText()==null?"Não informado":nomeMae.getText());
-		p.setRenda(renda.getText()==null?0.0:Double.parseDouble(renda.getText().replace(".","").replace(",",".")));
-		p.setOcupacao(ocupacao.getText()==null?"Não informado":ocupacao.getText());
-		p.setComposicao(compo);
-		p.setDataNascimento(data);
-		p.setSexo(sexo); 
-		p.setGenero(genero);
-		p.setCor(cor);
-		p.setEscolaridade_pes(escolaridade); 
-		p.setPrioritarioSCFV(pri);
-		p.setBeneficios(b);
-		p.setGestante(ges); 
-		p.setComDeficiencia(def); 
-		p.setNoSCFV(scfvB); 
-		
-		
-//		em.merge(p);
-//		em.getTransaction().commit();
-//		em.close();
-//		emf.close();
-		dao.atualizar(p);
-		dao.fecharTransacao();
-		dao.fechar();
-		notificar();
 	}
 	
+	public void desabilitarResponsavel() {
+		responsavel.setSelected(false);
+		responsavel.setDisable(true);
+	}
+	
+	public void habilitarResponsavel() {
+		
+		responsavel.setSelected(true);
+		responsavel.setDisable(true);
+
+	}
 
 
 }

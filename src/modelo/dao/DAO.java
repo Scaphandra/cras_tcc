@@ -82,13 +82,13 @@ public class DAO <E> {
 	}
 	
 	public List<E> obterTodos(){
-		return obterTodos(10, 0);
+		return obterTodos(200, 0);
 	}
 	
 	public List<E> obterTodos(int qtde, int deslocamento){
-		if (classe == null) {
-			throw new UnsupportedOperationException("Classe nula");
-		}
+//		if (classe == null) {
+//			throw new UnsupportedOperationException("Classe nula");
+//		}
 		
 		String jpql = "select e from " + classe.getName() + " e";
 		

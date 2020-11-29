@@ -9,12 +9,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import modelo.basico.Beneficio;
 import modelo.basico.Endereco;
 import modelo.basico.Familia;
 import modelo.basico.PesReferencia;
 import modelo.basico.Pessoa;
-import modelo.enumerados.BeneficioTipo;
 import modelo.enumerados.CorRaca;
 import modelo.enumerados.EnderecoTipo;
 import modelo.enumerados.Genero;
@@ -53,14 +51,14 @@ public class Teste {
 		}
 		em.getTransaction().begin();
 		
-		PesReferencia pes1 = em.find(PesReferencia.class, 25L);
-		
-//		pes1.setNome("Daniele");
-//		pes1.setDataNascimento(data);
-//		pes1.setSexo(Sexo.F);
-//		pes1.setGenero(Genero.F);
-//		pes1.setNomeMae("Fenanda Maria");
-//		pes1.setCor(CorRaca.PRETA);
+		PesReferencia pes1 = em.find(PesReferencia.class, 57L);
+		Pessoa pes2 = new Pessoa();
+		pes2.setNome("Teste parA o banco");
+		pes2.setDataNascimento(data);
+		pes2.setSexo(Sexo.F);
+		pes2.setGenero(Genero.F);
+		pes2.setNomeMae("Teste Maria");
+		pes2.setCor(CorRaca.PRETA);
 		
 //		List<Beneficio> bList = new ArrayList<>();
 //		
@@ -73,7 +71,7 @@ public class Teste {
 		
 		System.out.println(pes1.getTotalBeneficio());
 		
-		Pessoa pes2 = em.find(Pessoa.class, 27L);
+		//Pessoa pes2 = em.find(Pessoa.class, 27L);
 //		
 //		pes2.setNome("Fulano");
 //		pes2.setDataNascimento(data);
@@ -81,6 +79,10 @@ public class Teste {
 //		pes2.setGenero(Genero.M);
 //		pes2.setNomeMae("Ana");
 //		pes2.setCor(CorRaca.BRANCA);
+		em.merge(pes2);
+		em.getTransaction().commit();
+		em.close();
+		emf.close();
 		
 		List<Pessoa> lista = new ArrayList<>();
 		lista.add(pes1);
@@ -96,14 +98,15 @@ public class Teste {
 //		
 //		unidade.setAreaAbrangencia(area);
 //		em.merge(unidade);
-//		EntityManagerFactory emf2 = Persistence
-//				.createEntityManagerFactory("cras_tcc");
-//		EntityManager em2 = emf2.createEntityManager();
-//		em2.getTransaction().begin();
+		EntityManagerFactory emf2 = Persistence
+				.createEntityManagerFactory("cras_tcc");
+		EntityManager em2 = emf2.createEntityManager();
+		em2.getTransaction().begin();
 		
 		Familia fam = new Familia();
 		
 		fam.setPesReferencia(pes1);
+		
 		
 		String telefone = "(22) 998989898";
 		String telefone2 = "(22) 998980000";
@@ -117,9 +120,15 @@ public class Teste {
 		pes1.setFamilia(fam);
 		pes2.setFamilia(fam);
 		
-		em.persist(fam);
+		em2.persist(fam);
+		em2.getTransaction().commit();
+		em2.close();
+		emf2.close();
 		
 		System.out.println(fam.getPessoas());
+		
+//		Pessoa pes2 = em.find(Pessoa.class, 5L);
+		
 //		em.merge(pes1);
 //		em.merge(pes2);
 //		em.merge(pes3);
@@ -127,9 +136,6 @@ public class Teste {
 //		em.getTransaction().commit();
 //		em.close();
 //		emf.close();
-		em.getTransaction().commit();
-		em.close();
-		emf.close();
 		
 	
 		

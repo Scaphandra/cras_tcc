@@ -47,7 +47,8 @@ public class Familia {
 	@OneToMany(mappedBy= "familia", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	private List <Pessoa> pessoas_familia = new ArrayList<>();
 	
-	private int numero_pessoas;
+	@Column(name="numero_pessoas")
+	private Integer numero;
 	
 	@Embedded
 	private Endereco endereco_familia;
@@ -96,6 +97,15 @@ public class Familia {
 	@OneToOne
 	private Visita visita;
 	
+	@Column(columnDefinition = "boolean default false")
+	private Boolean ativo;
+	
+	@Temporal(TemporalType.DATE)
+	@Column
+	private Date dataDesligamento;
+	
+	@Column(name="motivo_desligamento")
+	private String motivoDesligamento;
 	
 	public Familia() {
 		
@@ -289,13 +299,24 @@ public class Familia {
 		return totalRenda;
 	}
 	
-	public int getNumeroPessoas() {
-		return this.numero_pessoas;
+	public Integer getNumero() {
+	
+		return this.numero;
 	}
 	
-	public void setNumero() {
-		this.numero_pessoas = this.pessoas_familia.size();
+	public void setNumero(Integer num) {
+		this.numero = num;
 	}
+	
+//	public void setNumero() {
+//		if(this.pessoas_familia != null) {
+//			
+//			this.numero = this.pessoas_familia.size();
+//		}
+//		else {
+//			this.numero = 1;
+//		}
+//	}
 	
 	public List<Beneficio> getBeneficios() {
 		return beneficios;
@@ -328,6 +349,30 @@ public class Familia {
 
 	public void setVisita(Visita visita) {
 		this.visita = visita;
+	}
+
+	public Boolean getAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(Boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public Date getDataDesligamento() {
+		return dataDesligamento;
+	}
+
+	public void setDataDesligamento(Date dataDesligamento) {
+		this.dataDesligamento = dataDesligamento;
+	}
+
+	public String getMotivoDesligamento() {
+		return motivoDesligamento;
+	}
+
+	public void setMotivoDesligamento(String motivoDesligamento) {
+		this.motivoDesligamento = motivoDesligamento;
 	}
 
 	@Override

@@ -129,6 +129,12 @@ public class Pessoa {
 		
 	}
 	
+	public Pessoa(Pessoa pes) {
+		if(pes instanceof PesReferencia) {
+			pes = (Pessoa) pes;
+		}
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -392,17 +398,29 @@ public class Pessoa {
 	
 
 	public Familia getFamilia() {
-//		Familia f = new Familia();
-//		f.setId(0L);
-//		if(this.familia == null) {
-//			this.familia = f;
-//		}
+
 		return familia;
 	}
 
 
 	public void setFamilia(Familia familia) {
 		this.familia = familia;
+	}
+	
+	public void sairFamilia() {
+		if(familia != null) {
+			setFamilia(null);
+		}
+		
+	}
+	
+	public void apagarPessoa() {
+		setFamilia(null);
+		setBeneficios(null);
+		setEncaminhamentos(null);
+		setAtendimentos(null);
+		setAcolhida(null);
+		
 	}
 
 	
@@ -450,12 +468,9 @@ public class Pessoa {
 		this.atendimentos.add(atendimento);
 	}
 
-	
-
 	@Override
 	public String toString() {
-		return this.nome + " código: "+this.id.toString();
+		return "Pessoa [id=" + id + ", nome=" + nome + "]";
 	}
-
 	
 }

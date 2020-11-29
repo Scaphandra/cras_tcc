@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -16,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="581.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="581.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.FormularioFamiliaControlador">
    <children>
       <GridPane layoutX="30.0" prefHeight="307.0" prefWidth="649.0">
         <columnConstraints>
@@ -42,12 +41,12 @@
                   <Insets left="10.0" />
                </GridPane.margin>
             </CheckBox>
-            <CheckBox fx:id="checkMulherChefe" mnemonicParsing="false" text="Mulher Chefe de Família" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <CheckBox fx:id="checkMulherChefe" mnemonicParsing="false" onAction="#clicarMulher" text="Mulher Chefe de Família" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
             </CheckBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+            <HBox GridPane.columnIndex="1">
                <children>
                   <Label fx:id="idFamilia" text="código:  ">
                      <HBox.margin>
@@ -73,7 +72,7 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </TextField>
-                  <CheckBox fx:id="checkDescumprimento" mnemonicParsing="false" prefHeight="26.0" prefWidth="218.0" text="Descumprimento de Condicionalidades" wrapText="true">
+                  <CheckBox fx:id="checkDescumprimento" mnemonicParsing="false" onAction="#clicarDescumprimento" prefHeight="26.0" prefWidth="218.0" text="Descumprimento de Condicionalidades" wrapText="true">
                      <padding>
                         <Insets left="5.0" />
                      </padding>
@@ -102,7 +101,8 @@
             <Label text="Benefícios:" GridPane.rowIndex="7">
                <GridPane.margin>
                   <Insets top="5.0" />
-               </GridPane.margin></Label>
+               </GridPane.margin>
+            </Label>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
                <children>
                   <CheckBox fx:id="checkPBF" disable="true" mnemonicParsing="false" text="PBF">
@@ -142,7 +142,6 @@
                   <Insets left="5.0" />
                </GridPane.margin>
             </TextField>
-            <ChoiceBox fx:id="comboTipoEndereco" onDragDetected="#clicarBoxEndereco" prefWidth="150.0" GridPane.rowIndex="2" />
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
                   <TextField fx:id="txtLogradouro" prefHeight="25.0" prefWidth="231.0" promptText="nome do logradouro">
@@ -242,7 +241,7 @@
                   </Label>
                </children>
             </HBox>
-            <ComboBox fx:id="comboSituacao" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+            <ComboBox fx:id="comboSituacao" onAction="#clicarBoxSituacao" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
                <GridPane.margin>
                   <Insets left="5.0" />
                </GridPane.margin>
@@ -269,14 +268,16 @@
                   </TextField>
                </children>
             </HBox>
+            <ComboBox fx:id="comboTipoEndereco" onAction="#clicarBoxEndereco" prefWidth="150.0" GridPane.rowIndex="2" />
          </children>
       </GridPane>
-      <Label layoutX="23.0" layoutY="314.0" text="Escolha as pessoas para inclusão na família" />
+      <Label layoutX="23.0" layoutY="314.0" text="Composição Familia:" />
       <TableView fx:id="tabelaPessoas" layoutX="23.0" layoutY="343.0" prefHeight="184.0" prefWidth="663.0">
         <columns>
-          <TableColumn fx:id="colunaNome" prefWidth="522.0000505447388" text="Nome: " />
-          <TableColumn fx:id="colunaIdade" minWidth="0.0" prefWidth="46.66668701171875" text="Idade:" />
-            <TableColumn fx:id="colunaSelecionar" prefWidth="104.66668701171875" text="Selecionar:" />
+          <TableColumn fx:id="colunaNome" prefWidth="464.66664695739746" text="Nome: " />
+          <TableColumn fx:id="colunaIdade" minWidth="0.0" prefWidth="50.666717529296875" text="Idade:" />
+            <TableColumn fx:id="colunaParentesco" prefWidth="92.0" text="Parentesco" />
+            <TableColumn fx:id="colunaRenda" prefWidth="55.33333333333337" text="Renda" />
         </columns>
       </TableView>
       <HBox layoutX="189.0" layoutY="541.0" prefHeight="25.0" prefWidth="332.0">
@@ -289,7 +290,12 @@
             <Button fx:id="btCancelar" mnemonicParsing="false" onAction="#clicarCancelar" text="Cancelar" />
          </children>
       </HBox>
-      <Button layoutX="620.0" layoutY="310.0" mnemonicParsing="false" text="Incluir" />
-      <Label layoutX="492.0" layoutY="314.0" text="Adicionar uma pessoa:" />
+      <Button fx:id="btIncluirPessoa" layoutX="330.0" layoutY="310.0" mnemonicParsing="false" onAction="#clicarIncluirPessoa" text="Incluir" />
+      <Label layoutX="206.0" layoutY="314.0" text="Adicionar uma pessoa:" />
+      <Button fx:id="btAlterarPesReferencia" layoutX="475.0" layoutY="310.0" mnemonicParsing="false" onAction="#clicarAlterarPesReferencia" text="Alterar Pessoa de Referência">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

@@ -34,19 +34,11 @@ public class AppControlador implements Initializable{
 	@FXML
 	private MenuItem menuAjuda;
 	@FXML
-	
 	private MenuItem menuRegistro;
-	@FXML
 	
-	private void clicarMenuPessoa() {
-		//Utilizando a mesma funcão rodarTela vamos incluir um novo parâmetro que é uma função lambda
-		rodarTela("../gui/listaPessoa.fxml",(ListaPessoaControlador controlador)-> {
-			controlador.setPessoa(new Pessoa());
-			controlador.carregarPessoas();
-		});
-	}
+
 	@FXML
-	private void clicarMenuFamilia() {
+	private void clicarFamilia() {
 		System.out.println("familia");
 		rodarTela("../gui/listaFamilia.fxml",(ListaFamiliaControlador controlador)-> {
 			controlador.setFamilia(new Familia());
@@ -54,6 +46,17 @@ public class AppControlador implements Initializable{
 		});
 	
 	}
+	
+	
+	@FXML
+	private void clicarPessoa() {
+		//Utilizando a mesma funcão rodarTela vamos incluir um novo parâmetro que é uma função lambda
+		rodarTela("../gui/listaPessoa.fxml",(ListaPessoaControlador controlador)-> {
+			controlador.setPessoa(new Pessoa());
+			controlador.carregarPessoas();
+		});
+	}
+	
 	@FXML
 	private void clicarMenuAtendimento() {
 		System.out.println("atendimento");

@@ -1,20 +1,22 @@
 package controlador;
 
-import java.util.List;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
-import org.controlsfx.control.Notifications;
-
+import aplicacao.App;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.control.Alert.AlertType;
+import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import modelo.basico.Funcionario;
-import modelo.dao.DAO;
+import javafx.stage.Stage;
 
-public class LoginControlador {
+public class LoginControlador implements Initializable{
 	
 	@FXML
 	private TextField campoCpf;
@@ -22,27 +24,45 @@ public class LoginControlador {
 	@FXML
 	private PasswordField campoSenha;
 	
-	public void rodarTela(String caminhoArquivo) {
+	private Scene cena;
+	
+	public void rodarTela() {
 		try{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(caminhoArquivo));
-			VBox novoVBox = loader.load();
+			Stage primaryStage = new Stage();
+			URL arquivoFXML = getClass().getResource("../gui/app.fxml");
+			FXMLLoader loader = new FXMLLoader(arquivoFXML);
+			ScrollPane raiz = loader.load();
+			raiz.setFitToHeight(true);
+			raiz.setFitToWidth(true);
+			
+			cena = new Scene(raiz);
+			
+			
+			primaryStage.setResizable(true);
+			primaryStage.setTitle("Centro de Referência da Assistência Social");
+			//inicializar a tela com cena
+			primaryStage.setScene(cena);
+			primaryStage.show();
+
 		}catch(Exception e) {
-			//lançar um alerta
+			e.printStackTrace();
 			
 		}
 	}
 	
 	public void entrar() {
 		
-		DAO<Funcionario> dao = new DAO<>(Funcionario.class);
+		rodarTela();
 		
-		List<Funcionario> lista = dao.obterTodos();	 
-		
-		for(Funcionario f: lista) {
-			if(campoCpf.getText() == f.getCpf() && campoSenha.getText()== f.getSenha()) {
-				
-			}
-		}
+//		DAO<Funcionario> dao = new DAO<>(Funcionario.class);
+//		
+//		List<Funcionario> lista = dao.obterTodos();	 
+//		
+//		for(Funcionario f: lista) {
+//			if(campoCpf.getText() == f.getCpf() && campoSenha.getText()== f.getSenha()) {
+//				
+//			}
+//		}
 		/*EntityManagerFactory emf;
 		EntityManager em;
 		emf = Persistence.createEntityManagerFactory("cras_tcc");
@@ -53,23 +73,29 @@ public class LoginControlador {
 				"' and senha='"+ campoSenha.getText()+"'", Funcionario.class);*/
 		
 		
+//		
+//		if(campoCpf != null){
+//			Notifications.create()
+//			.position(Pos.TOP_RIGHT)
+//			.title("Login FXML")
+//			.text("Login efetuado com sucesso!")
+//			.showInformation();
+//		}else {
+//			Notifications.create()
+//			.position(Pos.TOP_RIGHT)
+//			.title("Login FXML")
+//			.text("Usuário e/ou senha inválidos")
+//			.showError();
+//			
+//		}
+//		System.out.println(campoCpf.getText());
+//		System.out.println(campoSenha.getText());
+	}
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		// TODO Auto-generated method stub
 		
-		if(campoCpf != null){
-			Notifications.create()
-			.position(Pos.TOP_RIGHT)
-			.title("Login FXML")
-			.text("Login efetuado com sucesso!")
-			.showInformation();
-		}else {
-			Notifications.create()
-			.position(Pos.TOP_RIGHT)
-			.title("Login FXML")
-			.text("Usuário e/ou senha inválidos")
-			.showError();
-			
-		}
-		System.out.println(campoCpf.getText());
-		System.out.println(campoSenha.getText());
 	}
 
 	

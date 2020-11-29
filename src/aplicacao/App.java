@@ -15,14 +15,18 @@ public class App extends Application{
 	
 	private static Scene cena;
 	
+
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
 		
 		String arquivoCSS = getClass().getResource("../gui/estilo.css").toExternalForm();
 		URL arquivoFXML = getClass().getResource("../gui/app.fxml");
 		FXMLLoader loader = new FXMLLoader(arquivoFXML);
 		ScrollPane raiz = loader.load();
 		//ScrollPane raiz = loader.load(arquivoFXML);
+		
 		
 		raiz.setFitToHeight(true);
 		raiz.setFitToWidth(true);
@@ -32,11 +36,13 @@ public class App extends Application{
 		
 		
 		primaryStage.setResizable(true);
-		primaryStage.setTitle("Tela Principal");
+		primaryStage.setTitle("Centro de Referência da Assistência Social");
+		//inicializar a tela com cena
 		primaryStage.setScene(cena);
 		primaryStage.show();
 		
 	}
+
 	
 	
 	public static Scene getCena() {

@@ -6,7 +6,21 @@
 	<named-query name="obterDadosLogin">
 	
 		<query>
-			select cpf, nivel from Funcionario
+		<!-- Esse arquivo de consulta está mapeado no persistence.xml para poder funcionar todas as consultas do hibernate
+		-> selecione f de funcionario (deve colocar o nome da classe não da tabela) onde o cpf é :parâmetro que passaremos
+		 -->
+			select f from Funcionario f
+			where f.cpf :cpf
+		
+		</query>
+	
+	</named-query>
+	<named-query name="nomeTécnicos">
+	
+		<query>
+			select t from Funcionario t
+			join fetch t.nome
+			where 
 		
 		</query>
 	
