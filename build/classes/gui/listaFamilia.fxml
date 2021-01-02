@@ -12,23 +12,24 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.ListaFamiliaControlador">
    <children>
-      <Label text="Pessoas:">
+      <Label text="Famílias:">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button fx:id="inserir" mnemonicParsing="false" onAction="#clicarNova" text="Inserir" />
-            <Button fx:id="editar" mnemonicParsing="false" onAction="#clicarEditar" text="Editar" />
-            <Button fx:id="excluir" mnemonicParsing="false" onAction="#clicarExcluir" text="Excluir" />
+          <Button fx:id="inserir" mnemonicParsing="false" onAction="#clicarNova" text="Nova Família" />
+            <Button fx:id="editar" mnemonicParsing="false" onAction="#clicarEditar" text="Editar Família" />
+            <Button fx:id="reativar" mnemonicParsing="false" onAction="#clicarReativar" text="Reativar Família" />
         </items>
       </ToolBar>
-      <TableView fx:id="tabelaFamilia" prefHeight="200.0" prefWidth="200.0">
+      <TableView fx:id="tabelaFamilia" prefHeight="200.0" prefWidth="463.0">
         <columns>
           <TableColumn fx:id="colunaId" prefWidth="85.33331286907196" text="Identificador" />
-          <TableColumn fx:id="colunaResponsavel" prefWidth="428.66668701171875" text="Responsável Familiar" />
-            <TableColumn fx:id="colunaNum" prefWidth="79.99996948242188" text="nº pessoas" />
+          <TableColumn fx:id="colunaResponsavel" prefWidth="349.3332824707031" text="Responsável Familiar" />
+            <TableColumn fx:id="colunaNum" prefWidth="69.3333740234375" text="nº pessoas" />
+            <TableColumn fx:id="colunaAtivo" prefWidth="86.666748046875" text="Ativo" />
         </columns>
       </TableView>
       <HBox prefHeight="47.0" prefWidth="595.0" />

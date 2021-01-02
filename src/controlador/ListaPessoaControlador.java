@@ -6,13 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
-
 import aplicacao.App;
-import gui.DataChangeListener;
 import gui.util.Alerta;
 import gui.util.Util;
 import javafx.beans.value.ChangeListener;
@@ -31,25 +25,36 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
-import modelo.enumerados.CorRaca;
-import modelo.enumerados.Genero;
-import modelo.enumerados.Sexo;
+import modelo.dao.PessoaDAO;
+import modelo.enumerados.PessoaEstado;
 
 //observer
 
-public class ListaPessoaControlador implements Initializable, DataChangeListener{
+public class ListaPessoaControlador implements Initializable{
 
+	@SuppressWarnings("unused")
 	private Pessoa pessoa;
 	
 	private Object valor;
 	
 	private Long id;
+	
+	private PessoaDAO dao = new PessoaDAO();
+	
+	@FXML
+	private TextField busca;
+	
+	
+	private ObservableList<Pessoa> obsPessoas = FXCollections.observableArrayList();
+	
+	private List<Pessoa> lista = dao.obterTodos();
 	
 	@FXML
 	private TableView <Pessoa> tabelaPessoa;
@@ -65,6 +70,9 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 	
 	@FXML 
 	private TableColumn <Pessoa, Pessoa> colunaSelecionar;
+
+	@FXML
+	private TableColumn <Pessoa, String> colunaAtivo;
 	
 	@FXML
 	private Button selecionar;
@@ -77,42 +85,75 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 	
 	private ObservableList<Pessoa> obsPessoa;
 	
+
+	
+	
+	@FXML
+	private void filtrarRegistros() {
+		
+		busca.textProperty().addListener((observable, oldValue, newValue) -> {
+		    System.out.println("textfield changed from " + oldValue + " to " + newValue);
+		    obsPessoa.clear();
+		    if(newValue.length()==0){
+		    	lista = dao.obterTodos();
+		    	obsPessoa.addAll(lista);
+		    }
+		    atualizarFiltro(newValue);
+		    
+		    
+		});
+}
+	
+	public void atualizarFiltro(String valor) {
+		
+		obsPessoas.clear();
+		
+		if(busca.getText().isEmpty()) {
+			
+			lista = dao.obterTodos();
+			
+		}else {
+			
+			
+			lista = dao.obterPrimeiros(valor, "nome");
+			
+			obsPessoa.addAll(lista);			
+		}
+		iniciarTabela();
+
+//		obsPessoa = FXCollections.observableArrayList(lista);
+//		tabelaPessoa.getItems().setAll(obsPessoas);
+//		tabelaPessoa.getSelectionModel().selectFirst();
+	}
+	
 	@FXML
 	public void clicarNova(ActionEvent evento) {
 		Stage parentStage = Util.atual(evento);
 		Pessoa obj = new Pessoa();
-		obj.setCor(CorRaca.NAODECLARADA);
-		obj.setSexo(Sexo.F);
-		obj.setGenero(Genero.F);
-		criarFormularioAviso(obj, "/gui/formularioPessoa.fxml", parentStage);
+		criarFormulario(obj, "/gui/formularioPessoa.fxml", parentStage, true);
+
 		
 	}
 	@FXML
 	public void clicarEditar(ActionEvent evento) {
 		Stage parentStage = Util.atual(evento);
-		EntityManagerFactory emf = Persistence
-				.createEntityManagerFactory("cras_tcc");
-		EntityManager em = emf.createEntityManager();
 		
 		Pessoa obj = (Pessoa) valor;
 		System.out.println(obj.getId());
-		pessoa = em.find(Pessoa.class, obj.getId());
+		pessoa = dao.obterPorID(obj.getId());
 		System.out.println(obj);
-		em.close();
-		emf.close();
-		criarFormularioAviso(obj,"/gui/formularioPessoa.fxml", parentStage);
+		
+		criarFormulario(obj,"/gui/formularioPessoa.fxml", parentStage, false);
 		
 	}
 	
 	@FXML
 	public void clicarExcluir(ActionEvent evento) {
+		//TODO colocar nesse método a possibilidade de excluir a pessoa da família.	
 		
-		EntityManagerFactory emf = Persistence
-				.createEntityManagerFactory("cras_tcc");
-		EntityManager em = emf.createEntityManager();
-		
+		dao.abrirTransacao();
 		Pessoa pessoa = (Pessoa) valor;
-		Pessoa pes = em.find(Pessoa.class, pessoa.getId());
+		Pessoa pes = dao.obterPorID(pessoa.getId());
 		System.out.println(pessoa.getId());
 		System.out.println("clicou excluir");
 		Alert alerta = new Alert(AlertType.CONFIRMATION);
@@ -126,19 +167,11 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		Optional <ButtonType> result = alerta.showAndWait();
 		
 		if(result.get()==btProsseguir) {
-			em.getTransaction().begin();
-			em.remove(pes);
-			em.getTransaction().commit();
-			em.close();
-			emf.close();
-			//carregarPessoas();
-			onDataChanged();
-		
-			
+			dao.remover(pes);
+			dao.fecharTransacao();
+			dao.fechar();
+			carregarPessoas();	
 		}
-		
-		
-		
 	}
 	
 
@@ -151,16 +184,15 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		iniciarComponentes();
+		carregarPessoas();
+		iniciarTabela();
+		filtrarRegistros();
+		
 		
 	}
-
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void iniciarComponentes() {
-		
-		colunaId.setCellValueFactory(new PropertyValueFactory<Pessoa, Long>("id"));
-		colunaNome.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("nome"));
-		colunaIdFamilia.setCellValueFactory(new PropertyValueFactory<>("familia"));
-		
+	private void iniciarTabela() {
 		Stage cena = (Stage) App.getCena().getWindow();
 		tabelaPessoa.prefHeightProperty().bind(cena.heightProperty());
 		tabelaPessoa.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() {
@@ -171,12 +203,26 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 		        Object item = selectionModel.getSelectedItem();
 		        id = Long.valueOf(selectionModel.getSelectedIndex());//pega o id da TableList
 		        System.out.println("Selected Value " + item + " "+ id);
+		        Pessoa p = (Pessoa) item;
+		        busca.setText(p.getNome());
+		  
 		        //System.out.println(item.toString().substring(18,19));
 		       valor = item;
 				
 			}
 			
 		});
+	}
+
+	private void iniciarComponentes() {
+		
+		colunaId.setCellValueFactory(new PropertyValueFactory<Pessoa, Long>("id"));
+		colunaNome.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("nome"));
+		colunaIdFamilia.setCellValueFactory(new PropertyValueFactory<>("familia"));
+		colunaAtivo.setCellValueFactory(new PropertyValueFactory<>("ativo"));
+		
+		
+		
 		
 	}
 	
@@ -184,31 +230,28 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 	
 	public void carregarPessoas() {
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
-		String jpql = "select p from Pessoa p";
-		TypedQuery <Pessoa> query = em.createQuery(jpql, Pessoa.class);
-		List<Pessoa> pessoas = query.getResultList();
-		obsPessoa = FXCollections.observableArrayList(pessoas);
+		obsPessoa = FXCollections.observableArrayList(lista);
 		tabelaPessoa.setItems(obsPessoa);
-		em.getTransaction().commit();
-		em.close();
-		emf.close();
-		
+		tabelaPessoa.setMaxHeight(277);
 	}
 	
-	private void criarFormularioAviso(Pessoa obj, String nomeView, Stage parentStage) {
+	private void criarFormulario(Pessoa obj, String nomeView, Stage parentStage, boolean b) {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
-			Pane pane = loader.load();
-			
+			Pane pane = loader.load();	
 			FormularioPessoaControlador controlador = loader.getController();
-			controlador.setPessoa(obj);
-			controlador.preencherPessoa();
-			controlador.inscreverDataChangeListener(this);
 			
+			
+			controlador.setPessoa(obj, b);
+			controlador.setFamilia(obj.getFamilia());
+			controlador.preencherPessoa();
+			if(obj.getEstado()==PessoaEstado.RF) {
+				controlador.identificarRF(true);
+			}else {
+				controlador.identificarRF(false);
+			}
+			controlador.prepararPessoa(obj);
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Digite os dados para inclusão de pessoa");
@@ -220,13 +263,8 @@ public class ListaPessoaControlador implements Initializable, DataChangeListener
 			
 		}catch(IOException e) {
 			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
-			
+			e.printStackTrace();
 		}
 	}
 
-	@Override
-	public void onDataChanged() {
-		carregarPessoas();
-		
-	}
 }

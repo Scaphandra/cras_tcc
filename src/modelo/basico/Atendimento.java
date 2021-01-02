@@ -131,14 +131,9 @@ public class Atendimento {
 	}
 	
 	
-	
 	@Override
 	public String toString() {
-		return "Atendimento [id_atendimento=" + id
-				+ ", data_atendimento=" + data.toString() + ",pessoa= "+ pessoa.toString()
-				+ ", tipo_atendimento=" + tipo.toString() + ", demanda_atendimento=" + demanda.toString()
-				+ "beneficioEventual_atendimento="+ beneficioEventual.toString()
-				+ ", funcionario_atendimento=" + funcionario.toString() + "]";
+		return tipo.toString();
 	}
 	
 	

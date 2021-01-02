@@ -6,21 +6,20 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AppControlador">
+<ScrollPane prefHeight="400.0" prefWidth="647.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.AppControlador">
    <content>
-      <VBox prefHeight="319.0" prefWidth="521.0">
+      <VBox prefHeight="328.0" prefWidth="633.0">
          <children>
             <MenuBar>
               <menus>
-                  <Menu mnemonicParsing="false" text="Pessoa">
+                  <Menu mnemonicParsing="false" text="Pessoas">
                     <items>
-                      <MenuItem fx:id="menuPessoa" mnemonicParsing="false" onAction="#clicarPessoa" text="Lista" />
+                      <MenuItem fx:id="menuPessoa" mnemonicParsing="false" onAction="#clicarPessoa" text="Gerenciar" />
                     </items>
                   </Menu>
-                  <Menu fx:id="familia" mnemonicParsing="false" text="Família">
+                  <Menu fx:id="familia" mnemonicParsing="false" text="Famílias">
                     <items>
-                      <MenuItem fx:id="menuFamilia" mnemonicParsing="false" onAction="#clicarFamilia" text="Lista" />
+                      <MenuItem fx:id="menuFamilia" mnemonicParsing="false" onAction="#clicarFamilia" text="Gerenciar" />
                     </items>
                   </Menu>
                 <Menu mnemonicParsing="false" text="Ajuda">

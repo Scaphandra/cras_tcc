@@ -1,10 +1,10 @@
 package modelo.basico;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -19,14 +19,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
+import modelo.enumerados.AtendimentoTipo;
+import modelo.enumerados.Composicao;
 import modelo.enumerados.EncaminhamentoTipo;
+import modelo.enumerados.MoradiaTipo;
+import modelo.enumerados.PessoaEstado;
 import modelo.enumerados.SituacaoFamilia;
 
 @Entity
+@Table(name="familia")
 public class Familia {
 	
 	@Id
@@ -34,9 +39,9 @@ public class Familia {
 	@Column(name="id_familia")
 	private Long id;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name="id_pessoa_referencia")
-	private PesReferencia pesReferencia;
+	private Pessoa pesReferencia;
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataEntrada;
@@ -44,7 +49,7 @@ public class Familia {
 	@Temporal(TemporalType.DATE)
 	private Date dataCad;
 	
-	@OneToMany(mappedBy= "familia", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy= "familia", fetch=FetchType.LAZY)
 	private List <Pessoa> pessoas_familia = new ArrayList<>();
 	
 	@Column(name="numero_pessoas")
@@ -61,21 +66,24 @@ public class Familia {
 	private SituacaoFamilia situacao_familia;
 		
 	@Column(columnDefinition = "boolean default false", name="familia_acompanhamento")
-	private Boolean acompanhada = this.situacao_familia==SituacaoFamilia.ACOMP?true:false;
+	private boolean acompanhada = this.situacao_familia==SituacaoFamilia.ACOMP?true:false;
 	
 	@OneToOne
 	private Acompanhamento acompanhamento;
 	
 	@Column(columnDefinition = "boolean default false")
-	private Boolean perfilCreas;
+	private boolean perfilCreas;
 	
 	@Enumerated(EnumType.STRING)
 	private EncaminhamentoTipo encaminhada;
 
 	private double totalRenda;
-	
-	@Transient
+
 	private double totalBeneficio;
+	
+	private double percapita;
+	
+	private double rendaReferencia;
 	
 	@ManyToOne
 	@JoinColumn(name="id_tecnico_referencia")
@@ -86,16 +94,17 @@ public class Familia {
 	private Date atualizacaoCad;
 	
 	@Column(columnDefinition = "boolean default false")
-	private Boolean descumprimento;
+	private boolean descumprimento;
 	
 	@Column(columnDefinition = "boolean default false")
-	private Boolean mulherChefe;
+	private boolean mulherChefe;
 	
-	@Transient
+	@OneToMany(mappedBy="familia")
 	private List<Beneficio> beneficios = new ArrayList<>();
 	
-	@OneToOne
-	private Visita visita;
+	@OneToMany
+	@JoinColumn(name="familia_visitas")
+	private List<Visita> visitas;
 	
 	@Column(columnDefinition = "boolean default false")
 	private Boolean ativo;
@@ -106,6 +115,11 @@ public class Familia {
 	
 	@Column(name="motivo_desligamento")
 	private String motivoDesligamento;
+	
+	@Enumerated(EnumType.STRING)
+	private MoradiaTipo tipoMoradia;
+
+	private double valorMoradia;
 	
 	public Familia() {
 		
@@ -119,23 +133,25 @@ public class Familia {
 		this.id = id;
 	}
 
-	public PesReferencia getPesReferencia() {
+	public Pessoa getPesReferencia() {
 		return pesReferencia;
 	}
 
-	public void setPesReferencia(PesReferencia referencia) {
+	public void setPesReferencia(Pessoa referencia) {
 		this.pesReferencia = referencia;
-		this.pessoas_familia.add(referencia);
-		referencia.setFamilia(this);
-		
-		totalBeneficio += referencia.getTotalBeneficio();
-		
-		for(Beneficio b: referencia.getBeneficios()) {
-			beneficios.add(b);
+		if(!pessoas_familia.contains(referencia)) {			
+			this.pessoas_familia.add(referencia);
 		}
 	}
 	
+	public double getRendaReferencia() {
+		return pesReferencia.getRenda();
+	}
 	
+	public void setRendaReferencia() {
+		rendaReferencia = pesReferencia.getRenda();
+	}
+
 	public Date getDataEntrada() {
 		return dataEntrada;
 	}
@@ -154,37 +170,40 @@ public class Familia {
 	}
 
 	public double getTotalBeneficios() {
+		setTotalBeneficios();
 		return totalBeneficio;
 	}
 
-	public void setTotalBeneficios(double valorBeneficios) {
-		this.totalBeneficio = valorBeneficios;
+	public void setTotalBeneficios() {
+		double total = 0;
+		for(Beneficio b: beneficios) {
+			total += b.getValor();
+		}
+		this.totalBeneficio = total;
 	}
 
 	public List<Pessoa> getPessoas() {
 		return pessoas_familia;
 	}
 
-	public void setPessoas(List<Pessoa> pessoas_familia) {
-		this.pessoas_familia = pessoas_familia;
-		for(Pessoa p: this.pessoas_familia) {
-			p.setFamilia(this);
-			for(Beneficio b: p.getBeneficios()) {
-				this.beneficios.add(b);
-			}
-		}
+	public void setPessoas(Pessoa pessoa) {
+		this.pessoas_familia.add(pessoa);
+		pessoa.setFamilia(this);
 	}
 	
 	public void excluirPessoa(Pessoa pessoa) {
-		if(pessoa instanceof PesReferencia) {
-			this.pesReferencia = null;
-		}
 		for(Beneficio b: pessoa.getBeneficios()) {
 			this.beneficios.remove(b);
 			this.totalBeneficio -= pessoa.getTotalBeneficio();
 		}
 		this.pessoas_familia.remove(pessoa);
 		pessoa.setFamilia(null);
+		pessoa.setEstado(PessoaEstado.I);
+		pessoa.setComposicao(Composicao.N);
+		//TODO isso será possível?
+		if(pessoa.getEstado()==PessoaEstado.RF) {
+			this.pesReferencia = null;
+		}
 	}
 
 	public Endereco getEndereco() {
@@ -196,11 +215,13 @@ public class Familia {
 	}
 	
 	public List<String> getTelefone() {
+		
 		return telefones_familia;
 	}
 
-	public void setTelefone(String telefone) {
-		this.telefones_familia.add(telefone);
+	public void setTelefone(List<String> telefones) {
+		
+		this.telefones_familia = telefones;
 	}
 
 	
@@ -283,55 +304,68 @@ public class Familia {
 		this.mulherChefe = mulherChefe;
 	}
 
-
-	public void setTotalRenda() {
-	
-		for(Pessoa pessoa: this.pessoas_familia)
-			this.totalRenda += pessoa.getRenda();
-	}
-	
-	public double perCapta() {
-		return this.totalRenda/pessoas_familia.size();
+	public double getPercapita() {
+		return percapita;
 	}
 
-	@Transient
+	public void setPercapita() {
+//		DecimalFormat formato = new DecimalFormat("###.##");      
+//		double renda = Double.valueOf(formato.format(this.totalRenda/pessoas_familia.size()));
+//		this.percapita = renda;
+		this.percapita = totalRenda/pessoas_familia.size();
+	}
+
 	public double getTotalRenda() {
 		return totalRenda;
 	}
 	
-	public Integer getNumero() {
+	public void setTotalRenda() {
+		double total = 0;
+		for(Pessoa pessoa: this.pessoas_familia) {
+			total += pessoa.getRenda();
+		}
+		this.totalRenda = total;
+	}
 	
+	public Integer getNumero() {
+		setNumero();
 		return this.numero;
 	}
 	
-	public void setNumero(Integer num) {
-		this.numero = num;
+	public void setNumero() {		
+		this.numero = pessoas_familia.size();
 	}
-	
-//	public void setNumero() {
-//		if(this.pessoas_familia != null) {
-//			
-//			this.numero = this.pessoas_familia.size();
-//		}
-//		else {
-//			this.numero = 1;
-//		}
-//	}
 	
 	public List<Beneficio> getBeneficios() {
+		setBeneficios();
 		return beneficios;
 	}
-
-	@Transient
-	public double getTotalBeneficio() {
-
-		for(Pessoa pes: pessoas_familia) {
-			this.totalBeneficio += pes.getTotalBeneficio();
+	
+	public void setBeneficios() {
+		List<Beneficio> lista = new ArrayList<>();
+		for(Pessoa p: pessoas_familia) {
+			for(Beneficio b: p.getBeneficios()) {
+				lista.add(b);
+			}
 		}
+		beneficios = lista;
+	}
+
+	public double getTotalBeneficio() {
 		
+		setTotalBeneficio();
 		return totalBeneficio;
 	}
-	@Transient
+	
+	public void setTotalBeneficio() {
+		double total = 0;
+		for(Pessoa pes: pessoas_familia) {
+			total += pes.getTotalBeneficio();
+		}
+		this.totalBeneficio = total;
+		
+	}
+	//TODO rever como serão incluídos os encaminhamentos 
 	public List<Encaminhamento> getEncaminhamentos(){
 		List<Encaminhamento> encaminhamentos = new ArrayList<>();
 		for(Pessoa p: this.pessoas_familia) {
@@ -342,16 +376,23 @@ public class Familia {
 		return encaminhamentos;
 	}
 	
-
-	public Visita getVisita() {
-		return visita;
+	public List<Visita> getVisitas() {
+		return visitas;
 	}
 
-	public void setVisita(Visita visita) {
-		this.visita = visita;
+	public void setVisitas(Visita visita) {
+		this.visitas.add(visita);
 	}
 
-	public Boolean getAtivo() {
+	public String getAtivo() {
+		if(ativo) {
+			return "ATIVO";
+		}else {
+			return "INATIVO";
+		}
+	}
+	
+	public Boolean isAtivo() {
 		return ativo;
 	}
 
@@ -374,7 +415,87 @@ public class Familia {
 	public void setMotivoDesligamento(String motivoDesligamento) {
 		this.motivoDesligamento = motivoDesligamento;
 	}
+	
+	public MoradiaTipo getTipoMoradia() {
+		return tipoMoradia;
+	}
 
+	public void setTipoMoradia(MoradiaTipo tipoMoradia) {
+		this.tipoMoradia = tipoMoradia;
+	}
+	//TODO testar esse método
+	public double getValorMoradia() {
+		DecimalFormat d = new DecimalFormat();
+		d.format(valorMoradia);
+		return valorMoradia;
+	}
+
+	public void setValorMoradia(double valorMoradia) {
+		this.valorMoradia = valorMoradia;
+	}
+	
+	public Date ultimoAtendimentoCad() {
+		List<Atendimento> cad = new ArrayList<>();
+		for(Pessoa p: pessoas_familia) {
+			if(p.getAtendimentos().size()==0) {
+				return null;
+			}
+			for(Atendimento a: p.getAtendimentos()) {
+				if(a.getTipo() == AtendimentoTipo.C) {
+					cad.add(a);
+				}
+			}
+		}
+		if(cad.isEmpty()) {
+			return null;
+		}else {
+			
+			return cad.get(cad.size()-1).getData();
+		}
+	}
+	public Date ultimoAtendimentoTecnico() {
+		String sql = "Select max(data_atendimento) from atendimento a";
+		
+		List<Atendimento> tec = new ArrayList<>();
+		
+		for(Pessoa p: pessoas_familia) {
+			if(p.getAtendimentos().isEmpty()) {
+				return null;
+			}
+			for(Atendimento a: p.getAtendimentos()) {
+				if(a.getTipo() == AtendimentoTipo.T) {
+					tec.add(a);
+				}
+			}
+		}
+		if(tec.isEmpty()) {
+			return null;
+		}else {
+			
+			return tec.get(tec.size()-1).getData();
+		}
+	}
+
+	
+	public void apagarFamilia() {
+
+		this.setPesReferencia(null);
+		this.setEndereco(null);
+		this.setAcompanhamento(null);
+		if(!beneficios.isEmpty()) {
+			for(Beneficio b: beneficios) {
+				beneficios.remove(b);
+			}
+		}
+		if(!visitas.isEmpty()) {
+			for(Visita v: visitas) {
+				visitas.remove(v);
+			}
+		}
+		
+		this.setTecnico(null);
+		}
+	
 	@Override
 	public String toString() {
 		

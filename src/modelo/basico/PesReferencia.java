@@ -14,6 +14,8 @@ public class PesReferencia extends Pessoa{
 		super.setPesReferencia(true);
 	}
 
-	
+	public String toString() {
+		return super.getNome();
+	}
 	
 }

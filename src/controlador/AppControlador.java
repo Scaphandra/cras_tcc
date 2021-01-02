@@ -76,6 +76,7 @@ public class AppControlador implements Initializable{
 	private synchronized <T> void rodarTela(String arquivoFXML, Consumer<T> initializingAction) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(arquivoFXML));
+			
 			VBox novoVBox = loader.load();
 			
 			Scene cena = App.getCena();
@@ -92,26 +93,6 @@ public class AppControlador implements Initializable{
 			e.printStackTrace();
 		}
 	}
-	/*	private synchronized void rodarTela2(String arquivoFXML) {
-			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource(arquivoFXML));
-				VBox novoVBox = loader.load();
-				
-				Scene cena = App.getCena();
-				VBox appVBox = (VBox) ((ScrollPane) cena.getRoot()).getContent();
-				
-				Node appMenu = appVBox.getChildren().get(0);
-				appVBox.getChildren().clear();
-				appVBox.getChildren().add(appMenu);
-				appVBox.getChildren().addAll(novoVBox.getChildren());
-				
-				ListaPessoaControlador controlador = loader.getController();
-				controlador.setPessoa(new Pessoa());
-				controlador.carregarPessoas();
-			} catch (IOException e) {
-				Alerta.showAlert("IO Exception", "Erro ao carregar a tela", e.getMessage(), AlertType.ERROR);
-				e.printStackTrace();
-			}
-		}*/
+
 
 }

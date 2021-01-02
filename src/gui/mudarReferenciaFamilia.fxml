@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="607.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.MudarReferenciaFamilia">
+   <children>
+      <Button fx:id="btNovaPessoa" layoutX="488.0" layoutY="354.0" mnemonicParsing="false" onAction="#clicarNovaPessoa" text="Nova Pessoa de Referência">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btSelecionar" layoutX="326.0" layoutY="263.0" mnemonicParsing="false" onAction="#clicarSelecionar" text="Selecionar">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <TableView fx:id="tabelaPessoas" layoutX="51.0" layoutY="49.0" prefHeight="200.0" prefWidth="623.0">
+        <columns>
+          <TableColumn fx:id="colunaNome" minWidth="0.0" prefWidth="563.3333625793457" text="Nome" />
+            <TableColumn fx:id="colunaIdade" prefWidth="58.0" text="Idade" />
+        </columns>
+      </TableView>
+      <Label layoutX="224.0" layoutY="418.0" text="Pessoa de Referência está em outra Família?">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="btPessoaInativa" layoutX="51.0" layoutY="354.0" mnemonicParsing="false" onAction="#clicarPessoaInativa" text="Pessoa de Referência está inativa">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Button>
+      <Label layoutX="58.0" prefHeight="49.0" prefWidth="623.0" text="Caso a pessoa de referência esteja nesta família selecione-a na tabela e submeta a alteração cliando no botão &quot;Selecionar&quot;." textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="System Bold Italic" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="79.0" layoutY="320.0" text="Caso a Pessoa procurada não esteja na Família escolha uma das opções abaixo:">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Separator layoutX="168.0" layoutY="302.0" prefHeight="3.0" prefWidth="387.0" />
+      <Separator layoutX="167.0" layoutY="407.0" prefHeight="3.0" prefWidth="387.0" />
+      <Label layoutX="21.0" layoutY="487.0" prefHeight="67.0" prefWidth="319.0" text="Edite a família a qual a Pessoa de Referência está vinculada e desligue esta Família." wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="395.0" layoutY="487.0" prefHeight="67.0" prefWidth="319.0" text="Retire-a da Família atual e retorne a esta Família clicando a opção “Pessoa de Referência está inativa”." wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Separator layoutX="370.0" layoutY="475.0" orientation="VERTICAL" prefHeight="67.0" prefWidth="0.0" />
+      <Label layoutX="28.0" layoutY="452.0" text="É Pessoa de Referência?">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="395.0" layoutY="452.0" text="Não é Pessoa de Referência?">
+         <font>
+            <Font name="System Bold Italic" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="ver" layoutX="520.0" layoutY="263.0" mnemonicParsing="false" onAction="#clicarEditarRF" text="Editar Pessoa" />
+      <Button layoutX="344.0" layoutY="562.0" mnemonicParsing="false" onAction="#clicarCancelar" text="Cancelar" />
+   </children>
+</AnchorPane>

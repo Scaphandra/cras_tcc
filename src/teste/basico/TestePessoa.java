@@ -12,6 +12,7 @@ import modelo.basico.Pessoa;
 import modelo.enumerados.CorRaca;
 import modelo.enumerados.EnderecoTipo;
 import modelo.enumerados.Genero;
+import modelo.enumerados.PessoaEstado;
 import modelo.enumerados.Sexo;
 
 public class TestePessoa {
@@ -32,15 +33,32 @@ public static void main(String[] args) {
 		e.printStackTrace();
 	}
 	em.getTransaction().begin();
-	Pessoa pes1 = new Pessoa();
+	Pessoa pes1 = em.find(Pessoa.class, 7L);
+	Pessoa pes2 = em.find(Pessoa.class, 2L);
+	Pessoa pes3 = em.find(Pessoa.class, 5L);
+	Pessoa pes4 = em.find(Pessoa.class, 6L);
+	Pessoa pes5 = em.find(Pessoa.class, 7L);
 	
-	pes1.setNome("Carla");
-	pes1.setDataNascimento(data);
-	pes1.setSexo(Sexo.F);
-	pes1.setGenero(Genero.F);
-	pes1.setNomeMae("Fenanda Carla");
-	pes1.setCor(CorRaca.BRANCA);
+//	pes1.setNome("RF Pessoa");
+//	pes1.setDataNascimento(data);
+//	pes1.setSexo(Sexo.F);
+//	pes1.setGenero(Genero.F);
+//	pes1.setNomeMae("Fenanda Carla");
+//	pes1.setCor(CorRaca.BRANCA);
+	pes1.setEstado(PessoaEstado.P);
+	pes2.setEstado(PessoaEstado.P);
+	pes1.setNomesBeneficios("NV");
+	pes1.setRenda(550.00);
+	pes2.setNomesBeneficios("PBF");
+	pes3.setNomesBeneficios("PBF");
+	pes4.setNomesBeneficios("PBF NV");
+	pes5.setNomesBeneficios("BPCI");
+//	pes3.setEstado(PessoaEstado.P);
+//	pes4.setEstado(PessoaEstado.P);
+//	pes5.setEstado(PessoaEstado.P);
 //	pes1.setIdade();
+//	pes1.setRenda(1045.00);
+
 	
 //	List<Beneficio> bList = new ArrayList<>();
 //	
@@ -51,7 +69,7 @@ public static void main(String[] args) {
 //	
 //	pes1.setBeneficios(bList);
 	
-	em.persist(pes1);
+	em.merge(pes1);
 	em.getTransaction().commit();
 	em.close();
 	emf.close();

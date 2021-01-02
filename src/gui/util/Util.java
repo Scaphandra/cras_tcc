@@ -12,8 +12,10 @@ import javafx.stage.Stage;
 //tooltip
 
 public class Util {
+
 	
 	public static Stage atual(ActionEvent evento) {
+		
 		return (Stage) ((Node) evento.getSource()).getScene().getWindow();
 		
 	}
@@ -47,5 +49,6 @@ public class Util {
 		return camposVazio.isEmpty();
 		
 	}
+	
 	
 }

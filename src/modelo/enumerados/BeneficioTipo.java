@@ -1,7 +1,7 @@
 package modelo.enumerados;
 
 public enum BeneficioTipo {
-	PBF("PBF"), BPCI("BPCIdoso"), BPCDEF("BPCDeficiente"), NV("Nova Vida"), O("Outro");
+	PBF("PBF"), BPCI("BPC Idoso"), BPCDEF("BPC Def."), NV("Nova Vida"), O("Outro");
 	
 	private String descricao;
 	

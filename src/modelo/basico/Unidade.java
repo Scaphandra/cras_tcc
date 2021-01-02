@@ -9,8 +9,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
@@ -20,9 +18,8 @@ import javax.persistence.TemporalType;
 public class Unidade {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_unidade")
-	private Long id;
+	private Integer id = 1;
 
 	private String idCRAS;
 	

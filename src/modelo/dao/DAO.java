@@ -1,5 +1,6 @@
 package modelo.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -13,8 +14,9 @@ import org.apache.log4j.Logger;
 public class DAO <E> {
 
 	private static EntityManagerFactory emf;
-	private EntityManager em;
+	protected EntityManager em;
 	private Class<E> classe;
+	private List<E> lista = new ArrayList<>();
 	
 	static {
 		try {
@@ -28,12 +30,9 @@ public class DAO <E> {
 		
 	}
 	
-	public DAO() {
-		this(null);
-	}
 	//construtor recebe a classe que é a entidade que quisermos trabalhar
 	public DAO(Class<E> classe) {
-		
+		this.classe = classe;
 		em = emf.createEntityManager();
 	}
 	
@@ -58,9 +57,8 @@ public class DAO <E> {
 		
 		return this.abrirTransacao().incluir(entidade).fecharTransacao();
 	}
-	//estava Object id ao invés de Long id
-	//public E obterPorID(Object id) {
-	public E obterPorID(Class<E> classe, Object id) { 
+	
+	public E obterPorID(Object id) { 
 		return em.find(classe, id);
 	}
 	
@@ -82,13 +80,14 @@ public class DAO <E> {
 	}
 	
 	public List<E> obterTodos(){
-		return obterTodos(200, 0);
+		
+		return obterTodos(10000, 0);
 	}
 	
 	public List<E> obterTodos(int qtde, int deslocamento){
-//		if (classe == null) {
-//			throw new UnsupportedOperationException("Classe nula");
-//		}
+		if (classe == null) {
+			throw new UnsupportedOperationException("Classe nula");
+		}
 		
 		String jpql = "select e from " + classe.getName() + " e";
 		
@@ -99,9 +98,40 @@ public class DAO <E> {
 		
 		return query.getResultList();
 	}
+	public List<E> obterPrimeiros(String descricao, String nomeDoAtributo){
+		
+		if (classe == null) {
+			throw new UnsupportedOperationException("Classe nula");
+		}
+		if(descricao.equals("")) {
+			
+			lista = obterTodos();
+			
+		}else {
+			String jpql = " from " + classe.getName() + " p"+" where p."+ nomeDoAtributo+" like "+"'"+ descricao + "%'";
+			
+			TypedQuery<E> query = em.createQuery(jpql, classe);
+			
+			//a única opção para inserir limites no hibernate é o setMaxResults
+			query.setMaxResults(200);
+			
+			lista = query.getResultList();
+		}
+		
+		return lista;
+	}
+	
+	public List<E> obterCondicao(String nomeDoAtributo, String condicao){
+		String jpql = "select p from "+ classe.getName() + " p where "+nomeDoAtributo+"='"+condicao+"'";
+		TypedQuery<E> query = em.createQuery(jpql, classe);
+		query.setMaxResults(200);
+		return query.getResultList();
+		
+	}
+	
 	
 	public void removerPorID(Class<E> classe, Object id) {
-		E entidade = obterPorID(classe, id);
+		E entidade = obterPorID(id);
 		em.remove(entidade);
 			
 	}
@@ -120,6 +150,10 @@ public class DAO <E> {
 		List<E> lista = consultar(nomeConsulta, params);
 		return lista.isEmpty() ? null : lista.get(0);
 	
+	}
+	
+	public EntityManager getEM() {
+		return this.em;
 	}
 	
 	public void fechar() {

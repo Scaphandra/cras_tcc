@@ -39,7 +39,7 @@ public class Teste {
 		//pes = dao.obterPorID(Pessoa.class, 4L);
 		
 		
-		Endereco end = new Endereco(EnderecoTipo.RUA, "Francisco Portela", 500, "Sobrado", "Botafogo", "24435-200");
+		Endereco end = new Endereco(EnderecoTipo.MORRO, null, 500, "Sobrado", null, null);
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		String dataStr = "10/10/1989";
 		Date data = new Date();
@@ -51,14 +51,14 @@ public class Teste {
 		}
 		em.getTransaction().begin();
 		
-		PesReferencia pes1 = em.find(PesReferencia.class, 57L);
-		Pessoa pes2 = new Pessoa();
-		pes2.setNome("Teste parA o banco");
-		pes2.setDataNascimento(data);
-		pes2.setSexo(Sexo.F);
-		pes2.setGenero(Genero.F);
-		pes2.setNomeMae("Teste Maria");
-		pes2.setCor(CorRaca.PRETA);
+//		PesReferencia pes1 = em.find(PesReferencia.class, 7L);
+//		Pessoa pes2 = new Pessoa();
+//		pes2.setNome("Teste parA o banco");
+//		pes2.setDataNascimento(data);
+//		pes2.setSexo(Sexo.F);
+//		pes2.setGenero(Genero.F);
+//		pes2.setNomeMae("Teste Maria");
+//		pes2.setCor(CorRaca.PRETA);
 		
 //		List<Beneficio> bList = new ArrayList<>();
 //		
@@ -69,9 +69,12 @@ public class Teste {
 //		
 //		pes1.setBeneficios(bList);
 		
-		System.out.println(pes1.getTotalBeneficio());
+//		System.out.println(pes1.getTotalBeneficio());
 		
-		//Pessoa pes2 = em.find(Pessoa.class, 27L);
+		Pessoa pes2 = em.find(Pessoa.class, 78L);
+		Pessoa pes3 = em.find(Pessoa.class, 79L);
+		Pessoa pes4 = em.find(Pessoa.class, 80L);
+		Pessoa pes5 = em.find(Pessoa.class, 5L);
 //		
 //		pes2.setNome("Fulano");
 //		pes2.setDataNascimento(data);
@@ -79,14 +82,15 @@ public class Teste {
 //		pes2.setGenero(Genero.M);
 //		pes2.setNomeMae("Ana");
 //		pes2.setCor(CorRaca.BRANCA);
-		em.merge(pes2);
-		em.getTransaction().commit();
-		em.close();
-		emf.close();
+//		em.merge(pes2);
+		
 		
 		List<Pessoa> lista = new ArrayList<>();
-		lista.add(pes1);
+//		lista.add(pes1);
 		lista.add(pes2);
+		lista.add(pes3);
+		lista.add(pes4);
+		lista.add(pes5);
 
 //		Unidade unidade = em.find(Unidade.class, 1L);
 //		List <String> area = new ArrayList<>();
@@ -98,34 +102,32 @@ public class Teste {
 //		
 //		unidade.setAreaAbrangencia(area);
 //		em.merge(unidade);
-		EntityManagerFactory emf2 = Persistence
-				.createEntityManagerFactory("cras_tcc");
-		EntityManager em2 = emf2.createEntityManager();
-		em2.getTransaction().begin();
 		
-		Familia fam = new Familia();
+		Familia fam = em.find(Familia.class, 2L);
 		
-		fam.setPesReferencia(pes1);
+		//fam.setPesReferencia(pes1);
 		
 		
-		String telefone = "(22) 998989898";
-		String telefone2 = "(22) 998980000";
-		fam.setEndereco(end);
-		fam.setDataEntrada(data);
-		fam.setTelefone(telefone);
-		fam.setTelefone(telefone2);
-		fam.setPessoas(lista);
-		fam.setSituacao(SituacaoFamilia.ACOMP);
+//		String telefone = "(22) 998989898";
+//		String telefone2 = "(22) 998980000";
+//		fam.setEndereco(end);
+//		fam.setDataEntrada(data);
+//		List<String> tels = new ArrayList<>();
+//		tels.add(telefone);
+//		tels.add(telefone2);
+//		fam.setTelefone(tels);
+//		fam.setPessoas(lista);
+//		fam.setSituacao(SituacaoFamilia.ACOMP);
 		
-		pes1.setFamilia(fam);
-		pes2.setFamilia(fam);
+//		pes1.setFamilia(fam);
+//		pes2.setFamilia(fam);
 		
-		em2.persist(fam);
-		em2.getTransaction().commit();
-		em2.close();
-		emf2.close();
+		em.merge(fam);
+		em.getTransaction().commit();
+		em.close();
+		emf.close();
 		
-		System.out.println(fam.getPessoas());
+//		System.out.println(fam.getPessoas());
 		
 //		Pessoa pes2 = em.find(Pessoa.class, 5L);
 		

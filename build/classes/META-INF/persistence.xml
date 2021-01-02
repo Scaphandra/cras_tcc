@@ -31,8 +31,12 @@
 		<properties>
 			<property name= "javax.persistence.jdbc.driver" 
 				value="com.mysql.jdbc.Driver"></property>
-			<property name= "javax.persistence.jdbc.url" 
+			<!-- <property name= "javax.persistence.jdbc.url" 
 				value="jdbc:mysql://localhost/cras"></property>
+				value="jdbc:mysql://localhost/cras?useTimezone='true';serverTimezone='UTC';useSSL='false'"></property>
+				-->
+			<property name= "javax.persistence.jdbc.url" 
+				value="jdbc:mysql://localhost/cras?useSSL=false"></property>
 			<property name= "javax.persistence.jdbc.user" 
 				value="tcc"></property>
 			<property name= "javax.persistence.jdbc.password" 

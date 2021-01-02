@@ -1,5 +1,6 @@
 package modelo.basico;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +33,7 @@ import modelo.enumerados.Composicao;
 import modelo.enumerados.CorRaca;
 import modelo.enumerados.Escolaridade;
 import modelo.enumerados.Genero;
+import modelo.enumerados.PessoaEstado;
 import modelo.enumerados.Sexo;
 
 @Entity
@@ -40,7 +42,7 @@ import modelo.enumerados.Sexo;
 @DiscriminatorValue("P")
 @Table(name="pessoas")
 public class Pessoa {
-	
+	//TODO criar um switch com enum para implementar uma situação estado(state) em que a pessoa é RF, P ou I (inativa)
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_pessoa")
@@ -124,6 +126,15 @@ public class Pessoa {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_familia")
 	private Familia familia;
+	
+	@Column(name="nomes_beneficios")
+	private String nomesBeneficios = "";
+	
+	@Enumerated(EnumType.STRING)
+	private PessoaEstado estado;
+	
+	@Column(columnDefinition = "boolean default false")
+	private Boolean ativo;
 	
 	public Pessoa() {
 		
@@ -245,7 +256,6 @@ public class Pessoa {
 		}
 	}
 
-
 	public Sexo getSexo() {
 		return sexo;
 	}
@@ -305,6 +315,8 @@ public class Pessoa {
 	}
 
 	public double getRenda() {
+//		DecimalFormat formato = new DecimalFormat("0.00");      
+//		renda = Double.valueOf(formato.format(renda));
 		return renda;
 	}
 
@@ -342,6 +354,9 @@ public class Pessoa {
 
 	public void setBeneficios(List<Beneficio> beneficios) {
 		this.beneficios = beneficios;
+		for(Beneficio b: getBeneficios()) {
+			b.setPessoa(this);
+		}
 		
 	}
 
@@ -398,7 +413,6 @@ public class Pessoa {
 	
 
 	public Familia getFamilia() {
-
 		return familia;
 	}
 
@@ -410,6 +424,8 @@ public class Pessoa {
 	public void sairFamilia() {
 		if(familia != null) {
 			setFamilia(null);
+			setAtivo(false);
+			setEstado(PessoaEstado.I);
 		}
 		
 	}
@@ -468,9 +484,44 @@ public class Pessoa {
 		this.atendimentos.add(atendimento);
 	}
 
+	public PessoaEstado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(PessoaEstado estado) {
+		this.estado = estado;
+	}
+
+	public String getNomesBeneficios() {
+		
+		return this.nomesBeneficios;
+	}
+
+	public void setNomesBeneficios(String nome) {
+		
+		this.nomesBeneficios += nome+" ";
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+	
+	public String getAtivo() {
+		if(this.ativo) {
+			return "ATIVO";
+		}else {
+			return "INATIVO";
+		}
+		
+	}
+
 	@Override
 	public String toString() {
-		return "Pessoa [id=" + id + ", nome=" + nome + "]";
+		return nome;
 	}
 	
 }

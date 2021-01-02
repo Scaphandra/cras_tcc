@@ -110,10 +110,11 @@ public class TesteBeneficio {
 		String telefone2 = "(22) 998980000";
 		fam.setEndereco(end);
 		fam.setDataEntrada(data);
-		fam.setTelefone(telefone);
-		fam.setTelefone(telefone2);
-		fam.setPessoas(lista);
+//		fam.setTelefone(telefone);
+//		fam.setTelefone(telefone2);
+//		fam.setPessoas(lista);
 		fam.setSituacao(SituacaoFamilia.ACOMP);
+
 		
 		pes1.setFamilia(fam);
 		pes2.setFamilia(fam);

@@ -6,13 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
-
 import aplicacao.App;
-import gui.DataChangeListener;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerta;
 import gui.util.Util;
 import javafx.beans.value.ChangeListener;
@@ -23,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -38,9 +32,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
-import modelo.enumerados.CorRaca;
-import modelo.enumerados.Genero;
-import modelo.enumerados.Sexo;
+import modelo.dao.FamiliaDAO;
 
 //observer
 
@@ -50,6 +42,10 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	
 	private Object valor;
 	
+	private boolean familiaNova;
+	
+	private FamiliaDAO fdao = new FamiliaDAO();
+	
 	@FXML
 	private TableView <Familia> tabelaFamilia;
 	
@@ -57,13 +53,13 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	private TableColumn<Familia, Long> colunaId;
 	
 	@FXML 
-	private TableColumn<Pessoa, String> colunaResponsavel;
+	private TableColumn<Familia, String> colunaResponsavel;
 	
 	@FXML 
 	private TableColumn<Familia, Integer> colunaNum;
 	
 	@FXML 
-	private TableColumn <Familia, Familia> colunaSelecionar;
+	private TableColumn <Familia, String> colunaAtivo;
 	
 	@FXML
 	private Button selecionar;
@@ -73,6 +69,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	
 	@FXML
 	private Button excluir;
+	@FXML
+	private Button reativar;
 	
 	private ObservableList<Familia> obsFamilia;
 	
@@ -89,44 +87,35 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 //			e.printStackTrace();		}
 		Stage parentStage = Util.atual(evento);
 		Pessoa obj = new Pessoa();
-		obj.setCor(CorRaca.NAODECLARADA);
-		obj.setSexo(Sexo.F);
-		obj.setGenero(Genero.F);
-		
+		obj.setAtivo(true);
 		criarFormularioPessoa(obj, "/gui/formularioPessoa.fxml", parentStage);
 		
 	}
 	@FXML
 	public void clicarEditar(ActionEvent evento) {
+		
 		Stage parentStage = Util.atual(evento);
-		EntityManagerFactory emf = Persistence
-				.createEntityManagerFactory("cras_tcc");
-		EntityManager em = emf.createEntityManager();
 		
-		Familia obj = (Familia) valor;
-		familia = em.find(Familia.class, obj.getId());
-		System.out.println(obj);
+		Familia obj = fdao.obterPorID(this.familia.getId());
+		this.familiaNova = false;
+		
 		criarFormularioFamilia(obj,"/gui/formularioFamilia.fxml", parentStage);
+	
 		
-		em.close();
-		emf.close();
+	}
+	
+	@FXML
+	public void clicarReativar(ActionEvent evento) {
 		
 	}
 	
 	@FXML
 	public void clicarExcluir(ActionEvent evento) {
-		Stage parentStage = Util.atual(evento);
-		EntityManagerFactory emf = Persistence
-				.createEntityManagerFactory("cras_tcc");
-		EntityManager em = emf.createEntityManager();
 		
-		Familia obj = (Familia) valor;
-		familia = em.find(Familia.class, obj.getId());
-		em.getTransaction().begin();
-		System.out.println(obj);
-		
-		
-		
+		fdao.abrirTransacao();
+		Familia familia = (Familia) valor;
+		Familia obj = fdao.obterPorID(familia.getId());
+
 		System.out.println("clicou excluir");
 		Alert alerta = new Alert(AlertType.CONFIRMATION);
 		alerta.setTitle("Exclusão de pessoa do banco de dados");
@@ -139,17 +128,16 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		Optional <ButtonType> result = alerta.showAndWait();
 		
 		if(result.get()==btProsseguir) {
-			em.remove(familia);
-			em.getTransaction().commit();
-			em.close();
-			emf.close();
+			fdao.remover(obj);
+			fdao.fecharTransacao();
+			fdao.fechar();
 			carregarFamilia();
 		}
-		
-		
+	
 		
 	}
 	
+
 
 	public void setFamilia(Familia familia) {
 				
@@ -160,6 +148,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		iniciarComponentes();
+		carregarFamilia();
 		
 	}
 
@@ -167,8 +156,9 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	private void iniciarComponentes() {
 		
 		colunaId.setCellValueFactory(new PropertyValueFactory<Familia, Long>("id"));
-		colunaResponsavel.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("pesReferencia"));
+		colunaResponsavel.setCellValueFactory(new PropertyValueFactory<Familia, String>("pesReferencia"));
 		colunaNum.setCellValueFactory(new PropertyValueFactory<Familia, Integer>("numero"));
+		colunaAtivo.setCellValueFactory(new PropertyValueFactory<Familia, String>("ativo"));
 		
 		Stage cena = (Stage) App.getCena().getWindow();
 		tabelaFamilia.prefHeightProperty().bind(cena.heightProperty());
@@ -178,35 +168,25 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 				TableViewSelectionModel selectionModel = tabelaFamilia.getSelectionModel();
 		        Object item = selectionModel.getSelectedItem();
-		        int id = selectionModel.getSelectedIndex();//pega o id da TableList, mas está em inteiro, tem que fazer conversão para Long se quiser usar
-		        System.out.println("Selected Value " + item + " "+ id);
-		        valor = item;
-				
+//		        Long id = Long.valueOf(selectionModel.getSelectedIndex());//pega o id da TableList
+		        System.out.println("Selected Value " + item);
+		        setFamilia((Familia) item);
+		        valor = item;	
+		        System.out.println(item);
 			}
-			
 		});
 		
 	}
 	
 	public void carregarFamilia() {
-		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
-		String jpql = "select p from Familia p";
-		TypedQuery <Familia> query = em.createQuery(jpql, Familia.class);
-		List<Familia> pessoas = query.getResultList();
+		//CRIA UMA LISTA COM TODAS AS FAMÍLIAS PARA APARECEREM NO TABLEVIEW COM A VARIÁVEL OBSFAMILIA
+		List<Familia> pessoas = fdao.obterTodos();
 		obsFamilia = FXCollections.observableArrayList(pessoas);
 		tabelaFamilia.setItems(obsFamilia);
-	}
-	
-	
-
-	@Override
-	public void onDataChanged() {
-		carregarFamilia();
+		
 		
 	}
+	
 	
 	private void criarFormularioPessoa(Pessoa obj, String nomeView, Stage parentStage) {
 		try {
@@ -215,13 +195,14 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			Pane pane = loader.load();
 			
 			FormularioPessoaControlador controlador = loader.getController();
-			controlador.setPessoa(obj);
+			//setando pessoa nova
+			controlador.setPessoa(obj, true);
+			controlador.identificarRF(true);
+			controlador.prepararPessoa(obj);
 			controlador.preencherPessoa();
-			controlador.inscreverDataChangeListener(this);
-			controlador.habilitarResponsavel();
 			
 			Stage avisoCena = new Stage();
-			avisoCena.setTitle("Digite os dados para inclusão de pessoa");
+			avisoCena.setTitle("Formulário para Inclusão e Edição de Pessoas");
 			avisoCena.setScene(new Scene(pane));
 			avisoCena.setResizable(false);
 			avisoCena.initOwner(parentStage);
@@ -230,7 +211,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			
 		}catch(IOException e) {
 			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
-			
+			e.printStackTrace();
 		}
 	}
 	private void criarFormularioFamilia(Familia obj, String nomeView, Stage parentStage) {
@@ -240,13 +221,14 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			Pane pane = loader.load();
 			
 			FormularioFamiliaControlador controlador = loader.getController();
-//			controlador.setFamilia(obj);
-//			controlador.preencherPessoa();
-//			controlador.inscreverDataChangeListener(this);
-//			controlador.habilitarResponsavel();
+			controlador.inscreverListener(this);
+			controlador.setFamilia(obj);
+			controlador.preencherFamilia();
+			controlador.carregarPessoas(obj.getId());
+			controlador.setFamiliaNova(this.familiaNova);
 			
 			Stage avisoCena = new Stage();
-			avisoCena.setTitle("Digite os dados para inclusão de pessoa");
+			avisoCena.setTitle("Formulário para Inclusão e Edição de Famílias");
 			avisoCena.setScene(new Scene(pane));
 			avisoCena.setResizable(false);
 			avisoCena.initOwner(parentStage);
@@ -254,8 +236,16 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			avisoCena.showAndWait();
 			
 		}catch(IOException e) {
+			System.out.println(e.getStackTrace());
 			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
-			
+			e.printStackTrace();
 		}
 	}
+	@Override
+	public void onDataChanged() {
+		carregarFamilia();
+		iniciarComponentes();
+		
+	}
+
 }

@@ -12,8 +12,8 @@ public class InclusaoPessoaApp extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		String arquivoCSS = getClass().getResource("../fxml/estilo.css").toExternalForm();
-		URL arquivoFXML = getClass().getResource("../fxml/inclusaoPessoa.fxml");
+		String arquivoCSS = getClass().getResource("/gui/estilo.css").toExternalForm();
+		URL arquivoFXML = getClass().getResource("/gui/inclusaoPessoa.fxml");
 		Pane raiz = FXMLLoader.load(arquivoFXML);
 		
 		Scene cena = new Scene(raiz);

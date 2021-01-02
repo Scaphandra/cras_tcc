@@ -5,12 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.ListaPessoaControlador">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="443.0" prefWidth="639.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.ListaPessoaControlador">
    <children>
       <Label text="Pessoas:">
          <font>
@@ -19,19 +20,23 @@
       </Label>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-          <Button fx:id="inserir" mnemonicParsing="false" onAction="#clicarNova" text="Inserir" />
             <Button fx:id="editar" mnemonicParsing="false" onAction="#clicarEditar" text="Editar" />
             <Button fx:id="excluir" mnemonicParsing="false" onAction="#clicarExcluir" text="Excluir" />
         </items>
       </ToolBar>
-      <TableView fx:id="tabelaPessoa" prefHeight="200.0" prefWidth="200.0">
+      <HBox prefHeight="28.0" prefWidth="634.0">
+         <children>
+            <TextField fx:id="busca" onInputMethodTextChanged="#filtrarRegistros" prefHeight="25.0" prefWidth="609.0" promptText="buscar por nome" />
+         </children>
+      </HBox>
+      <TableView fx:id="tabelaPessoa" prefHeight="200.0" prefWidth="423.0" VBox.vgrow="NEVER">
         <columns>
           <TableColumn fx:id="colunaId" prefWidth="45.99999988079071" text="código" />
-          <TableColumn fx:id="colunaNome" prefWidth="289.9999694824219" text="Nome" />
-            <TableColumn fx:id="colunaIdFamilia" prefWidth="261.3333740234375" text="Responsável Familiar (Pessoa de Referência)" />
+          <TableColumn fx:id="colunaNome" prefWidth="347.3333435058594" text="Nome" />
+            <TableColumn fx:id="colunaIdFamilia" prefWidth="163.3333740234375" text="Responsável Familiar" />
+            <TableColumn fx:id="colunaAtivo" prefWidth="75.33331298828125" text="Ativo" />
         </columns>
       </TableView>
-      <HBox prefHeight="47.0" prefWidth="595.0" />
    </children>
    <padding>
       <Insets left="5.0" top="5.0" />

@@ -27,8 +27,12 @@ public class Beneficio {
 	private double valor;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="id_pessoa")
+	@JoinColumn(name="pessoa_beneficio")
 	private Pessoa pessoa;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="familia_beneficio")
+	private Familia familia;
 	
 	public Beneficio() {
 		
@@ -64,6 +68,7 @@ public class Beneficio {
 
 	public void setPessoa(Pessoa pessoa_beneficio) {
 		this.pessoa = pessoa_beneficio;
+		this.pessoa.setNomesBeneficios(this.nome.toString());
 	}
 
 
