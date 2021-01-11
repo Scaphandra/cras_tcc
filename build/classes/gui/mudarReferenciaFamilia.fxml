@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="569.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.MudarReferenciaFamilia">
+<AnchorPane prefHeight="607.0" prefWidth="724.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.MudarReferenciaFamilia">
    <children>
       <Button fx:id="btNovaPessoa" layoutX="488.0" layoutY="354.0" mnemonicParsing="false" onAction="#clicarNovaPessoa" text="Nova Pessoa de Referência">
          <font>
@@ -70,5 +70,6 @@
          </font>
       </Label>
       <Button fx:id="ver" layoutX="520.0" layoutY="263.0" mnemonicParsing="false" onAction="#clicarEditarRF" text="Editar Pessoa" />
+      <Button layoutX="344.0" layoutY="562.0" mnemonicParsing="false" onAction="#clicarCancelar" text="Cancelar" />
    </children>
 </AnchorPane>

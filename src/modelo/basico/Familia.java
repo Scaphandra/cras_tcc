@@ -336,6 +336,10 @@ public class Familia {
 		this.numero = pessoas_familia.size();
 	}
 	
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+	
 	public List<Beneficio> getBeneficios() {
 		setBeneficios();
 		return beneficios;

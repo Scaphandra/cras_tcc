@@ -255,8 +255,17 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 	}
 
 	public void setFamilia(Familia familia) {
+		daof.abrirTransacao();
+		if(familia.getId()==null) {
+			this.entidade = familia;
+		}else {
+			
+			this.entidade = daof.obterPorID(familia.getId());
+		}
 		
-		this.entidade = daof.obterPorID(familia.getId());
+		daof.incluir(this.entidade);
+		//transacao familiaDAO fechada em salvar
+		//daof.fecharTransacao().fechar();
 
 	}
 
@@ -359,9 +368,9 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 
 	@FXML
 	public void clicarRemover(ActionEvent event) {
-
+//transacao familiaDAO aberta em setFamilia
 		daop.abrirTransacao();
-		daof.abrirTransacao();
+//		daof.abrirTransacao();
 		this.pessoa = (Pessoa) selecionado;
 		Pessoa removida = daop.obterPorID(pessoa.getId());
 		Familia f = daof.obterPorID(entidade.getId());
@@ -371,7 +380,7 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		daop.atualizar(pessoa);
 		daof.atualizar(f);
 		daop.fecharTransacao().fechar();
-		daof.fecharTransacao().fechar();
+//		daof.fecharTransacao().fechar();
 
 		carregarPessoas(this.entidade.getId());
 	}
@@ -471,7 +480,8 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 	}
 
 	public void preencherFamilia() {
-		daof.abrirTransacao();
+	//transacao familiaDAO aberta em setFamilia
+//		daof.abrirTransacao();
 		this.id = entidade.getId();
 		idFamilia.setText("código da família: " + entidade.getId().toString());
 		if (!entidade.isAtivo()) {
@@ -544,7 +554,9 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		// dadta do último atendimento
 		txtAlugada.setText(String.valueOf(entidade.getValorMoradia() * 10));
 		comboTipoMoradia.getSelectionModel().select(entidade.getTipoMoradia());
-		daof.fecharTransacao();
+
+//		daof.fecharTransacao();
+//		daof.fechar();
 
 	}
 
@@ -609,8 +621,8 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 	}
 
 	public void salvarFamiliaNova() {
-
-		daof.abrirTransacao();
+		//transação de FamiliaDAO aberta em setFamilia
+		//daof.abrirTransacao();
 
 		Familia f = daof.obterPorID(this.entidade.getId());
 
@@ -639,7 +651,8 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		f.setDescumprimento(descumprimento);
 		f.setMulherChefe(mulherChefe);
 
-		daof.incluir(f).fecharTransacao().fechar();
+		daof.incluir(f);
+		daof.fecharTransacao().fechar();
 
 	}
 

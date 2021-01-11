@@ -51,8 +51,8 @@ public class FormularioComposicaoControlador implements Initializable{
 		
 	}
 	
-	
-	public void clicarOk(ActionEvent event) {
+	@FXML
+	public void clicarCancelar(ActionEvent event) {
 
 		Util.atual(event).close();
 		

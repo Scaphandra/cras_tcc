@@ -196,9 +196,9 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			
 			FormularioPessoaControlador controlador = loader.getController();
 			//setando pessoa nova
-			controlador.setPessoa(obj, true);
+			//controlador.setPessoa(obj, true);
 			controlador.identificarRF(true);
-			controlador.prepararPessoa(obj);
+			controlador.prepararPessoa(null);
 			controlador.preencherPessoa();
 			
 			Stage avisoCena = new Stage();
