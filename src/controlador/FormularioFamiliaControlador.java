@@ -255,15 +255,17 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 	}
 
 	public void setFamilia(Familia familia) {
-		daof.abrirTransacao();
-		if(familia.getId()==null) {
-			this.entidade = familia;
-		}else {
-			
-			this.entidade = daof.obterPorID(familia.getId());
-		}
 		
-		daof.incluir(this.entidade);
+		this.entidade = familia;
+//		daof.abrirTransacao();
+//		if(familia.getId()==null) {
+//			this.entidade = familia;
+//		}else {
+//			
+//			this.entidade = daof.obterPorID(familia.getId());
+//		}
+//		
+//		daof.incluir(this.entidade);
 		//transacao familiaDAO fechada em salvar
 		//daof.fecharTransacao().fechar();
 
@@ -326,7 +328,10 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 
 	@FXML
 	void clicarDesligar(ActionEvent event) {
+		Stage parentStage = Util.atual(event);
 
+		criarFormularioDesligar(this.entidade, "/gui/formDesligamentoFamilia.fxml", parentStage);
+		
 	}
 
 	@FXML
@@ -369,20 +374,28 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 	@FXML
 	public void clicarRemover(ActionEvent event) {
 //transacao familiaDAO aberta em setFamilia
+		FamiliaDAO daof = new FamiliaDAO();
+		PessoaDAO daop = new PessoaDAO();
 		daop.abrirTransacao();
-//		daof.abrirTransacao();
+		daof.abrirTransacao();
 		this.pessoa = (Pessoa) selecionado;
-		Pessoa removida = daop.obterPorID(pessoa.getId());
+		
 		Familia f = daof.obterPorID(entidade.getId());
-
-		f.excluirPessoa(removida);
+		pessoa = daop.obterPorID(pessoa.getId());
+		for(Pessoa p: f.getPessoas()) {
+			if(p.getId().equals(pessoa.getId())) {
+				f.excluirPessoa(p);
+				break;
+			}
+		}
 
 		daop.atualizar(pessoa);
 		daof.atualizar(f);
 		daop.fecharTransacao().fechar();
-//		daof.fecharTransacao().fechar();
+		daof.fecharTransacao().fechar();
 
-		carregarPessoas(this.entidade.getId());
+		
+		carregarPessoas(f.getId());
 	}
 
 	@FXML
@@ -481,7 +494,7 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 
 	public void preencherFamilia() {
 	//transacao familiaDAO aberta em setFamilia
-//		daof.abrirTransacao();
+		daof.abrirTransacao();
 		this.id = entidade.getId();
 		idFamilia.setText("código da família: " + entidade.getId().toString());
 		if (!entidade.isAtivo()) {
@@ -555,8 +568,8 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		txtAlugada.setText(String.valueOf(entidade.getValorMoradia() * 10));
 		comboTipoMoradia.getSelectionModel().select(entidade.getTipoMoradia());
 
-//		daof.fecharTransacao();
-//		daof.fechar();
+		daof.fecharTransacao();
+		daof.fechar();
 
 	}
 
@@ -622,7 +635,7 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 
 	public void salvarFamiliaNova() {
 		//transação de FamiliaDAO aberta em setFamilia
-		//daof.abrirTransacao();
+		daof.abrirTransacao();
 
 		Familia f = daof.obterPorID(this.entidade.getId());
 
@@ -758,6 +771,32 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 			e.printStackTrace();
 		}
 	}
+	public void criarFormularioDesligar(Familia familia, String nomeView, Stage parentStage) {
+		
+		try {
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
+			Stage avisoCena = new Stage();
+			Pane pane = loader.load();
+			
+			FormDesligamentoFamiliaControlador controlador = loader.getController();
+			
+			controlador.setFamilia(entidade);
+			controlador.carregarLabel(entidade);
+			
+			avisoCena.setTitle("Alteração de Pessoa de Referência Familiar");
+			avisoCena.setScene(new Scene(pane));
+			avisoCena.setResizable(false);
+			avisoCena.initOwner(parentStage);
+			avisoCena.initModality(Modality.WINDOW_MODAL);
+			avisoCena.showAndWait();
+			
+		} catch (IOException e) {
+			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
+	}
+	
 
 	@Override
 	public void onDataChanged() {

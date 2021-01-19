@@ -425,7 +425,8 @@ public class Pessoa {
 		if(familia != null) {
 			setFamilia(null);
 			setAtivo(false);
-			setEstado(PessoaEstado.I);
+			setComposicao(Composicao.N);
+
 		}
 		
 	}

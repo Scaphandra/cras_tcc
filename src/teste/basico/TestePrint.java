@@ -1,7 +1,6 @@
 package teste.basico;
 
-import java.util.List;
-
+import modelo.basico.Beneficio;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
 import modelo.dao.FamiliaDAO;
@@ -60,18 +59,34 @@ public class TestePrint {
 //		em.remove(f);
 		FamiliaDAO dao = new FamiliaDAO();
 		PessoaDAO daop = new PessoaDAO();
-		
+		dao.abrirTransacao();
+		daop.abrirTransacao();
 		Familia f = dao.obterPorID(1L);
-		List <Pessoa> pes = daop.obterCondicao("id_familia", f.getId().toString());
+		Pessoa p = daop.obterPorID(74L);
+		//List <Pessoa> pes = daop.obterCondicao("id_familia", f.getId().toString());
 		
-		
-		for(Pessoa p: pes) {
-			System.out.println(p.getNome());
+//		f.excluirPessoa(p);
+//		daop.atualizar(p);
+//		dao.atualizar(f);
+//	
+//		
+//		daop.fecharTransacao().fechar();
+//		dao.fecharTransacao().fechar();
+	
+		System.out.println(p.getBeneficios().size());
+		//System.out.println(f.getBeneficios().size());
+		for(Beneficio b: f.getBeneficios()) {
+			System.out.println(b.toString());
 		}
-		System.out.println(f.getTotalRenda());
-		System.out.println(f.getRendaReferencia());
-		System.out.println(f.getPercapita());
 		
+		for(Beneficio b: p.getBeneficios()) {
+			System.out.println(b.getNome());
+		}
+		
+//		System.out.println(f.getTotalRenda());
+//		System.out.println(f.getRendaReferencia());
+//		System.out.println(f.getPercapita());
+
 		
 		
 		

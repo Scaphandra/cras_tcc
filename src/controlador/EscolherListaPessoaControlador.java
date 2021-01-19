@@ -3,6 +3,7 @@ package controlador;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import aplicacao.App;
@@ -14,7 +15,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -81,25 +86,92 @@ public class EscolherListaPessoaControlador implements Initializable {
 		
 	}
 	
+	
+	
 	@FXML
 	void clicarSelecionar(ActionEvent event) {
-		dao.abrirTransacao();
-		daof.abrirTransacao();
-		familia = daof.obterPorID(familia.getId());
-		pessoa = dao.obterPorID(pessoa.getId());
-		pessoa.setAtivo(true);
-		pessoa.setPesReferencia(false);
-		pessoa.setEstado(PessoaEstado.P);
-		familia.setPessoas(pessoa);	
-		dao.incluir(pessoa);
-		daof.atualizar(familia);
-		dao.fecharTransacao().fechar();
-		daof.fecharTransacao().fechar();
 		
-		Util.atual(event).close();
+		if(pessoa.getFamilia()!=null && pessoa.getEstado()==PessoaEstado.P) {
+			dao.abrirTransacao();
+			daof.abrirTransacao();
+			familia = daof.obterPorID(familia.getId());
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Esta pessoa pertence a uma família desligada");
+			alert.setHeaderText("A pessoa selecionada será retirada de uma família desligada");
+			alert.setContentText("Escolha o que deseja fazer.");
+			alert.show();
+			ButtonType btCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+			ButtonType btProsseguir = new ButtonType("Prosseguir");
+			alert.getButtonTypes().setAll(btCancelar, btProsseguir);
+			Optional <ButtonType> result = alert.showAndWait();
+			
+			if(result.get()==btProsseguir) {
+				dao.abrirTransacao();
+				daof.abrirTransacao();
+				familia = daof.obterPorID(familia.getId());
+				pessoa = dao.obterPorID(pessoa.getId());
+				Familia f = daof.obterPorID(pessoa.getFamilia());
+				f.excluirPessoa(pessoa);
+				pessoa.setAtivo(true);
+				familia.setPessoas(pessoa);
+				daof.atualizar(f);
+				daof.atualizar(familia);
+				dao.atualizar(pessoa);
+				dao.fecharTransacao().fechar();
+				daof.fecharTransacao().fechar();
+				Util.atual(event).close();
+			}
+			
+		}
+		else if(pessoa.getFamilia()!=null && pessoa.getEstado()==PessoaEstado.RF) {
+			
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Pessoa de Referência de Família Desligada!");
+			alert.setHeaderText("A pessoa selecionada é referência de uma família desligada. "
+					+ "\nSe prosseguir, a família a qual a pessoa pertencia \n não poderá mais ser reativada.");
+			alert.setContentText("Escolha o que deseja fazer.");
+			alert.show();
+			ButtonType btCancelar = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
+			ButtonType btProsseguir = new ButtonType("Prosseguir");
+			alert.getButtonTypes().setAll(btCancelar, btProsseguir);
+			Optional <ButtonType> result = alert.showAndWait();
+			
+			if(result.get()==btProsseguir) {
+				pessoa = dao.obterPorID(pessoa.getId());
+				Familia f = daof.obterPorID(pessoa.getFamilia());
+				f.setPesReferencia(null);
+				f.excluirPessoa(pessoa);
+				pessoa.setAtivo(true);
+				pessoa.setPesReferencia(false);
+				familia.setPessoas(pessoa);
+				daof.atualizar(f);
+				daof.atualizar(familia);
+				dao.atualizar(pessoa);
+				dao.fecharTransacao().fechar();
+				daof.fecharTransacao().fechar();
+				Util.atual(event).close();
+			}
+			
+		}else if(pessoa.getFamilia()==null){
+			
+			dao.abrirTransacao();
+			daof.abrirTransacao();
+			familia = daof.obterPorID(familia.getId());
+			pessoa = dao.obterPorID(pessoa.getId());
+			pessoa.setAtivo(true);
+			pessoa.setPesReferencia(false);
+			pessoa.setEstado(PessoaEstado.P);
+			familia.setPessoas(pessoa);	
+			dao.incluir(pessoa);
+			daof.atualizar(familia);
+			dao.fecharTransacao().fechar();
+			daof.fecharTransacao().fechar();
+			Util.atual(event).close();
+			
+		}
 		
 	}
-	
+
 	
 	public void setFamilia(Familia f) {
 		
@@ -110,7 +182,7 @@ public class EscolherListaPessoaControlador implements Initializable {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void iniciarTabela() {
-		lista = dao.obterCondicao("estado","I");
+		lista = dao.obterCondicao("ativo","0");
 		obsPessoas = FXCollections.observableArrayList(lista);
 		tabelaPessoa.setItems(obsPessoas);
 		tabelaPessoa.setMaxHeight(180);
@@ -126,7 +198,7 @@ public class EscolherListaPessoaControlador implements Initializable {
 		        pessoa = (Pessoa) item;
 		        busca.setText(pessoa.getNome());
 		        if(busca.getText().equals("")) {
-		        	lista = dao.obterCondicao("estado","I");
+		        	lista = dao.obterCondicao("ativo","0");
 		        }
 		  
 		        //System.out.println(item.toString().substring(18,19));

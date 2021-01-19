@@ -138,10 +138,10 @@ public class Familia {
 	}
 
 	public void setPesReferencia(Pessoa referencia) {
-		this.pesReferencia = referencia;
 		if(!pessoas_familia.contains(referencia)) {			
 			this.pessoas_familia.add(referencia);
 		}
+		this.pesReferencia = referencia;
 	}
 	
 	public double getRendaReferencia() {
@@ -150,6 +150,19 @@ public class Familia {
 	
 	public void setRendaReferencia() {
 		rendaReferencia = pesReferencia.getRenda();
+	}
+	
+	public void trocarRf(Pessoa antiga, Pessoa nova) {
+		antiga.setEstado(PessoaEstado.P);
+		antiga.setComposicao(Composicao.N);
+		antiga.setPesReferencia(false);
+		
+		nova.setEstado(PessoaEstado.RF);
+		nova.setPesReferencia(true);
+		nova.setComposicao(Composicao.RF);
+		this.setPesReferencia(nova);
+		setRendaReferencia();
+		setTotalRenda();
 	}
 
 	public Date getDataEntrada() {
@@ -192,19 +205,26 @@ public class Familia {
 	}
 	
 	public void excluirPessoa(Pessoa pessoa) {
-		for(Beneficio b: pessoa.getBeneficios()) {
-			this.beneficios.remove(b);
-			this.totalBeneficio -= pessoa.getTotalBeneficio();
+		
+		if(pessoa.getBeneficios().size()!=0) {
+			for(int i = 0; i<=pessoa.getBeneficios().size();i++) {
+				for(Beneficio b: this.beneficios) {
+					if(b.getPessoa().equals(pessoa)) {
+						this.beneficios.remove(b);
+					}
+				}
+			}
 		}
-		this.pessoas_familia.remove(pessoa);
+		this.totalBeneficio -= pessoa.getTotalBeneficio();
+
+		
 		pessoa.setFamilia(null);
-		pessoa.setEstado(PessoaEstado.I);
 		pessoa.setComposicao(Composicao.N);
-		//TODO isso será possível?
-		if(pessoa.getEstado()==PessoaEstado.RF) {
-			this.pesReferencia = null;
-		}
+		pessoa.setAtivo(false);
+		this.pessoas_familia.remove(pessoa);
+		
 	}
+	
 
 	public Endereco getEndereco() {
 		return endereco_familia;

@@ -2,12 +2,10 @@ package controlador;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import aplicacao.App;
-import gui.listeners.DataChangeListener;
 import gui.util.Alerta;
 import gui.util.Util;
 import javafx.beans.value.ChangeListener;
@@ -80,6 +78,12 @@ public class MudarReferenciaFamilia implements Initializable{
 		this.familia = f;
 		
 	}
+	
+	@FXML
+	public void clicarCancelar(ActionEvent event) {
+		
+		Util.atual(event).close();
+	}
 
 	@FXML
 	void clicarSelecionar(ActionEvent event) {
@@ -99,17 +103,18 @@ public class MudarReferenciaFamilia implements Initializable{
 
 			Pessoa antigaRF = dao.obterPorID(familia.getPesReferencia().getId());
 			Pessoa novaRF = dao.obterPorID(this.pessoa.getId());			
-
-			antigaRF.setEstado(PessoaEstado.P);
-			antigaRF.setComposicao(Composicao.N);
-			antigaRF.setPesReferencia(false);
-			
-			novaRF.setEstado(PessoaEstado.RF);
-			novaRF.setPesReferencia(true);
-			novaRF.setComposicao(Composicao.RF);
-			familia.setTotalRenda();
-			familia.setRendaReferencia();
-			familia.setPesReferencia(novaRF);
+//
+//			antigaRF.setEstado(PessoaEstado.P);
+//			antigaRF.setComposicao(Composicao.N);
+//			antigaRF.setPesReferencia(false);
+//			
+//			novaRF.setEstado(PessoaEstado.RF);
+//			novaRF.setPesReferencia(true);
+//			novaRF.setComposicao(Composicao.RF);
+//			familia.setTotalRenda();
+//			familia.setPesReferencia(novaRF);
+//			familia.setRendaReferencia();
+			familia.trocarRf(antigaRF, novaRF);
 			daof.atualizar(familia);
 			
 			daof.fecharTransacao().fechar();
@@ -121,6 +126,8 @@ public class MudarReferenciaFamilia implements Initializable{
 		}
 		
 	}
+	
+
 
 	@FXML
 	void clicarNovaPessoa(ActionEvent event) {
@@ -132,7 +139,8 @@ public class MudarReferenciaFamilia implements Initializable{
 
 	@FXML
 	void clicarPessoaInativa(ActionEvent event) {
-
+		
+		
 	}
 	
 	@FXML

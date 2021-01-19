@@ -826,9 +826,6 @@ public class FormularioPessoaControlador implements Initializable {
 				responsavel.setText("");
 				boxCompo.setDisable(false);
 			}
-			if (p.getEstado() == PessoaEstado.I) {
-				p.setAtivo(false);
-			}
 
 			// SE FOR PESSOA NOVA
 		} else {
