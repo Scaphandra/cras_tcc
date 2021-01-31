@@ -61,11 +61,14 @@ public class TestePrint {
 		PessoaDAO daop = new PessoaDAO();
 		dao.abrirTransacao();
 		daop.abrirTransacao();
-		Familia f = dao.obterPorID(1L);
-		Pessoa p = daop.obterPorID(74L);
+		Familia f = dao.obterPorID(28L);
+		Pessoa p = daop.obterPorID(231L);
+		Pessoa p2 = daop.obterPorID(223L);
 		//List <Pessoa> pes = daop.obterCondicao("id_familia", f.getId().toString());
 		
-//		f.excluirPessoa(p);
+	//	f.excluirPessoa(p);
+		p.excluirBanco();
+		//p2.excluirBanco();
 //		daop.atualizar(p);
 //		dao.atualizar(f);
 //	

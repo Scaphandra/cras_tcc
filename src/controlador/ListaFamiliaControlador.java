@@ -37,6 +37,8 @@ import modelo.dao.FamiliaDAO;
 //observer
 
 public class ListaFamiliaControlador implements Initializable, DataChangeListener{
+	
+	
 
 	private Familia familia;
 	
@@ -107,6 +109,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	@FXML
 	public void clicarReativar(ActionEvent evento) {
 		
+		Stage parentStage = Util.atual(evento);
+		criarFormularioReativar("/gui/reativarFamilia.fxml",parentStage);
 	}
 	
 	@FXML
@@ -134,6 +138,11 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			carregarFamilia();
 		}
 	
+		
+	}
+	
+	@FXML
+	public void clicarVisualizar(ActionEvent evento) {
 		
 	}
 	
@@ -180,7 +189,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	
 	public void carregarFamilia() {
 		//CRIA UMA LISTA COM TODAS AS FAMÍLIAS PARA APARECEREM NO TABLEVIEW COM A VARIÁVEL OBSFAMILIA
-		List<Familia> pessoas = fdao.obterTodos();
+		List<Familia> pessoas = fdao.obterCondicao("ativo","1");
 		obsFamilia = FXCollections.observableArrayList(pessoas);
 		tabelaFamilia.setItems(obsFamilia);
 		
@@ -241,11 +250,35 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			e.printStackTrace();
 		}
 	}
+	private void criarFormularioReativar(String nomeView, Stage parentStage) {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
+			Pane pane = loader.load();
+			
+			ReativarFamiliaControlador controlador = loader.getController();
+			controlador.inscreverListener(this);
+			
+			
+			Stage avisoCena = new Stage();
+			avisoCena.setTitle("Formulário para Inclusão e Edição de Famílias");
+			avisoCena.setScene(new Scene(pane));
+			avisoCena.setResizable(false);
+			avisoCena.initOwner(parentStage);
+			avisoCena.initModality(Modality.WINDOW_MODAL);
+			avisoCena.showAndWait();
+			
+		}catch(IOException e) {
+			System.out.println(e.getStackTrace());
+			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
+	}
 	@Override
 	public void onDataChanged() {
-		carregarFamilia();
 		iniciarComponentes();
-		
+//		carregarFamilia();
+	
 	}
 
 }

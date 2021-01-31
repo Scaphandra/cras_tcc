@@ -244,7 +244,7 @@ public class ListaPessoaControlador implements Initializable{
 			
 			
 			controlador.setPessoa(obj, b);
-			controlador.setFamilia(obj.getFamilia());
+			controlador.setFamilia(obj.getFamilia(), false);
 			controlador.preencherPessoa();
 			if(obj.getEstado()==PessoaEstado.RF) {
 				controlador.identificarRF(true);

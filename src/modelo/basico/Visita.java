@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -39,7 +40,10 @@ public class Visita {
 	@Column(name="motivo_visita", columnDefinition="VARCHAR(200)")
 	private String motivo;
 	
-	@ManyToMany(mappedBy="visitas")
+	@ManyToMany
+	@JoinTable(name="visita_tecnico",
+	joinColumns= {@JoinColumn(name="id_visita")},
+	inverseJoinColumns= {@JoinColumn(name="id_tecnico")})
 	private List <Tecnico> tecnicos_visita = new ArrayList<>();
 	
 	@ManyToOne

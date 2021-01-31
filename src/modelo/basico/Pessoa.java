@@ -1,6 +1,5 @@
 package modelo.basico;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,8 +25,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
+import modelo.dao.PessoaDAO;
 import modelo.enumerados.BeneficioTipo;
 import modelo.enumerados.Composicao;
 import modelo.enumerados.CorRaca;
@@ -140,10 +139,14 @@ public class Pessoa {
 		
 	}
 	
-	public Pessoa(Pessoa pes) {
-		if(pes instanceof PesReferencia) {
-			pes = (Pessoa) pes;
-		}
+	public void excluirBanco() {
+		
+		PessoaDAO dao = new PessoaDAO();
+		dao.abrirTransacao();
+		Pessoa pes = dao.obterPorID(this.getId());
+		dao.removerPorID(pes.getId());
+		dao.fecharTransacao().fechar();
+		
 	}
 	
 	public Long getId() {
@@ -360,7 +363,6 @@ public class Pessoa {
 		
 	}
 
-	@Transient
 	public double getValorBeneficio(BeneficioTipo tipo) {
 		for(Beneficio b: getBeneficios()) {
 			if(b.getNome() == tipo) {
@@ -440,9 +442,6 @@ public class Pessoa {
 		
 	}
 
-	
-
-	@Transient
 	public double getTotalBeneficio() {
 		totalBeneficio = 0;
 		

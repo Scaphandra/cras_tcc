@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
+
 import gui.util.Alerta;
 import gui.util.MaskFieldUtil;
 import gui.util.Util;
@@ -50,6 +53,7 @@ public class FormDesligamentoFamiliaControlador implements Initializable{
 		txtData.setText(converteData(new Date()));
 		
 		
+		
 	}
 	
 	public void carregarLabel(Familia f) {
@@ -78,6 +82,13 @@ public class FormDesligamentoFamiliaControlador implements Initializable{
 	
 	@FXML 
 	public void clicarDesligar(ActionEvent event) {
+		
+		desligar();
+		
+		Util.atual(event).close();
+	}
+	
+	public void desligar() {
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		String dataStr = txtData.getText();
 		Date data = new Date();
@@ -90,6 +101,9 @@ public class FormDesligamentoFamiliaControlador implements Initializable{
 		FamiliaDAO dao = new FamiliaDAO();
 		dao.abrirTransacao();
 		
+		ValidationSupport validarTxt = new ValidationSupport();
+		validarTxt.registerValidator(txtMotivo, Validator.createEmptyValidator("Campo Obrigatório"));
+		
 		entidade = dao.obterPorID(this.entidade.getId());
 		for(Pessoa p: entidade.getPessoas()) {
 			PessoaDAO daop = new PessoaDAO();
@@ -101,8 +115,6 @@ public class FormDesligamentoFamiliaControlador implements Initializable{
 		entidade.setMotivoDesligamento(txtMotivo.getText());
 		dao.atualizar(entidade);
 		dao.fecharTransacao().fechar();
-		
-		Util.atual(event).close();
 	}
 
 }

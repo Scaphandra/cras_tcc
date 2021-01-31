@@ -130,7 +130,7 @@ public class DAO <E> {
 	}
 	
 	
-	public void removerPorID(Class<E> classe, Object id) {
+	public void removerPorID(Object id) {
 		E entidade = obterPorID(id);
 		em.remove(entidade);
 			

@@ -40,7 +40,7 @@ public class Reuniao {
 	@JoinTable(name="funcionarios_reuniao",
 	joinColumns= {@JoinColumn(name="id_reuniao")},
 	inverseJoinColumns= {@JoinColumn(name="id_funcionario")})
-	private List<Funcionario> funcionarios = new ArrayList<>();
+	private List <Funcionario> funcionarios = new ArrayList<>();
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="data_reuniao")

@@ -109,46 +109,54 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
-                  <Label prefHeight="36.0" prefWidth="125.0" text="Benefícios/Programas:" wrapText="true">
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="lbPBF" text="pbf">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="lbBPCI" text="bpci">
-                     <HBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="lbBPCD" text="bpcd">
-                     <HBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="lbNV" text="nv">
-                     <HBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="lbOutro" text="outro">
-                     <HBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label text="Total R$:">
-                     <HBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="txtTotalBeneficio" disable="true" editable="false" prefHeight="25.0" prefWidth="71.0">
+                  <HBox prefHeight="31.0" prefWidth="592.0">
+                     <children>
+                        <Label prefHeight="36.0" prefWidth="125.0" text="Benefícios/Programas:" wrapText="true">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="lbPBF">
+                           <HBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="lbBPCI">
+                           <HBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="lbBPCD">
+                           <HBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="lbNV">
+                           <HBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label fx:id="lbOutro">
                      <HBox.margin>
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
-                  </TextField>
+                  </Label>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Total R$:">
+                           <HBox.margin>
+                              <Insets left="20.0" top="10.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField fx:id="txtTotalBeneficio" disable="true" editable="false" prefHeight="25.0" prefWidth="71.0">
+                           <HBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -351,11 +359,12 @@
       </GridPane>
       <TableView fx:id="tabelaPessoas" cache="true" layoutX="27.0" layoutY="354.0" maxHeight="-Infinity" prefHeight="184.0" prefWidth="656.0">
         <columns>
-          <TableColumn fx:id="colunaNome" prefWidth="333.33327198028564" text="Nome: " />
-          <TableColumn fx:id="colunaIdade" minWidth="0.0" prefWidth="42.0" text="Idade:" />
-            <TableColumn fx:id="colunaParentesco" prefWidth="103.3333740234375" text="Parentesco" />
-            <TableColumn fx:id="colunaRenda" prefWidth="61.999969482421875" text="Renda" />
-            <TableColumn fx:id="colunaBeneficio" prefWidth="114.00006103515625" text="Benfícios" />
+          <TableColumn fx:id="colunaNome" maxWidth="320.0" minWidth="-Infinity" prefWidth="300.0" text="Nome: " />
+            <TableColumn fx:id="colId" maxWidth="50.0" minWidth="-Infinity" prefWidth="122.0" text="código:" />
+          <TableColumn fx:id="colunaIdade" maxWidth="50.0" minWidth="-Infinity" prefWidth="100.0" text="Idade:" />
+            <TableColumn fx:id="colunaParentesco" maxWidth="90.0" minWidth="-Infinity" prefWidth="100.0" resizable="false" text="Parentesco:" />
+            <TableColumn fx:id="colunaRenda" maxWidth="60.0" minWidth="-Infinity" prefWidth="50.0" text="Renda:" />
+            <TableColumn fx:id="colunaBeneficio" maxWidth="140.0" minWidth="-Infinity" prefWidth="150.0" text="Benfícios:" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -367,7 +376,7 @@
                <HBox.margin>
                   <Insets right="80.0" />
                </HBox.margin></Button>
-            <Button fx:id="btSalvar" mnemonicParsing="false" onAction="#clicarSalvar" prefHeight="25.0" prefWidth="59.0" text="Salvar">
+            <Button fx:id="btSalvar" mnemonicParsing="false" onAction="#clicarSalvar" prefHeight="25.0" prefWidth="59.0" text="Ok">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

@@ -38,7 +38,7 @@ public class RedeReferenciada {
 	private Endereco endereco_rede;
 	
 	@ElementCollection(fetch = FetchType.LAZY)
-	@Column(name="telefones_familia")
+	@Column(name="telefones")
 	private List <String> telefones = new ArrayList<>();
 	
 	public RedeReferenciada() {

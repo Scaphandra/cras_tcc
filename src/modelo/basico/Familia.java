@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -39,15 +40,13 @@ public class Familia {
 	@Column(name="id_familia")
 	private Long id;
 	
-	@OneToOne
+	//colocado o cascadeType persist porque na hora de reativar família sem pessoa de referencia deu TransientPropertyValueException
+	@OneToOne(cascade=CascadeType.PERSIST)
 	@JoinColumn(name="id_pessoa_referencia")
 	private Pessoa pesReferencia;
 	
 	@Temporal(TemporalType.DATE)
 	private Date dataEntrada;
-	
-	@Temporal(TemporalType.DATE)
-	private Date dataCad;
 	
 	@OneToMany(mappedBy= "familia", fetch=FetchType.LAZY)
 	private List <Pessoa> pessoas_familia = new ArrayList<>();
@@ -91,7 +90,7 @@ public class Familia {
 	
 	@Temporal(TemporalType.DATE)
 	@Column
-	private Date atualizacaoCad;
+	private Date dataCad;
 	
 	@Column(columnDefinition = "boolean default false")
 	private boolean descumprimento;
@@ -140,6 +139,7 @@ public class Familia {
 	public void setPesReferencia(Pessoa referencia) {
 		if(!pessoas_familia.contains(referencia)) {			
 			this.pessoas_familia.add(referencia);
+			this.setNumero();
 		}
 		this.pesReferencia = referencia;
 	}
@@ -159,6 +159,7 @@ public class Familia {
 		
 		nova.setEstado(PessoaEstado.RF);
 		nova.setPesReferencia(true);
+		this.setRendaReferencia();
 		nova.setComposicao(Composicao.RF);
 		this.setPesReferencia(nova);
 		setRendaReferencia();
@@ -171,15 +172,6 @@ public class Familia {
 
 	public void setDataEntrada(Date dataEntrada) {
 		this.dataEntrada = dataEntrada;
-	}
-	
-	
-	public Date getDataCad() {
-		return dataCad;
-	}
-
-	public void setDataCad(Date dataCad) {
-		this.dataCad = dataCad;
 	}
 
 	public double getTotalBeneficios() {
@@ -201,6 +193,7 @@ public class Familia {
 
 	public void setPessoas(Pessoa pessoa) {
 		this.pessoas_familia.add(pessoa);
+		this.setNumero();
 		pessoa.setFamilia(this);
 	}
 	
@@ -222,6 +215,7 @@ public class Familia {
 		pessoa.setComposicao(Composicao.N);
 		pessoa.setAtivo(false);
 		this.pessoas_familia.remove(pessoa);
+		this.setNumero();
 		
 	}
 	
@@ -300,12 +294,12 @@ public class Familia {
 		this.tecnico = tecnicoRef;
 	}
 
-	public Date getAtualizacaoCad() {
-		return atualizacaoCad;
+	public Date getDataCad() {
+		return dataCad;
 	}
 
 	public void setAtualizacaoCad(Date atualizacaoCad) {
-		this.atualizacaoCad = atualizacaoCad;
+		this.dataCad = atualizacaoCad;
 	}
 
 	public boolean isDescumprimento() {
@@ -331,7 +325,9 @@ public class Familia {
 	public void setPercapita() {
 //		DecimalFormat formato = new DecimalFormat("###.##");      
 //		double renda = Double.valueOf(formato.format(this.totalRenda/pessoas_familia.size()));
-//		this.percapita = renda;
+		//this.percapita = renda;
+		DecimalFormat d = new DecimalFormat("####,##");
+		d.format(this.percapita);
 		this.percapita = totalRenda/pessoas_familia.size();
 	}
 
@@ -449,7 +445,7 @@ public class Familia {
 	}
 	//TODO testar esse método
 	public double getValorMoradia() {
-		DecimalFormat d = new DecimalFormat();
+		DecimalFormat d = new DecimalFormat("####,##");
 		d.format(valorMoradia);
 		return valorMoradia;
 	}

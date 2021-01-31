@@ -37,6 +37,7 @@ import javafx.stage.Stage;
 import modelo.basico.Beneficio;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
+import modelo.dao.FamiliaDAO;
 import modelo.dao.PessoaDAO;
 import modelo.enumerados.BeneficioTipo;
 import modelo.enumerados.Composicao;
@@ -61,6 +62,8 @@ public class FormularioPessoaControlador implements Initializable {
 	private boolean pesNova;
 
 	private boolean rf;
+	
+	private boolean famNova;
 
 	@FXML
 	private Label labelAtivo;
@@ -145,7 +148,7 @@ public class FormularioPessoaControlador implements Initializable {
 	private boolean ges;
 	private boolean def;
 	private boolean scfvB;
-	private boolean resp;
+//	private boolean resp;
 
 	@FXML
 	private ComboBox<Composicao> boxCompo;
@@ -201,9 +204,15 @@ public class FormularioPessoaControlador implements Initializable {
 			this.pesNova = false;
 		}
 		this.entidade = entidade;
+	
 	}
 
-	public void setFamilia(Familia familia) {
+	public void setFamilia(Familia familia, boolean b) {
+		if (b) {
+			this.famNova = true;
+		} else {
+			this.famNova = false;
+		}
 
 		this.familia = familia;
 
@@ -217,13 +226,12 @@ public class FormularioPessoaControlador implements Initializable {
 	@FXML
 	public void clicarSalvar(ActionEvent evento) {
 
-		if (rf && pesNova) {
+		if (rf && pesNova && famNova) {
 			Stage parentStage = Util.atual(evento);
 			salvarNovaFamilia();
-			System.out.println("entrou no resp");
 			chamarFormulario(entidade, familia, "/gui/formularioFamilia.fxml", parentStage);
 			Util.atual(evento).close();
-		} else {
+		}if(!rf) {
 			if (pesNova) {
 				salvarPessoa();
 				Util.atual(evento).close();
@@ -231,12 +239,41 @@ public class FormularioPessoaControlador implements Initializable {
 				editarPessoa();
 				Util.atual(evento).close();
 			}
+		}if(rf && pesNova && !famNova) {
+			
+			salvarPessoa();
+
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
+			EntityManager em = emf.createEntityManager();
+			em.getTransaction().begin();
+			
+			familia = em.find(Familia.class, familia.getId());
+
+			System.out.println(entidade.toString());
+		
+			Pessoa pNova = em.find(Pessoa.class, entidade.getId());
+			Pessoa pAntiga = em.find(Pessoa.class, familia.getPesReferencia().getId());
+			familia.trocarRf(pAntiga, pNova);
+			pNova.setAtivo(true);
+
+			em.merge(familia);
+			em.merge(pNova);
+			em.merge(pAntiga);
+			em.getTransaction().commit();
+			em.close();
+			emf.close();
+			
+			
+			Util.atual(evento).close();
 		}
 
 	}
 
 	@FXML
 	public void clicarCancelar(ActionEvent evento) {
+		if(entidade.getNome()==null||entidade.getAtivo()==null) {			
+			entidade.excluirBanco();
+		}
 
 		Util.atual(evento).close();
 	}
@@ -436,7 +473,8 @@ public class FormularioPessoaControlador implements Initializable {
 			throw new IllegalStateException("Pessoa não está no banco");
 		}
 
-		this.id = entidade.getId();
+		//this.id = entidade.getId();
+		System.out.println(entidade.toString());
 		if (!entidade.isAtivo()) {
 			labelAtivo.setStyle("-fx-text-fill: #ff0000;");
 		}
@@ -568,6 +606,8 @@ public class FormularioPessoaControlador implements Initializable {
 		Pessoa p = new Pessoa();
 		this.entidade = p;
 		Familia f = this.familia;
+
+		//p.setAtivo(true);
 
 		p.setNome(nome.getText());
 		p.setHomonimo(homo);
@@ -775,7 +815,7 @@ public class FormularioPessoaControlador implements Initializable {
 		p.setPesReferencia(true);
 		p.setEstado(PessoaEstado.RF);
 		f.setPesReferencia(p);
-		setFamilia(f);
+		setFamilia(f, true);
 		setPessoa(p, true);
 		f.setAtivo(true);
 		f.setNumero(2);
@@ -814,56 +854,54 @@ public class FormularioPessoaControlador implements Initializable {
 	}
 
 	public void prepararPessoa(Pessoa p) {
-		//PessoaDAO daop = new PessoaDAO();
-
+			
+		this.entidade = p;
 		// SE NÃO FOR PESSOA NOVA
-		if (p != null) {
-			if (p.getEstado() == PessoaEstado.RF) {
+		if (p.getId() != null) {
+			System.out.println("entidade não é null");
+			if (this.entidade.getEstado() == PessoaEstado.RF) {
 				boxCompo.getSelectionModel().select(Composicao.RF);
 				responsavel.setText("Pessoa de Referência");
 			}
-			if (p.getEstado() == PessoaEstado.P) {
+			if (this.entidade.getEstado() == PessoaEstado.P) {
 				responsavel.setText("");
 				boxCompo.setDisable(false);
 			}
 
 			// SE FOR PESSOA NOVA
 		} else {
-
-			//daop.abrirTransacao();
+			System.out.println(entidade.toString());
 
 			if (rf) {
-
-				p = new Pessoa();
-				p.setAtivo(true);
-				p.setPesReferencia(true);
-				p.setEstado(PessoaEstado.RF);
-				setPessoa(p, true);
+				//TODO -> Não está funcionando
+				this.entidade = new Pessoa();
+				this.entidade.setAtivo(true);
+				this.entidade.setPesReferencia(true);
+				this.entidade.setEstado(PessoaEstado.RF);
+				setPessoa(this.entidade, true);
 
 				pesNova = true;
 
 				Familia f = new Familia();
 
-				setFamilia(f);
+				setFamilia(f, famNova);
 
 				boxCompo.getSelectionModel().select(Composicao.RF);
 				boxCompo.setDisable(true);
 
 			} else {
 
-				p = new Pessoa();
-				p.setAtivo(true);
-				p.setPesReferencia(false);
-				p.setEstado(PessoaEstado.P);
+				this.entidade = new Pessoa();
+				this.entidade.setAtivo(true);
+				this.entidade.setPesReferencia(false);
+				this.entidade.setEstado(PessoaEstado.P);
 				pesNova = true;
 
 			}
 
-			entidade = p;
-			//daop.incluir(p);
-			//daop.fecharTransacao().fechar();
 
 		}
+		
 		preencherPessoa();
 
 	}

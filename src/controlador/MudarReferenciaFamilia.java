@@ -87,8 +87,6 @@ public class MudarReferenciaFamilia implements Initializable{
 
 	@FXML
 	void clicarSelecionar(ActionEvent event) {
-		daof.abrirTransacao();
-		dao.abrirTransacao();
 		
 		this.pessoa = (Pessoa) valor;
 		
@@ -114,11 +112,13 @@ public class MudarReferenciaFamilia implements Initializable{
 //			familia.setTotalRenda();
 //			familia.setPesReferencia(novaRF);
 //			familia.setRendaReferencia();
+			daof.abrirTransacao();
+			dao.abrirTransacao();
 			familia.trocarRf(antigaRF, novaRF);
 			daof.atualizar(familia);
 			
 			daof.fecharTransacao().fechar();
-			dao.fecharTransacao();
+			dao.fecharTransacao().fechar();
 			
 			Stage parent = Util.atual(event);
 			atualizarComposicao("/gui/atualizarComposicao.fxml", parent);
@@ -132,8 +132,14 @@ public class MudarReferenciaFamilia implements Initializable{
 	@FXML
 	void clicarNovaPessoa(ActionEvent event) {
 		Stage parentStage = Util.atual(event);
+
+		daof.abrirTransacao();
+		daof.obterPorID(familia.getId());
+		
 		Pessoa obj = new Pessoa();
-		formularioPessoa(obj, "/gui/formularioPessoa.fxml", parentStage,true);
+		
+		formularioPessoa(obj, "/gui/formularioPessoa.fxml", parentStage,true, true);
+		
 		Util.atual(event).close();
 	 }
 
@@ -148,9 +154,17 @@ public class MudarReferenciaFamilia implements Initializable{
 		
 		Stage parent = Util.atual(event);
 		
+		boolean rf;
+		
 		this.pessoa = (Pessoa) valor;
 		
-		formularioPessoa(this.pessoa, "/gui/formularioPessoa.fxml", parent, false);
+		if(this.pessoa.getEstado()==PessoaEstado.RF) {
+			rf = true;
+		}else {
+			rf=false;
+		}
+		
+		formularioPessoa(this.pessoa, "/gui/formularioPessoa.fxml", parent, false, rf);
 		
 		Util.atual(event).close();
 	}
@@ -186,7 +200,7 @@ public class MudarReferenciaFamilia implements Initializable{
 	}
 
 	
-	public void formularioPessoa(Pessoa obj, String nomeView, Stage parentStage, boolean pesNova) {
+	public void formularioPessoa(Pessoa obj, String nomeView, Stage parentStage, boolean pesNova, boolean rf) {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
@@ -195,12 +209,9 @@ public class MudarReferenciaFamilia implements Initializable{
 			
 			controlador.setPessoa(obj, pesNova);
 			
-			if(obj.getEstado()==PessoaEstado.RF) {
-				controlador.identificarRF(true);
-			}else {
-				controlador.identificarRF(false);
-			}
+			controlador.identificarRF(rf);
 			controlador.prepararPessoa(obj);
+			controlador.setFamilia(this.familia, false);
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Digite os dados para inclusão de pessoa");

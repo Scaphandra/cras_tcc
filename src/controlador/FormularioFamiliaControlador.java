@@ -47,6 +47,7 @@ import modelo.basico.Familia;
 import modelo.basico.Pessoa;
 import modelo.basico.Tecnico;
 import modelo.basico.Unidade;
+import modelo.dao.DAO;
 import modelo.dao.FamiliaDAO;
 import modelo.dao.PessoaDAO;
 import modelo.enumerados.BeneficioTipo;
@@ -54,7 +55,7 @@ import modelo.enumerados.EnderecoTipo;
 import modelo.enumerados.MoradiaTipo;
 import modelo.enumerados.SituacaoFamilia;
 
-public class FormularioFamiliaControlador implements Initializable, DataChangeListener {
+public class FormularioFamiliaControlador implements Initializable{
 
 	private List<DataChangeListener> listeners = new ArrayList<>();
 
@@ -212,6 +213,9 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 
 	@FXML
 	private TableColumn<Beneficio, String> colunaBeneficio;
+	
+	@FXML
+	private TableColumn<Pessoa, Long> colId;
 
 	@FXML
 	private Button btSalvar;
@@ -257,17 +261,6 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 	public void setFamilia(Familia familia) {
 		
 		this.entidade = familia;
-//		daof.abrirTransacao();
-//		if(familia.getId()==null) {
-//			this.entidade = familia;
-//		}else {
-//			
-//			this.entidade = daof.obterPorID(familia.getId());
-//		}
-//		
-//		daof.incluir(this.entidade);
-		//transacao familiaDAO fechada em salvar
-		//daof.fecharTransacao().fechar();
 
 	}
 
@@ -367,7 +360,7 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		Stage parentStage = Util.atual(event);
 		criarFormularioAlterarRF(entidade, "/gui/mudarReferenciaFamilia.fxml", parentStage);
 		carregarPessoas(this.entidade.getId());
-		preencherFamilia();
+//		preencherFamilia();
 
 	}
 
@@ -425,6 +418,7 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 
 		carregarComboBox();
 		colunaNome.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("nome"));
+		colId.setCellValueFactory(new PropertyValueFactory<Pessoa, Long>("id"));
 		colunaIdade.setCellValueFactory(new PropertyValueFactory<Pessoa, Integer>("idade"));
 		colunaParentesco.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("composicao"));
 		colunaRenda.setCellValueFactory(new PropertyValueFactory<Pessoa, Double>(("renda")));
@@ -489,11 +483,12 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		SimpleDateFormat formatBra;
 		formatBra = new SimpleDateFormat("dd/MM/yyyy");
 
-		return formatBra.format(dt).toString().replace("/", "");
+		return formatBra.format(dt).toString();//.replace("/", "");
 	}
 
 	public void preencherFamilia() {
 	//transacao familiaDAO aberta em setFamilia
+		FamiliaDAO daof = new FamiliaDAO();
 		daof.abrirTransacao();
 		this.id = entidade.getId();
 		idFamilia.setText("código da família: " + entidade.getId().toString());
@@ -536,16 +531,16 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 			} else {
 
 				for (Beneficio b : p.getBeneficios()) {
-					if (b.getNome() == BeneficioTipo.PBF) {
+					if (b.getNome().equals(BeneficioTipo.PBF)) {
 						lbPBF.setText("-> Programa Bolsa Família");
-					} else if (b.getNome() == BeneficioTipo.BPCDEF) {
-						lbBPCD.setText("-> BPC Idoso");
-					} else if (b.getNome() == BeneficioTipo.BPCI) {
+					} else if (b.getNome().equals(BeneficioTipo.BPCDEF)) {
 						lbBPCD.setText("-> BPC Pessoa com Deficiência");
+					} else if (b.getNome().equals(BeneficioTipo.BPCI)) {
+						lbBPCD.setText("-> BPC Idoso");
 						;
-					} else if (b.getNome() == BeneficioTipo.NV) {
+					} else if (b.getNome().equals(BeneficioTipo.NV)) {
 						lbNV.setText("-> Programa Nova Vida");
-					} else if (b.getNome() == BeneficioTipo.O) {
+					} else if (b.getNome().equals(BeneficioTipo.O)){
 						lbOutro.setText("-> Outro Benefício");
 					}
 				}
@@ -565,12 +560,24 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		labelAtivo.setText("CADASTRO " + entidade.getAtivo());
 		// TODO terminar esse método conferindo a consistência do banco com inclusão de
 		// dadta do último atendimento
+		if(entidade.getValorMoradia()!=0) {
+			txtAlugada.setDisable(false);
+		}
 		txtAlugada.setText(String.valueOf(entidade.getValorMoradia() * 10));
 		comboTipoMoradia.getSelectionModel().select(entidade.getTipoMoradia());
+		labelDataDesligamento.setText("Data do Desligamento: "+ converteData(entidade.getDataDesligamento()));
+		labelMotivoDesligamento.setText("Motivo do Desligamento: "+ entidade.getMotivoDesligamento());
 
 		daof.fecharTransacao();
 		daof.fechar();
 
+	}
+	
+	public void visualizarFamilia() {
+		FamiliaDAO daof = new FamiliaDAO();
+		daof.abrirTransacao();
+		this.id = entidade.getId();
+		
 	}
 
 	private void carregarComboBox() {
@@ -581,15 +588,16 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		comboTipoEndereco.getSelectionModel().selectFirst();
 
 		// LISTA ÁREA DE ABRANGÊNCIA DIRETO DO BANCO
-		EntityManagerFactory emf;
-		EntityManager em;
-		emf = Persistence.createEntityManagerFactory("cras_tcc");
-		em = emf.createEntityManager();
-		em.getTransaction().begin();
+//		EntityManagerFactory emf;
+//		EntityManager em;
+//		emf = Persistence.createEntityManagerFactory("cras_tcc");
+//		em = emf.createEntityManager();
+//		em.getTransaction().begin();
+		
 
-//		DAO<Unidade> daoU = new DAO<>(Unidade.class);
-//		Unidade uni = daoU.obterPorID(Unidade.class, 2);
-		Unidade uni = em.find(Unidade.class, 2);
+		DAO<Unidade> daoU = new DAO<>(Unidade.class);
+		Unidade uni = daoU.obterPorID(1);
+	//	Unidade uni = em.find(Unidade.class, 2);
 		List<String> bairros = uni.getAreaAbrangencia();
 		System.out.println(bairros);
 		obsBairro = FXCollections.observableArrayList(bairros);
@@ -601,9 +609,10 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 //		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
 //		EntityManager em = emf.createEntityManager();
 
-		String jpql = "select e from Tecnico e";
-		TypedQuery<Tecnico> query = em.createQuery(jpql, Tecnico.class);
-		List<Tecnico> tecnicos = query.getResultList();
+		//String jpql = "select e from Tecnico e";
+		//TypedQuery<Tecnico> query = em.createQuery(jpql, Tecnico.class);
+		DAO<Tecnico> daoT = new DAO<>(Tecnico.class);
+		List<Tecnico> tecnicos = daoT.obterTodos();
 
 		obsTecnico = FXCollections.observableArrayList(tecnicos);
 		comboTecnico.setItems(obsTecnico);
@@ -619,6 +628,9 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		comboTipoMoradia.setItems(obsMoradia);
 		comboTipoMoradia.getSelectionModel().selectFirst();
 
+//		em.getTransaction().commit();
+//		em.close();
+//		emf.close();
 	}
 
 	public Date preparaData(TextField tx) {
@@ -635,6 +647,7 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 
 	public void salvarFamiliaNova() {
 		//transação de FamiliaDAO aberta em setFamilia
+		FamiliaDAO daof = new FamiliaDAO();
 		daof.abrirTransacao();
 
 		Familia f = daof.obterPorID(this.entidade.getId());
@@ -656,7 +669,9 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 		f.setDataEntrada(preparaData(txtDataInclusao));
 		f.setEndereco(e);
 		f.setTipoMoradia(moradia);
-		f.setValorMoradia(txtAlugada.getText().equals("") ? 0.0 : Double.parseDouble(txtAlugada.getText()));
+//		f.setValorMoradia(txtAlugada.getText().equals("") ? 0 : Double.valueOf(txtAlugada.getText()));
+		f.setValorMoradia(txtAlugada.getText().equals("") ? 0 : 
+			Double.parseDouble(txtAlugada.getText().replace(".", "").replace(",", ".")));
 		f.setTelefone(telefones);
 		f.setSituacao(situacao);
 		f.setTecnico(tecnico);
@@ -666,6 +681,7 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 
 		daof.incluir(f);
 		daof.fecharTransacao().fechar();
+		notificarListener();
 
 	}
 
@@ -676,7 +692,7 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 			Pane pane = loader.load();
 
 			FormularioPessoaControlador controlador = loader.getController();
-			controlador.setFamilia(entidade);
+			controlador.setFamilia(entidade, false);
 			controlador.setPessoa(pessoa, true);
 			controlador.identificarRF(false);
 			controlador.prepararPessoa(null);
@@ -796,12 +812,6 @@ public class FormularioFamiliaControlador implements Initializable, DataChangeLi
 			e.printStackTrace();
 		}
 	}
-	
 
-	@Override
-	public void onDataChanged() {
-		preencherFamilia();
-
-	}
 
 }
