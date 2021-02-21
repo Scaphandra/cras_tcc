@@ -22,8 +22,9 @@
       </Button>
       <TableView fx:id="tabelaPessoas" layoutX="51.0" layoutY="49.0" prefHeight="200.0" prefWidth="623.0">
         <columns>
-          <TableColumn fx:id="colunaNome" minWidth="0.0" prefWidth="563.3333625793457" text="Nome" />
-            <TableColumn fx:id="colunaIdade" prefWidth="58.0" text="Idade" />
+          <TableColumn fx:id="colunaNome" minWidth="0.0" prefWidth="485.3333625793457" text="Nome" />
+            <TableColumn fx:id="colunaId" prefWidth="52.66668701171875" text="Código:" />
+            <TableColumn fx:id="colunaIdade" maxWidth="100.0" prefWidth="83.99995930989587" text="Idade" />
         </columns>
       </TableView>
       <Label layoutX="224.0" layoutY="418.0" text="Pessoa de Referência está em outra Família?">
@@ -69,7 +70,6 @@
             <Font name="System Bold Italic" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="ver" layoutX="520.0" layoutY="263.0" mnemonicParsing="false" onAction="#clicarEditarRF" text="Editar Pessoa" />
       <Button layoutX="344.0" layoutY="562.0" mnemonicParsing="false" onAction="#clicarCancelar" text="Cancelar" />
    </children>
 </AnchorPane>

@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import aplicacao.App;
 import gui.util.Util;
 import javafx.beans.value.ChangeListener;
@@ -53,6 +57,8 @@ public class EscolherListaPessoaControlador implements Initializable {
 	@FXML
 	private Label idFamilia;
 	
+	private boolean mudarRF;
+	
 	@FXML
 	private TableView <Pessoa> tabelaPessoa;
 	
@@ -73,6 +79,10 @@ public class EscolherListaPessoaControlador implements Initializable {
 	private TableColumn <Pessoa, Integer> colunaIdade;
 
 
+	public void mudarRF(boolean b) {
+		this.mudarRF = b;
+	}
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
@@ -114,12 +124,16 @@ public class EscolherListaPessoaControlador implements Initializable {
 				f.excluirPessoa(pessoa);
 				pessoa.setAtivo(true);
 				familia.setPessoas(pessoa);
+				if(mudarRF) {
+					Pessoa antigaRF = dao.obterPorID(familia.getPesReferencia().getId());
+					familia.trocarRf(antigaRF, pessoa);
+				}
 				daof.atualizar(f);
 				daof.atualizar(familia);
 				dao.atualizar(pessoa);
 				dao.fecharTransacao().fechar();
 				daof.fecharTransacao().fechar();
-				Util.atual(event).close();
+				//Util.atual(event).close();
 			}
 			
 		}
@@ -144,12 +158,16 @@ public class EscolherListaPessoaControlador implements Initializable {
 				pessoa.setAtivo(true);
 				pessoa.setPesReferencia(false);
 				familia.setPessoas(pessoa);
+				if(mudarRF) {
+					Pessoa antigaRF = dao.obterPorID(familia.getPesReferencia().getId());
+					familia.trocarRf(antigaRF, pessoa);
+				}
 				daof.atualizar(f);
 				daof.atualizar(familia);
 				dao.atualizar(pessoa);
 				dao.fecharTransacao().fechar();
 				daof.fecharTransacao().fechar();
-				Util.atual(event).close();
+				//Util.atual(event).close();
 			}
 			
 		}else if(pessoa.getFamilia()==null){
@@ -166,13 +184,39 @@ public class EscolherListaPessoaControlador implements Initializable {
 			daof.atualizar(familia);
 			dao.fecharTransacao().fechar();
 			daof.fecharTransacao().fechar();
-			Util.atual(event).close();
+			//Util.atual(event).close();
 			
 		}
 		
+		verificarMudarRF();
+		
+		Util.atual(event).close();
 	}
 
-	
+	public void verificarMudarRF() {
+		
+		if(mudarRF) {
+			
+			EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
+			EntityManager em = emf.createEntityManager();
+			em.getTransaction().begin();
+			
+			familia = em.find(Familia.class, familia.getId());
+			pessoa = em.find(Pessoa.class, pessoa.getId());
+			
+			pessoa.setAtivo(true);
+			Pessoa antigaRF = em.find(Pessoa.class, familia.getPesReferencia().getId());
+			familia.trocarRf(antigaRF, pessoa);
+			
+			em.merge(pessoa);
+			em.merge(antigaRF);
+			em.merge(familia);
+			em.getTransaction().commit();
+			em.close();
+			emf.close();
+		}
+		
+	}
 	public void setFamilia(Familia f) {
 		
 		this.familia = f;

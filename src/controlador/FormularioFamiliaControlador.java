@@ -259,7 +259,9 @@ public class FormularioFamiliaControlador implements Initializable{
 	}
 
 	public void setFamilia(Familia familia) {
-		
+		//FamiliaDAO dao = new FamiliaDAO();
+		System.out.println(familia.toString());
+		//this.entidade = dao.obterPorID(familia.getId());
 		this.entidade = familia;
 
 	}
@@ -329,7 +331,7 @@ public class FormularioFamiliaControlador implements Initializable{
 
 	@FXML
 	void clicarDescumprimento(ActionEvent event) {
-		creas = checkDescumprimento.selectedProperty().getValue();
+		descumprimento = checkDescumprimento.selectedProperty().getValue();
 	}
 
 	@FXML
@@ -487,11 +489,10 @@ public class FormularioFamiliaControlador implements Initializable{
 	}
 
 	public void preencherFamilia() {
-	//transacao familiaDAO aberta em setFamilia
-		FamiliaDAO daof = new FamiliaDAO();
-		daof.abrirTransacao();
-		this.id = entidade.getId();
-		idFamilia.setText("código da família: " + entidade.getId().toString());
+		
+		//this.id = entidade.getId();
+		
+		idFamilia.setText(entidade.getId()==null? "" : "código da família: " + getFamilia().getId().toString());
 		if (!entidade.isAtivo()) {
 			btDesligar.setDisable(true);
 		}
@@ -567,18 +568,12 @@ public class FormularioFamiliaControlador implements Initializable{
 		comboTipoMoradia.getSelectionModel().select(entidade.getTipoMoradia());
 		labelDataDesligamento.setText("Data do Desligamento: "+ converteData(entidade.getDataDesligamento()));
 		labelMotivoDesligamento.setText("Motivo do Desligamento: "+ entidade.getMotivoDesligamento());
-
-		daof.fecharTransacao();
-		daof.fechar();
+//
+//		daof.fecharTransacao();
+//		daof.fechar();
 
 	}
 	
-	public void visualizarFamilia() {
-		FamiliaDAO daof = new FamiliaDAO();
-		daof.abrirTransacao();
-		this.id = entidade.getId();
-		
-	}
 
 	private void carregarComboBox() {
 		// LISTA TIPO ENDERECO DIRETO DO BANCO

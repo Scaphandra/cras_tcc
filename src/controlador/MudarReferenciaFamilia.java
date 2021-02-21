@@ -68,6 +68,9 @@ public class MudarReferenciaFamilia implements Initializable{
 	@FXML 
 	private TableColumn<Pessoa, Integer> colunaIdade;
 	
+	@FXML 
+	private TableColumn<Pessoa, Long> colunaId;
+	
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -145,29 +148,32 @@ public class MudarReferenciaFamilia implements Initializable{
 
 	@FXML
 	void clicarPessoaInativa(ActionEvent event) {
+		Stage parentStage = Util.atual(event);
+		criarFormularioPessoaBanco("/gui/escolherListaPessoa.fxml", parentStage);
+		Util.atual(event).close();
 		
 		
 	}
 	
-	@FXML
-	void clicarEditarRF(ActionEvent event) {
-		
-		Stage parent = Util.atual(event);
-		
-		boolean rf;
-		
-		this.pessoa = (Pessoa) valor;
-		
-		if(this.pessoa.getEstado()==PessoaEstado.RF) {
-			rf = true;
-		}else {
-			rf=false;
-		}
-		
-		formularioPessoa(this.pessoa, "/gui/formularioPessoa.fxml", parent, false, rf);
-		
-		Util.atual(event).close();
-	}
+//	@FXML
+//	void clicarEditarRF(ActionEvent event) {
+//		
+//		Stage parent = Util.atual(event);
+//		
+//		boolean rf;
+//		
+//		this.pessoa = (Pessoa) valor;
+//		
+//		if(this.pessoa.getEstado()==PessoaEstado.RF) {
+//			rf = true;
+//		}else {
+//			rf=false;
+//		}
+//		
+//		formularioPessoa(this.pessoa, "/gui/formularioPessoa.fxml", parent, false, rf);
+//		
+//		Util.atual(event).close();
+//	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void carregarPessoas(Familia familia) {
@@ -182,6 +188,7 @@ public class MudarReferenciaFamilia implements Initializable{
 		tabelaPessoas.setMaxHeight(200);
 		Stage cena = (Stage) App.getCena().getWindow();
 		
+		colunaId.setCellValueFactory(new PropertyValueFactory<Pessoa, Long>("id"));
 		colunaIdade.setCellValueFactory(new PropertyValueFactory<Pessoa, Integer>("idade"));
 		colunaNome.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("nome"));
 		
@@ -254,6 +261,32 @@ public class MudarReferenciaFamilia implements Initializable{
 		
 		}
 		
+	}
+	
+	public void criarFormularioPessoaBanco(String nomeView, Stage parentStage) {
+		try {
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
+			Pane pane = loader.load();
+
+			EscolherListaPessoaControlador controlador = loader.getController();
+
+			controlador.setFamilia(familia);
+			controlador.mudarRF(true);
+
+			Stage avisoCena = new Stage();
+			avisoCena.setTitle("Escolha uma pessoa da lista e clique em selecionar pessoa");
+			avisoCena.setScene(new Scene(pane));
+			avisoCena.setResizable(false);
+			avisoCena.initOwner(parentStage);
+			avisoCena.initModality(Modality.WINDOW_MODAL);
+			avisoCena.showAndWait();
+
+		} catch (IOException e) {
+			System.out.println(e.getStackTrace());
+			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
 	}
 
 }

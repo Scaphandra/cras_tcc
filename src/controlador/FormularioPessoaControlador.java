@@ -49,7 +49,7 @@ import modelo.enumerados.Sexo;
 
 public class FormularioPessoaControlador implements Initializable {
 
-	private Pessoa entidade;
+	private Pessoa pessoa;
 
 	private Familia familia;
 
@@ -203,7 +203,7 @@ public class FormularioPessoaControlador implements Initializable {
 		} else {
 			this.pesNova = false;
 		}
-		this.entidade = entidade;
+		this.pessoa = entidade;
 	
 	}
 
@@ -217,6 +217,15 @@ public class FormularioPessoaControlador implements Initializable {
 		this.familia = familia;
 
 	}
+	
+	public void setFamiliaNova(boolean b) {
+		if (b) {
+			this.famNova = true;
+		} else {
+			this.famNova = false;
+		}
+		
+	}
 
 	@FXML
 	private void clicarNome(ActionEvent event) {
@@ -229,7 +238,7 @@ public class FormularioPessoaControlador implements Initializable {
 		if (rf && pesNova && famNova) {
 			Stage parentStage = Util.atual(evento);
 			salvarNovaFamilia();
-			chamarFormulario(entidade, familia, "/gui/formularioFamilia.fxml", parentStage);
+			chamarFormulario(pessoa, familia, "/gui/formularioFamilia.fxml", parentStage, true);
 			Util.atual(evento).close();
 		}if(!rf) {
 			if (pesNova) {
@@ -249,9 +258,9 @@ public class FormularioPessoaControlador implements Initializable {
 			
 			familia = em.find(Familia.class, familia.getId());
 
-			System.out.println(entidade.toString());
+			System.out.println(pessoa.toString());
 		
-			Pessoa pNova = em.find(Pessoa.class, entidade.getId());
+			Pessoa pNova = em.find(Pessoa.class, pessoa.getId());
 			Pessoa pAntiga = em.find(Pessoa.class, familia.getPesReferencia().getId());
 			familia.trocarRf(pAntiga, pNova);
 			pNova.setAtivo(true);
@@ -271,8 +280,8 @@ public class FormularioPessoaControlador implements Initializable {
 
 	@FXML
 	public void clicarCancelar(ActionEvent evento) {
-		if(entidade.getNome()==null||entidade.getAtivo()==null) {			
-			entidade.excluirBanco();
+		if(pessoa.getNome()==null||pessoa.getAtivo()==null) {			
+			pessoa.excluirBanco();
 		}
 
 		Util.atual(evento).close();
@@ -469,37 +478,37 @@ public class FormularioPessoaControlador implements Initializable {
 	}
 
 	public void preencherPessoa() {
-		if (entidade == null) {
+		if (pessoa == null) {
 			throw new IllegalStateException("Pessoa não está no banco");
 		}
 
 		//this.id = entidade.getId();
-		System.out.println(entidade.toString());
-		if (!entidade.isAtivo()) {
+		System.out.println(pessoa.toString());
+		if (!pessoa.isAtivo()) {
 			labelAtivo.setStyle("-fx-text-fill: #ff0000;");
 		}
-		labelAtivo.setText("CADASTRO " + entidade.getAtivo());
-		idPessoa.setText(entidade.getId() == null ? "" : "Identificador: " + entidade.getId().toString());
-		nome.setText(entidade.getNome());
-		homonimo.setSelected(entidade.isHomonimo());
-		cpf.setText(entidade.getCpf());
-		rg.setText(entidade.getRg());
-		nis.setText(entidade.getNis());
-		dataNasc.setText(converteData(entidade.getDataNascimento()));
-		nomeMae.setText(entidade.getNomeMae());
-		renda.setText(String.valueOf(entidade.getRenda() * 10));
-		ocupacao.setText(entidade.getOcupacao());
+		labelAtivo.setText("CADASTRO " + pessoa.getAtivo());
+		idPessoa.setText(pessoa.getId() == null ? "" : "Identificador: " + pessoa.getId().toString());
+		nome.setText(pessoa.getNome());
+		homonimo.setSelected(pessoa.isHomonimo());
+		cpf.setText(pessoa.getCpf());
+		rg.setText(pessoa.getRg());
+		nis.setText(pessoa.getNis());
+		dataNasc.setText(converteData(pessoa.getDataNascimento()));
+		nomeMae.setText(pessoa.getNomeMae());
+		renda.setText(String.valueOf(pessoa.getRenda() * 10));
+		ocupacao.setText(pessoa.getOcupacao());
 
-		boxSexo.getSelectionModel().select(entidade.getSexo());
-		boxCompo.getSelectionModel().select(entidade.getComposicao());
-		boxCor.getSelectionModel().select(entidade.getCor());
-		boxGenero.getSelectionModel().select(entidade.getGenero());
-		boxEscolaridade.getSelectionModel().select(entidade.getEscolaridade());
+		boxSexo.getSelectionModel().select(pessoa.getSexo());
+		boxCompo.getSelectionModel().select(pessoa.getComposicao());
+		boxCor.getSelectionModel().select(pessoa.getCor());
+		boxGenero.getSelectionModel().select(pessoa.getGenero());
+		boxEscolaridade.getSelectionModel().select(pessoa.getEscolaridade());
 
-		deficiencia.setSelected(entidade.isComDeficiencia());
-		gestante.setSelected(entidade.isGestante());
-		prioritario.setSelected(entidade.isPrioritarioSCFV());
-		scfv.setSelected(entidade.isNoSCFV());
+		deficiencia.setSelected(pessoa.isComDeficiencia());
+		gestante.setSelected(pessoa.isGestante());
+		prioritario.setSelected(pessoa.isPrioritarioSCFV());
+		scfv.setSelected(pessoa.isNoSCFV());
 		if (!rf) {
 			responsavel.setText("");
 		} else {
@@ -508,7 +517,7 @@ public class FormularioPessoaControlador implements Initializable {
 			boxCompo.setDisable(true);
 		}
 
-		List<Beneficio> bs = entidade.getBeneficios();
+		List<Beneficio> bs = pessoa.getBeneficios();
 		for (Beneficio b : bs) {
 			if (b.getNome() == BeneficioTipo.PBF) {
 				pbf_b.setSelected(true);
@@ -535,11 +544,11 @@ public class FormularioPessoaControlador implements Initializable {
 			}
 		}
 
-		valorBolsa.setText(String.valueOf(entidade.getValorBeneficio(BeneficioTipo.PBF) * 10));
-		valorBpci.setText(String.valueOf(entidade.getValorBeneficio(BeneficioTipo.BPCI) * 10));
-		valorBpcd.setText(String.valueOf(entidade.getValorBeneficio(BeneficioTipo.BPCDEF) * 10));
-		valorNv.setText(String.valueOf(entidade.getValorBeneficio(BeneficioTipo.NV) * 10));
-		valorOutro.setText(String.valueOf(entidade.getValorBeneficio(BeneficioTipo.O) * 10));
+		valorBolsa.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.PBF) * 10));
+		valorBpci.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.BPCI) * 10));
+		valorBpcd.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.BPCDEF) * 10));
+		valorNv.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.NV) * 10));
+		valorOutro.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.O) * 10));
 
 	}
 
@@ -604,8 +613,8 @@ public class FormularioPessoaControlador implements Initializable {
 		}
 
 		Pessoa p = new Pessoa();
-		this.entidade = p;
-		Familia f = this.familia;
+		this.pessoa = p;
+		Familia f = em.find(Familia.class, this.familia.getId());
 
 		//p.setAtivo(true);
 
@@ -630,11 +639,14 @@ public class FormularioPessoaControlador implements Initializable {
 		p.setGestante(ges);
 		p.setComDeficiencia(def);
 		p.setNoSCFV(scfvB);
+		p.setHomonimo(homo);
 		p.setEstado(PessoaEstado.P);
 		p.setPesReferencia(false);
 		p.setFamilia(f);
+		f.setNumero(f.getPessoas().size());
 
 		em.persist(p);
+		em.merge(f);
 		em.getTransaction().commit();
 		em.close();
 		emf.close();
@@ -698,7 +710,7 @@ public class FormularioPessoaControlador implements Initializable {
 			e.printStackTrace();
 		}
 
-		Pessoa p = em.find(Pessoa.class, entidade.getId());
+		Pessoa p = em.find(Pessoa.class, pessoa.getId());
 
 		Familia f = p.getFamilia();
 
@@ -722,6 +734,7 @@ public class FormularioPessoaControlador implements Initializable {
 		p.setGestante(ges);
 		p.setComDeficiencia(def);
 		p.setNoSCFV(scfvB);
+		p.setHomonimo(homo);
 		p.setFamilia(f);
 
 		em.merge(p);
@@ -788,9 +801,10 @@ public class FormularioPessoaControlador implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		FamiliaDAO daof = new FamiliaDAO();
+		daof.abrirTransacao();
 		Familia f = familia;
-		Pessoa p = entidade;
+		Pessoa p = pessoa;
 
 		p.setNome(nome.getText());
 		p.setHomonimo(homo);
@@ -812,19 +826,23 @@ public class FormularioPessoaControlador implements Initializable {
 		p.setGestante(ges);
 		p.setComDeficiencia(def);
 		p.setNoSCFV(scfvB);
+		p.setHomonimo(homo);
 		p.setPesReferencia(true);
 		p.setEstado(PessoaEstado.RF);
 		f.setPesReferencia(p);
 		setFamilia(f, true);
 		setPessoa(p, true);
 		f.setAtivo(true);
-		f.setNumero(2);
-		dao.incluir(p);
+		f.setNumero(f.getPessoas().size());
+		daof.atualizar(f);
+		dao.atualizar(p);
 		dao.fecharTransacao().fechar();
+		daof.fecharTransacao().fechar();
+		familia = f;
 
 	}
 
-	private void chamarFormulario(Pessoa p, Familia f, String caminho, Stage parentStage) {
+	private void chamarFormulario(Pessoa p, Familia f, String caminho, Stage parentStage,boolean familiaNova) {
 
 		try {
 
@@ -832,9 +850,9 @@ public class FormularioPessoaControlador implements Initializable {
 			Pane pane = loader.load();
 
 			FormularioFamiliaControlador controlador = loader.getController();
-
+			
 			controlador.setFamilia(f);
-			controlador.setFamiliaNova(true);
+			controlador.setFamiliaNova(familiaNova);
 			controlador.setPessoa(p);
 			controlador.preencherFamilia();
 
@@ -855,30 +873,30 @@ public class FormularioPessoaControlador implements Initializable {
 
 	public void prepararPessoa(Pessoa p) {
 			
-		this.entidade = p;
+		this.pessoa = p;
 		// SE NÃO FOR PESSOA NOVA
-		if (p.getId() != null) {
+		if (p != null) {
 			System.out.println("entidade não é null");
-			if (this.entidade.getEstado() == PessoaEstado.RF) {
+			if (this.pessoa.getEstado() == PessoaEstado.RF) {
 				boxCompo.getSelectionModel().select(Composicao.RF);
 				responsavel.setText("Pessoa de Referência");
 			}
-			if (this.entidade.getEstado() == PessoaEstado.P) {
+			if (this.pessoa.getEstado() == PessoaEstado.P) {
 				responsavel.setText("");
 				boxCompo.setDisable(false);
 			}
 
 			// SE FOR PESSOA NOVA
 		} else {
-			System.out.println(entidade.toString());
+			//System.out.println(entidade.toString());
 
 			if (rf) {
-				//TODO -> Não está funcionando
-				this.entidade = new Pessoa();
-				this.entidade.setAtivo(true);
-				this.entidade.setPesReferencia(true);
-				this.entidade.setEstado(PessoaEstado.RF);
-				setPessoa(this.entidade, true);
+				
+				this.pessoa = new Pessoa();
+				this.pessoa.setAtivo(true);
+				this.pessoa.setPesReferencia(true);
+				this.pessoa.setEstado(PessoaEstado.RF);
+				setPessoa(this.pessoa, true);
 
 				pesNova = true;
 
@@ -891,10 +909,10 @@ public class FormularioPessoaControlador implements Initializable {
 
 			} else {
 
-				this.entidade = new Pessoa();
-				this.entidade.setAtivo(true);
-				this.entidade.setPesReferencia(false);
-				this.entidade.setEstado(PessoaEstado.P);
+				this.pessoa = new Pessoa();
+				this.pessoa.setAtivo(true);
+				this.pessoa.setPesReferencia(false);
+				this.pessoa.setEstado(PessoaEstado.P);
 				pesNova = true;
 
 			}
@@ -922,7 +940,7 @@ public class FormularioPessoaControlador implements Initializable {
 
 			if (newValue == null) {
 
-				buscar.setText("Se salvar pessoa com o mesmo nome de outra deve selecionar a opção Homônimo");
+				buscar.setText("Pessoas com o mesmo nome devem ser marcadas como Homônimo");
 
 			} else {
 				

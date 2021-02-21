@@ -78,19 +78,11 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	
 	@FXML
 	public void clicarNova(ActionEvent evento) {
-//		try {
-//			Parent raiz = FXMLLoader.load(getClass().getResource("../gui/formularioFamilia.fxml"));
-//			Stage stage = new Stage();
-//			Scene cena = new Scene(raiz);
-//			stage.setScene(cena);			
-//			stage.show();
-//			
-//		}catch(IOException e) {
-//			e.printStackTrace();		}
+
 		Stage parentStage = Util.atual(evento);
 		Pessoa obj = new Pessoa();
 		obj.setAtivo(true);
-		criarFormularioPessoa(obj, "/gui/formularioPessoa.fxml", parentStage);
+		criarFormularioPessoa(obj, "/gui/formularioPessoa.fxml", parentStage, true);
 		
 	}
 	@FXML
@@ -143,6 +135,10 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	
 	@FXML
 	public void clicarVisualizar(ActionEvent evento) {
+		
+		Stage parentStage = Util.atual(evento);
+		
+		criarVisualizar("/gui/visualizarFamilia.fxml",parentStage, familia);
 		
 	}
 	
@@ -197,7 +193,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	}
 	
 	
-	private void criarFormularioPessoa(Pessoa obj, String nomeView, Stage parentStage) {
+	private void criarFormularioPessoa(Pessoa obj, String nomeView, Stage parentStage, boolean famNova) {
 		try {
 			
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
@@ -209,6 +205,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			controlador.identificarRF(true);
 			controlador.prepararPessoa(null);
 			controlador.preencherPessoa();
+			controlador.setFamiliaNova(famNova);			
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Formulário para Inclusão e Edição de Pessoas");
@@ -261,7 +258,33 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			
 			
 			Stage avisoCena = new Stage();
-			avisoCena.setTitle("Formulário para Inclusão e Edição de Famílias");
+			avisoCena.setTitle("Formulário para Reativação de Famílias");
+			avisoCena.setScene(new Scene(pane));
+			avisoCena.setResizable(false);
+			avisoCena.initOwner(parentStage);
+			avisoCena.initModality(Modality.WINDOW_MODAL);
+			avisoCena.showAndWait();
+			
+		}catch(IOException e) {
+			System.out.println(e.getStackTrace());
+			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
+	}
+	private void criarVisualizar(String nomeView, Stage parentStage,Familia familia) {
+		try {
+			
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
+			Pane pane = loader.load();
+			
+			VisualizarFamiliaControlador controlador = loader.getController();
+			controlador.setFamilia(familia);
+			controlador.carregarFamilia(familia);
+			controlador.carregarPessoas(familia.getId());
+			
+			
+			Stage avisoCena = new Stage();
+			avisoCena.setTitle("Visualização de Famílias");
 			avisoCena.setScene(new Scene(pane));
 			avisoCena.setResizable(false);
 			avisoCena.initOwner(parentStage);
