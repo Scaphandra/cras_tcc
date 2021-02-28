@@ -2,6 +2,7 @@ package controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -36,7 +37,7 @@ import modelo.dao.FamiliaDAO;
 
 //observer
 
-public class ListaFamiliaControlador implements Initializable, DataChangeListener{
+public class ListaFamiliaControlador implements Initializable{
 	
 	
 
@@ -47,6 +48,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	private boolean familiaNova;
 	
 	private FamiliaDAO fdao = new FamiliaDAO();
+	
+	private List<DataChangeListener> listeners = new ArrayList<>();
 	
 	@FXML
 	private TableView <Familia> tabelaFamilia;
@@ -76,6 +79,17 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 	
 	private ObservableList<Familia> obsFamilia;
 	
+	
+	public void inscreverListener(DataChangeListener d) {
+		listeners.add(d);
+	}
+
+	public void notificarListener() {
+		for (DataChangeListener d : listeners) {
+			d.onDataChanged();
+		}
+	}
+	
 	@FXML
 	public void clicarNova(ActionEvent evento) {
 
@@ -83,9 +97,12 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		Pessoa obj = new Pessoa();
 		obj.setAtivo(true);
 		criarFormularioPessoa(obj, "/gui/formularioPessoa.fxml", parentStage, true);
+		notificarListener();
 		
 	}
+
 	@FXML
+	
 	public void clicarEditar(ActionEvent evento) {
 		
 		Stage parentStage = Util.atual(evento);
@@ -94,6 +111,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		this.familiaNova = false;
 		
 		criarFormularioFamilia(obj,"/gui/formularioFamilia.fxml", parentStage);
+		
+		notificarListener();
 	
 		
 	}
@@ -103,6 +122,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		
 		Stage parentStage = Util.atual(evento);
 		criarFormularioReativar("/gui/reativarFamilia.fxml",parentStage);
+		carregarFamilia();
+		notificarListener();
 	}
 	
 	@FXML
@@ -130,6 +151,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			carregarFamilia();
 		}
 	
+		carregarFamilia();
+		notificarListener();
 		
 	}
 	
@@ -138,7 +161,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 		
 		Stage parentStage = Util.atual(evento);
 		
-		criarVisualizar("/gui/visualizarFamilia.fxml",parentStage, familia);
+		criarVisualizar("/gui/listaFamiliaVisualizar.fxml",parentStage, familia);
+		
 		
 	}
 	
@@ -205,7 +229,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			controlador.identificarRF(true);
 			controlador.prepararPessoa(null);
 			controlador.preencherPessoa();
-			controlador.setFamiliaNova(famNova);			
+			controlador.setFamiliaNova(famNova);
+			
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Formulário para Inclusão e Edição de Pessoas");
@@ -227,11 +252,12 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			Pane pane = loader.load();
 			
 			FormularioFamiliaControlador controlador = loader.getController();
-			controlador.inscreverListener(this);
+			
 			controlador.setFamilia(obj);
 			controlador.preencherFamilia();
 			controlador.carregarPessoas(obj.getId());
 			controlador.setFamiliaNova(this.familiaNova);
+			
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Formulário para Inclusão e Edição de Famílias");
@@ -253,9 +279,7 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
 			Pane pane = loader.load();
 			
-			ReativarFamiliaControlador controlador = loader.getController();
-			controlador.inscreverListener(this);
-			
+//			ReativarFamiliaControlador controlador = loader.getController();	
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Formulário para Reativação de Famílias");
@@ -277,10 +301,8 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
 			Pane pane = loader.load();
 			
-			VisualizarFamiliaControlador controlador = loader.getController();
-			controlador.setFamilia(familia);
-			controlador.carregarFamilia(familia);
-			controlador.carregarPessoas(familia.getId());
+			//ListaFamiliaVisualizar controlador = loader.getController();
+			
 			
 			
 			Stage avisoCena = new Stage();
@@ -297,11 +319,6 @@ public class ListaFamiliaControlador implements Initializable, DataChangeListene
 			e.printStackTrace();
 		}
 	}
-	@Override
-	public void onDataChanged() {
-		iniciarComponentes();
-//		carregarFamilia();
-	
-	}
+
 
 }

@@ -354,12 +354,44 @@ public class Pessoa {
 		return beneficios;
 	}
 
-
+	private List<Beneficio> corrigirBeneficio(List<Beneficio> bes) {
+		
+		List<Beneficio> corrigido = new ArrayList<>();
+		
+		boolean pbf;
+		boolean bpci;
+		boolean bpcd;
+		boolean nv;
+		boolean outro;
+		
+		for(Beneficio b : beneficios) {
+			if(b.getNome().equals("PBF")) {
+				pbf = true;
+			}
+			if(b.getNome().equals("BPC Idoso")) {
+				bpci = true;
+			}
+			if(b.getNome().equals("BPC Def.")){
+				bpcd = true;
+			}
+			if(b.getNome().equals("Nova Vida")){
+				nv = true;
+			}
+			if(b.getNome().equals("Outro")){
+				outro = true;
+			}
+		}
+		
+		return corrigido;
+		
+	}
 	public void setBeneficios(List<Beneficio> beneficios) {
 		this.beneficios = beneficios;
 		for(Beneficio b: getBeneficios()) {
 			b.setPessoa(this);
 		}
+		
+		setNomesBeneficios();
 		
 	}
 
@@ -493,13 +525,17 @@ public class Pessoa {
 	}
 
 	public String getNomesBeneficios() {
-		
+		setNomesBeneficios();
 		return this.nomesBeneficios;
 	}
 
-	public void setNomesBeneficios(String nome) {
-		
-		this.nomesBeneficios += nome+" ";
+	public void setNomesBeneficios() {
+		nomesBeneficios = "";
+		if(!beneficios.isEmpty()) {
+			for(Beneficio b: beneficios) {
+				this.nomesBeneficios += b.getNome()+ " ";
+			}
+		}
 	}
 
 	public boolean isAtivo() {

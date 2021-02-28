@@ -26,6 +26,7 @@ public class DAO <E> {
 			Logger logger = Logger.getLogger("modelo.dao.DAO");
 			logger.info("Bloco estático de criação do EntityManagerFactory");
 			logger.debug("Criando EntityManager para o banco cras"); 
+			System.out.println(e.getMessage());
 		}
 		
 	}
@@ -34,6 +35,7 @@ public class DAO <E> {
 	public DAO(Class<E> classe) {
 		this.classe = classe;
 		em = emf.createEntityManager();
+	
 	}
 	
 	//como temos um método que retorna a própria classe poderemos fazer encadeamento de chamadas

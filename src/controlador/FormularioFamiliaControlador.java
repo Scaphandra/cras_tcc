@@ -55,9 +55,7 @@ import modelo.enumerados.EnderecoTipo;
 import modelo.enumerados.MoradiaTipo;
 import modelo.enumerados.SituacaoFamilia;
 
-public class FormularioFamiliaControlador implements Initializable{
-
-	private List<DataChangeListener> listeners = new ArrayList<>();
+public class FormularioFamiliaControlador implements Initializable {
 
 	private Familia entidade;
 
@@ -101,9 +99,6 @@ public class FormularioFamiliaControlador implements Initializable{
 
 	@FXML
 	private TextField txtDataCad;
-
-	@FXML
-	private TextField txtRendaPesRef;
 
 	@FXML
 	private CheckBox checkDescumprimento;
@@ -213,7 +208,7 @@ public class FormularioFamiliaControlador implements Initializable{
 
 	@FXML
 	private TableColumn<Beneficio, String> colunaBeneficio;
-	
+
 	@FXML
 	private TableColumn<Pessoa, Long> colId;
 
@@ -240,16 +235,6 @@ public class FormularioFamiliaControlador implements Initializable{
 	@FXML
 	private Button btDesligar;
 
-	public void inscreverListener(DataChangeListener d) {
-		listeners.add(d);
-	}
-
-	public void notificarListener() {
-		for (DataChangeListener d : listeners) {
-			d.onDataChanged();
-		}
-	}
-
 	public boolean isFamiliaNova() {
 		return familiaNova;
 	}
@@ -259,9 +244,9 @@ public class FormularioFamiliaControlador implements Initializable{
 	}
 
 	public void setFamilia(Familia familia) {
-		//FamiliaDAO dao = new FamiliaDAO();
+		// FamiliaDAO dao = new FamiliaDAO();
 		System.out.println(familia.toString());
-		//this.entidade = dao.obterPorID(familia.getId());
+		// this.entidade = dao.obterPorID(familia.getId());
 		this.entidade = familia;
 
 	}
@@ -318,7 +303,6 @@ public class FormularioFamiliaControlador implements Initializable{
 	void clicarCancelar(ActionEvent event) {
 
 		Util.atual(event).close();
-
 	}
 
 	@FXML
@@ -326,7 +310,6 @@ public class FormularioFamiliaControlador implements Initializable{
 		Stage parentStage = Util.atual(event);
 
 		criarFormularioDesligar(this.entidade, "/gui/formDesligamentoFamilia.fxml", parentStage);
-		
 	}
 
 	@FXML
@@ -342,27 +325,33 @@ public class FormularioFamiliaControlador implements Initializable{
 	@FXML
 	public void clicarCriarPessoa(ActionEvent event) {
 		Stage parentStage = Util.atual(event);
-
 		criarFormularioPessoaNova("/gui/formularioPessoa.fxml", parentStage);
 		carregarPessoas(this.entidade.getId());
+		preencherFamilia();
 	}
 
 	@FXML
 	// do banco
 	public void clicarEscolherPessoa(ActionEvent event) {
 		Stage parentStage = Util.atual(event);
+
 		criarFormularioPessoaBanco("/gui/escolherListaPessoa.fxml", parentStage);
+
 		carregarPessoas(this.entidade.getId());
 
+		preencherFamilia();
 	}
 
 	@FXML
 	public void clicarAlterarPesReferencia(ActionEvent event) {
 		// TODO
 		Stage parentStage = Util.atual(event);
+
 		criarFormularioAlterarRF(entidade, "/gui/mudarReferenciaFamilia.fxml", parentStage);
+
 		carregarPessoas(this.entidade.getId());
-//		preencherFamilia();
+
+		preencherFamilia();
 
 	}
 
@@ -374,11 +363,11 @@ public class FormularioFamiliaControlador implements Initializable{
 		daop.abrirTransacao();
 		daof.abrirTransacao();
 		this.pessoa = (Pessoa) selecionado;
-		
+
 		Familia f = daof.obterPorID(entidade.getId());
 		pessoa = daop.obterPorID(pessoa.getId());
-		for(Pessoa p: f.getPessoas()) {
-			if(p.getId().equals(pessoa.getId())) {
+		for (Pessoa p : f.getPessoas()) {
+			if (p.getId().equals(pessoa.getId())) {
 				f.excluirPessoa(p);
 				break;
 			}
@@ -389,7 +378,6 @@ public class FormularioFamiliaControlador implements Initializable{
 		daop.fecharTransacao().fechar();
 		daof.fecharTransacao().fechar();
 
-		
 		carregarPessoas(f.getId());
 	}
 
@@ -411,7 +399,7 @@ public class FormularioFamiliaControlador implements Initializable{
 	@FXML
 	private void clicarSalvar(ActionEvent event) {
 		salvarFamiliaNova();
-		notificarListener();
+
 		Util.atual(event).close();
 	}
 
@@ -434,7 +422,6 @@ public class FormularioFamiliaControlador implements Initializable{
 		MaskFieldUtil.monetaryField(txtTotalBeneficio);
 		MaskFieldUtil.monetaryField(txtPerCapita);
 		MaskFieldUtil.monetaryField(txtRenda);
-		MaskFieldUtil.monetaryField(txtRendaPesRef);
 		MaskFieldUtil.monetaryField(txtAlugada);
 		MaskFieldUtil.foneField(txtTel1);
 		MaskFieldUtil.foneField(txtTel2);
@@ -452,7 +439,7 @@ public class FormularioFamiliaControlador implements Initializable{
 	public void carregarPessoas(Long id) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
-		String jpql = "select p from Pessoa p where id_familia='" + id + "' and estado!='RF'";
+		String jpql = "select p from Pessoa p where id_familia='" + id + "'";//+ "' and estado!='RF'";
 		TypedQuery<Pessoa> query = em.createQuery(jpql, Pessoa.class);
 		List<Pessoa> pessoas = query.getResultList();
 		ObservableList<Pessoa> obsPessoa = FXCollections.observableArrayList(pessoas);
@@ -485,14 +472,14 @@ public class FormularioFamiliaControlador implements Initializable{
 		SimpleDateFormat formatBra;
 		formatBra = new SimpleDateFormat("dd/MM/yyyy");
 
-		return formatBra.format(dt).toString();//.replace("/", "");
+		return formatBra.format(dt).toString();// .replace("/", "");
 	}
 
 	public void preencherFamilia() {
-		
-		//this.id = entidade.getId();
-		
-		idFamilia.setText(entidade.getId()==null? "" : "código da família: " + getFamilia().getId().toString());
+
+		// this.id = entidade.getId();
+
+		idFamilia.setText(entidade.getId() == null ? "" : "código da família: " + getFamilia().getId().toString());
 		if (!entidade.isAtivo()) {
 			btDesligar.setDisable(true);
 		}
@@ -518,35 +505,57 @@ public class FormularioFamiliaControlador implements Initializable{
 		txtDataCad.setText(entidade.getDataCad() == null ? "" : converteData(entidade.getDataCad()));
 		checkDescumprimento.setSelected(entidade.isDescumprimento());
 		entidade.setTotalRenda();
-		txtRenda.setText(String.valueOf(entidade.getTotalRenda() * 10));
+		txtRenda.setText(String.valueOf(entidade.getTotalRenda()));// * 10));
 		entidade.setRendaReferencia();
-		txtRendaPesRef.setText(String.valueOf(entidade.getRendaReferencia() * 10));
+		if (entidade.getBeneficios().isEmpty()) {
+			lbPBF.setText("");
+			lbBPCI.setText("");
+			lbBPCD.setText("");
+			lbNV.setText("");
+			lbOutro.setText("");
+		} else {
 
-		for (Pessoa p : entidade.getPessoas()) {
-			if (p.getBeneficios().isEmpty()) {
-				lbPBF.setText("");
-				lbBPCI.setText("");
-				lbBPCD.setText("");
-				lbNV.setText("");
-				lbOutro.setText("");
-			} else {
+			for (Beneficio b : entidade.getBeneficios()) {
 
-				for (Beneficio b : p.getBeneficios()) {
-					if (b.getNome().equals(BeneficioTipo.PBF)) {
-						lbPBF.setText("-> Programa Bolsa Família");
-					} else if (b.getNome().equals(BeneficioTipo.BPCDEF)) {
-						lbBPCD.setText("-> BPC Pessoa com Deficiência");
-					} else if (b.getNome().equals(BeneficioTipo.BPCI)) {
-						lbBPCD.setText("-> BPC Idoso");
-						;
-					} else if (b.getNome().equals(BeneficioTipo.NV)) {
-						lbNV.setText("-> Programa Nova Vida");
-					} else if (b.getNome().equals(BeneficioTipo.O)){
-						lbOutro.setText("-> Outro Benefício");
-					}
+				if (b.getNome().equals(BeneficioTipo.PBF)) {
+					lbPBF.setText("-> Programa Bolsa Família");
+				} else if (b.getNome().equals(BeneficioTipo.BPCDEF)) {
+					lbBPCD.setText("-> BPC Pessoa com Deficiência");
+				} else if (b.getNome().equals(BeneficioTipo.BPCI)) {
+					lbBPCD.setText("-> BPC Idoso");
+				} else if (b.getNome().equals(BeneficioTipo.NV)) {
+					lbNV.setText("-> Programa Nova Vida");
+				} else if (b.getNome().equals(BeneficioTipo.O)) {
+					lbOutro.setText("-> Outro Benefício");
 				}
 			}
 		}
+
+//		for (Pessoa p : entidade.getPessoas()) {
+//			if (p.getBeneficios().isEmpty()) {
+//				lbPBF.setText("");
+//				lbBPCI.setText("");
+//				lbBPCD.setText("");
+//				lbNV.setText("");
+//				lbOutro.setText("");
+//			} else {
+//
+//				for (Beneficio b : p.getBeneficios()) {
+//					if (b.getNome().equals(BeneficioTipo.PBF)) {
+//						lbPBF.setText("-> Programa Bolsa Família");
+//					} else if (b.getNome().equals(BeneficioTipo.BPCDEF)) {
+//						lbBPCD.setText("-> BPC Pessoa com Deficiência");
+//					} else if (b.getNome().equals(BeneficioTipo.BPCI)) {
+//						lbBPCD.setText("-> BPC Idoso");
+//						;
+//					} else if (b.getNome().equals(BeneficioTipo.NV)) {
+//						lbNV.setText("-> Programa Nova Vida");
+//					} else if (b.getNome().equals(BeneficioTipo.O)){
+//						lbOutro.setText("-> Outro Benefício");
+//					}
+//				}
+//			}
+//		}
 		entidade.setTotalBeneficio();
 		txtTotalBeneficio.setText(String.valueOf(entidade.getTotalBeneficio() * 10));
 		txtDataAtendimento.setText(
@@ -561,19 +570,18 @@ public class FormularioFamiliaControlador implements Initializable{
 		labelAtivo.setText("CADASTRO " + entidade.getAtivo());
 		// TODO terminar esse método conferindo a consistência do banco com inclusão de
 		// dadta do último atendimento
-		if(entidade.getValorMoradia()!=0) {
+		if (entidade.getValorMoradia() != 0) {
 			txtAlugada.setDisable(false);
 		}
 		txtAlugada.setText(String.valueOf(entidade.getValorMoradia() * 10));
 		comboTipoMoradia.getSelectionModel().select(entidade.getTipoMoradia());
-		labelDataDesligamento.setText("Data do Desligamento: "+ converteData(entidade.getDataDesligamento()));
-		labelMotivoDesligamento.setText("Motivo do Desligamento: "+ entidade.getMotivoDesligamento());
+		labelDataDesligamento.setText("Data do Desligamento: " + converteData(entidade.getDataDesligamento()));
+		labelMotivoDesligamento.setText("Motivo do Desligamento: " + entidade.getMotivoDesligamento());
 //
 //		daof.fecharTransacao();
 //		daof.fechar();
 
 	}
-	
 
 	private void carregarComboBox() {
 		// LISTA TIPO ENDERECO DIRETO DO BANCO
@@ -588,11 +596,10 @@ public class FormularioFamiliaControlador implements Initializable{
 //		emf = Persistence.createEntityManagerFactory("cras_tcc");
 //		em = emf.createEntityManager();
 //		em.getTransaction().begin();
-		
 
 		DAO<Unidade> daoU = new DAO<>(Unidade.class);
 		Unidade uni = daoU.obterPorID(1);
-	//	Unidade uni = em.find(Unidade.class, 2);
+		// Unidade uni = em.find(Unidade.class, 2);
 		List<String> bairros = uni.getAreaAbrangencia();
 		System.out.println(bairros);
 		obsBairro = FXCollections.observableArrayList(bairros);
@@ -604,8 +611,8 @@ public class FormularioFamiliaControlador implements Initializable{
 //		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
 //		EntityManager em = emf.createEntityManager();
 
-		//String jpql = "select e from Tecnico e";
-		//TypedQuery<Tecnico> query = em.createQuery(jpql, Tecnico.class);
+		// String jpql = "select e from Tecnico e";
+		// TypedQuery<Tecnico> query = em.createQuery(jpql, Tecnico.class);
 		DAO<Tecnico> daoT = new DAO<>(Tecnico.class);
 		List<Tecnico> tecnicos = daoT.obterTodos();
 
@@ -641,7 +648,7 @@ public class FormularioFamiliaControlador implements Initializable{
 	}
 
 	public void salvarFamiliaNova() {
-		//transação de FamiliaDAO aberta em setFamilia
+		// transação de FamiliaDAO aberta em setFamilia
 		FamiliaDAO daof = new FamiliaDAO();
 		daof.abrirTransacao();
 
@@ -665,8 +672,8 @@ public class FormularioFamiliaControlador implements Initializable{
 		f.setEndereco(e);
 		f.setTipoMoradia(moradia);
 //		f.setValorMoradia(txtAlugada.getText().equals("") ? 0 : Double.valueOf(txtAlugada.getText()));
-		f.setValorMoradia(txtAlugada.getText().equals("") ? 0 : 
-			Double.parseDouble(txtAlugada.getText().replace(".", "").replace(",", ".")));
+		f.setValorMoradia(txtAlugada.getText().equals("") ? 0
+				: Double.parseDouble(txtAlugada.getText().replace(".", "").replace(",", ".")));
 		f.setTelefone(telefones);
 		f.setSituacao(situacao);
 		f.setTecnico(tecnico);
@@ -676,7 +683,6 @@ public class FormularioFamiliaControlador implements Initializable{
 
 		daof.incluir(f);
 		daof.fecharTransacao().fechar();
-		notificarListener();
 
 	}
 
@@ -716,6 +722,7 @@ public class FormularioFamiliaControlador implements Initializable{
 			controlador.setPessoa(p, false);
 			controlador.identificarRF(p.isPesReferencia());
 			controlador.prepararPessoa(p);
+			controlador.setFamilia(this.entidade, false);
 			controlador.preencherPessoa();
 
 			Stage avisoCena = new Stage();
@@ -782,31 +789,31 @@ public class FormularioFamiliaControlador implements Initializable{
 			e.printStackTrace();
 		}
 	}
+
 	public void criarFormularioDesligar(Familia familia, String nomeView, Stage parentStage) {
-		
+
 		try {
-			
+
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
 			Stage avisoCena = new Stage();
 			Pane pane = loader.load();
-			
+
 			FormDesligamentoFamiliaControlador controlador = loader.getController();
-			
+
 			controlador.setFamilia(entidade);
 			controlador.carregarLabel(entidade);
-			
+
 			avisoCena.setTitle("Alteração de Pessoa de Referência Familiar");
 			avisoCena.setScene(new Scene(pane));
 			avisoCena.setResizable(false);
 			avisoCena.initOwner(parentStage);
 			avisoCena.initModality(Modality.WINDOW_MODAL);
 			avisoCena.showAndWait();
-			
+
 		} catch (IOException e) {
 			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
 			e.printStackTrace();
 		}
 	}
-
 
 }

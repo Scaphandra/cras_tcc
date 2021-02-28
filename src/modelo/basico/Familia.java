@@ -23,6 +23,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import modelo.enumerados.AtendimentoTipo;
 import modelo.enumerados.Composicao;
@@ -98,7 +99,7 @@ public class Familia {
 	@Column(columnDefinition = "boolean default false")
 	private boolean mulherChefe;
 	
-	@OneToMany(mappedBy="familia")
+	@Transient
 	private List<Beneficio> beneficios = new ArrayList<>();
 	
 	@OneToMany

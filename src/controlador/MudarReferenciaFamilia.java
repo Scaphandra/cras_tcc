@@ -135,14 +135,16 @@ public class MudarReferenciaFamilia implements Initializable{
 	@FXML
 	void clicarNovaPessoa(ActionEvent event) {
 		Stage parentStage = Util.atual(event);
-
-		daof.abrirTransacao();
-		daof.obterPorID(familia.getId());
+//
+//		daof.abrirTransacao();
+//		daof.obterPorID(familia.getId());
 		
 		Pessoa obj = new Pessoa();
 		
 		formularioPessoa(obj, "/gui/formularioPessoa.fxml", parentStage,true, true);
 		
+		Stage parent = Util.atual(event);
+		atualizarComposicao("/gui/atualizarComposicao.fxml", parent);
 		Util.atual(event).close();
 	 }
 

@@ -18,7 +18,7 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.FormularioFamiliaControlador">
    <children>
-      <GridPane layoutX="9.0" layoutY="1.0" prefHeight="296.0" prefWidth="930.0">
+      <GridPane layoutX="9.0" layoutY="1.0" prefHeight="277.0" prefWidth="930.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.9999618530273" minWidth="0.0" prefWidth="0.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="881.6666666666667" minWidth="10.0" prefWidth="881.6666666666667" />
@@ -31,7 +31,6 @@
           <RowConstraints maxHeight="58.66668446858725" minHeight="10.0" prefHeight="44.66667175292969" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="35.99998982747397" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="49.333343505859375" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="52.3333435058594" minHeight="10.0" prefHeight="26.66666666666663" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="49.33331298828125" minHeight="10.0" prefHeight="39.33333333333337" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
@@ -62,18 +61,8 @@
                   </Label>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <children>
-                  <Label text="Renda da Pessoa de Referência R$:">
-                     <HBox.margin>
-                        <Insets top="10.0" />
-                     </HBox.margin>
-                  </Label>
-                  <TextField fx:id="txtRendaPesRef" disable="true" editable="false" prefHeight="25.0" prefWidth="81.0" promptText="0">
-                     <HBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </HBox.margin>
-                  </TextField>
                   <Label prefHeight="16.0" prefWidth="85.0" text="Renda Total R$:">
                      <font>
                         <Font size="11.0" />
@@ -100,63 +89,21 @@
                         <Insets left="10.0" top="5.0" />
                      </HBox.margin>
                   </TextField>
+                  <Label text="Total de BenefíciosR$:">
+                     <HBox.margin>
+                        <Insets left="20.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <TextField fx:id="txtTotalBeneficio" disable="true" editable="false" prefHeight="25.0" prefWidth="71.0">
+                     <HBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </HBox.margin>
+                  </TextField>
                   <CheckBox fx:id="checkMulherChefe" mnemonicParsing="false" onAction="#clicarMulher" text="Mulher Chefe de Família" wrapText="true">
                      <HBox.margin>
                         <Insets left="20.0" top="10.0" />
                      </HBox.margin>
                   </CheckBox>
-               </children>
-            </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
-               <children>
-                  <HBox prefHeight="31.0" prefWidth="592.0">
-                     <children>
-                        <Label prefHeight="36.0" prefWidth="125.0" text="Benefícios/Programas:" wrapText="true">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="lbPBF">
-                           <HBox.margin>
-                              <Insets left="10.0" top="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="lbBPCI">
-                           <HBox.margin>
-                              <Insets left="10.0" top="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="lbBPCD">
-                           <HBox.margin>
-                              <Insets left="10.0" top="5.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="lbNV">
-                           <HBox.margin>
-                              <Insets left="10.0" top="5.0" />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <Label fx:id="lbOutro">
-                     <HBox.margin>
-                        <Insets left="10.0" top="5.0" />
-                     </HBox.margin>
-                  </Label>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label text="Total R$:">
-                           <HBox.margin>
-                              <Insets left="20.0" top="10.0" />
-                           </HBox.margin>
-                        </Label>
-                        <TextField fx:id="txtTotalBeneficio" disable="true" editable="false" prefHeight="25.0" prefWidth="71.0">
-                           <HBox.margin>
-                              <Insets left="10.0" top="5.0" />
-                           </HBox.margin>
-                        </TextField>
-                     </children>
-                  </HBox>
                </children>
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -242,7 +189,7 @@
                   </CheckBox>
                </children>
             </HBox>
-            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <HBox prefHeight="41.0" prefWidth="882.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <children>
                   <Label prefHeight="35.0" prefWidth="98.0" text="Data do último Atendimento:" wrapText="true">
                      <HBox.margin>
@@ -357,7 +304,7 @@
             </HBox>
          </children>
       </GridPane>
-      <TableView fx:id="tabelaPessoas" cache="true" layoutX="27.0" layoutY="354.0" maxHeight="-Infinity" prefHeight="184.0" prefWidth="656.0">
+      <TableView fx:id="tabelaPessoas" cache="true" layoutX="27.0" layoutY="326.0" maxHeight="-Infinity" prefHeight="197.0" prefWidth="656.0">
         <columns>
           <TableColumn fx:id="colunaNome" maxWidth="320.0" minWidth="-Infinity" prefWidth="300.0" text="Nome: " />
             <TableColumn fx:id="colId" maxWidth="50.0" minWidth="-Infinity" prefWidth="122.0" text="código:" />
@@ -370,33 +317,37 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <HBox layoutX="271.0" layoutY="545.0" prefHeight="25.0" prefWidth="203.0">
+      <HBox layoutX="372.0" layoutY="547.0" prefHeight="25.0" prefWidth="203.0">
          <children>
-            <Button fx:id="btCancelar" mnemonicParsing="false" onAction="#clicarCancelar" text="Cancelar">
-               <HBox.margin>
-                  <Insets right="80.0" />
-               </HBox.margin></Button>
-            <Button fx:id="btSalvar" mnemonicParsing="false" onAction="#clicarSalvar" prefHeight="25.0" prefWidth="59.0" text="Ok">
+            <Button fx:id="btSalvar" mnemonicParsing="false" onAction="#clicarSalvar" prefHeight="25.0" prefWidth="59.0" text="Salvar">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
+               <HBox.margin>
+                  <Insets right="80.0" />
+               </HBox.margin>
             </Button>
+            <Button fx:id="btCancelar" mnemonicParsing="false" onAction="#clicarCancelar" text="Cancelar">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></Button>
          </children>
       </HBox>
-      <Button fx:id="btEscolherPessoa" layoutX="697.0" layoutY="405.0" mnemonicParsing="false" onAction="#clicarEscolherPessoa" prefHeight="25.0" prefWidth="233.0" text="Escolher uma Pessoa do Banco de Dados" />
-      <Button fx:id="btCriarPessoa" layoutX="697.0" layoutY="365.0" mnemonicParsing="false" onAction="#clicarCriarPessoa" text="Adicionar" />
-      <Label layoutX="27.0" layoutY="328.0" text="Composição Familiar:" />
-      <Button fx:id="btDesligar" layoutX="754.0" layoutY="462.0" mnemonicParsing="false" onAction="#clicarDesligar" prefHeight="25.0" prefWidth="120.0" text="Desligar Família">
+      <Button fx:id="btEscolherPessoa" layoutX="697.0" layoutY="399.0" mnemonicParsing="false" onAction="#clicarEscolherPessoa" prefHeight="25.0" prefWidth="233.0" text="Escolher uma Pessoa do Banco de Dados" />
+      <Button fx:id="btCriarPessoa" layoutX="697.0" layoutY="359.0" mnemonicParsing="false" onAction="#clicarCriarPessoa" text="Adicionar" />
+      <Label layoutX="41.0" layoutY="300.0" text="Composição Familiar:" />
+      <Button fx:id="btDesligar" layoutX="746.0" layoutY="466.0" mnemonicParsing="false" onAction="#clicarDesligar" prefHeight="25.0" prefWidth="120.0" text="Desligar Família">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Button>
-      <Label fx:id="labelMotivoDesligamento" alignment="TOP_LEFT" layoutX="712.0" layoutY="522.0" prefHeight="64.0" prefWidth="203.0" text="Motivo do Desligamento: " textAlignment="JUSTIFY" wrapText="true" />
-      <Label fx:id="labelDataDesligamento" layoutX="714.0" layoutY="495.0" text="Data do Desligamento: " />
-      <Separator layoutX="714.0" layoutY="446.0" prefWidth="200.0" />
-      <Separator layoutX="40.0" layoutY="309.0" prefHeight="3.0" prefWidth="882.0" />
-      <Button fx:id="btRemover" layoutX="866.0" layoutY="365.0" mnemonicParsing="false" onAction="#clicarRemover" text="Remover" />
-      <Button fx:id="btEditar" layoutX="788.0" layoutY="365.0" mnemonicParsing="false" onAction="#clicarEditar" text="Editar" />
-      <Label layoutX="698.0" layoutY="337.0" text="Opções para pessoas da família:" />
+      <Label fx:id="labelMotivoDesligamento" alignment="TOP_LEFT" layoutX="746.0" layoutY="535.0" prefHeight="50.0" prefWidth="183.0" text="Motivo do Desligamento: " textAlignment="JUSTIFY" wrapText="true" />
+      <Label fx:id="labelDataDesligamento" layoutX="744.0" layoutY="505.0" text="Data do Desligamento: " />
+      <Separator layoutX="697.0" layoutY="449.0" prefHeight="3.0" prefWidth="218.0" />
+      <Separator layoutX="41.0" layoutY="288.0" prefHeight="3.0" prefWidth="882.0" />
+      <Button fx:id="btRemover" layoutX="859.0" layoutY="359.0" mnemonicParsing="false" onAction="#clicarRemover" text="Remover" />
+      <Button fx:id="btEditar" layoutX="783.0" layoutY="359.0" mnemonicParsing="false" onAction="#clicarEditar" text="Editar" />
+      <Label layoutX="698.0" layoutY="317.0" text="Opções para pessoas da família:" />
+      <Separator layoutX="693.0" layoutY="448.0" orientation="VERTICAL" prefHeight="131.0" prefWidth="3.0" />
    </children>
 </AnchorPane>

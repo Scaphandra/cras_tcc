@@ -20,6 +20,7 @@ public class Beneficio {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id_beneficio;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name="nome_beneficio")
 	private BeneficioTipo nome;
 	
@@ -29,10 +30,6 @@ public class Beneficio {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="pessoa_beneficio")
 	private Pessoa pessoa;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="familia_beneficio")
-	private Familia familia;
 	
 	public Beneficio() {
 		
@@ -45,6 +42,16 @@ public class Beneficio {
 		this.pessoa = pessoa;
 	}
 	
+	
+	
+	public Long getId_beneficio() {
+		return id_beneficio;
+	}
+
+	public void setId_beneficio(Long id_beneficio) {
+		this.id_beneficio = id_beneficio;
+	}
+
 	@Enumerated(EnumType.STRING)
 	public BeneficioTipo getNome() {
 		return nome;
@@ -68,7 +75,7 @@ public class Beneficio {
 
 	public void setPessoa(Pessoa pessoa_beneficio) {
 		this.pessoa = pessoa_beneficio;
-		this.pessoa.setNomesBeneficios(this.nome.toString());
+		//this.pessoa.setNomesBeneficios(this.nome.toString());
 	}
 
 

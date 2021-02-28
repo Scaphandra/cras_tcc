@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import aplicacao.App;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerta;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ import javafx.scene.layout.VBox;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
 
-public class AppControlador implements Initializable{
+public class AppControlador implements Initializable, DataChangeListener{
 
 	
 	@FXML
@@ -43,6 +44,7 @@ public class AppControlador implements Initializable{
 		rodarTela("../gui/listaFamilia.fxml",(ListaFamiliaControlador controlador)-> {
 			controlador.setFamilia(new Familia());
 			controlador.carregarFamilia();
+			controlador.inscreverListener(this);
 		});
 	
 	}
@@ -92,6 +94,13 @@ public class AppControlador implements Initializable{
 			Alerta.showAlert("IO Exception", "Erro ao carregar a tela", e.getMessage(), AlertType.ERROR);
 			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public void onDataChanged() {
+		clicarFamilia();
+		
 	}
 
 

@@ -39,35 +39,14 @@ public static void main(String[] args) {
 	Pessoa pes4 = em.find(Pessoa.class, 6L);
 	Pessoa pes5 = em.find(Pessoa.class, 7L);
 	
-//	pes1.setNome("RF Pessoa");
-//	pes1.setDataNascimento(data);
-//	pes1.setSexo(Sexo.F);
-//	pes1.setGenero(Genero.F);
-//	pes1.setNomeMae("Fenanda Carla");
-//	pes1.setCor(CorRaca.BRANCA);
-	pes1.setEstado(PessoaEstado.P);
-	pes2.setEstado(PessoaEstado.P);
-	pes1.setNomesBeneficios("NV");
-	pes1.setRenda(550.00);
-	pes2.setNomesBeneficios("PBF");
-	pes3.setNomesBeneficios("PBF");
-	pes4.setNomesBeneficios("PBF NV");
-	pes5.setNomesBeneficios("BPCI");
-//	pes3.setEstado(PessoaEstado.P);
-//	pes4.setEstado(PessoaEstado.P);
-//	pes5.setEstado(PessoaEstado.P);
-//	pes1.setIdade();
-//	pes1.setRenda(1045.00);
 
 	
-//	List<Beneficio> bList = new ArrayList<>();
-//	
-//	Beneficio pbf = new Beneficio(BeneficioTipo.PBF, 120.0, pes1);
-//	bList.add(pbf);
-//	Beneficio bpc = new Beneficio(BeneficioTipo.BPCDEF, 1045.0, pes1);
-//	bList.add(bpc);
-//	
-//	pes1.setBeneficios(bList);
+	pes1.setEstado(PessoaEstado.P);
+	pes2.setEstado(PessoaEstado.P);
+
+	pes1.setRenda(550.00);
+
+
 	
 	em.merge(pes1);
 	em.getTransaction().commit();

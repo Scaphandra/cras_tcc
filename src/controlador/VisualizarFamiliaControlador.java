@@ -205,10 +205,7 @@ public class VisualizarFamiliaControlador implements Initializable {
 	}
 	
 	public void carregarFamilia(Familia familia) {
-		
-		FamiliaDAO daof = new FamiliaDAO();
-		daof.abrirTransacao();
-		Long id = familia.getId();
+
 		idFamilia.setText("código da família: " + familia.getId().toString());
 		if (!familia.isAtivo()) {
 			labelAtivo.setStyle("-fx-text-fill: #ff0000;");

@@ -1,5 +1,6 @@
 package controlador;
 
+import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.ResourceBundle;
 
 import aplicacao.App;
 import gui.listeners.DataChangeListener;
+import gui.util.Alerta;
 import gui.util.Util;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,7 +18,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -26,16 +30,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
 import modelo.dao.FamiliaDAO;
 
-public class ReativarFamiliaControlador implements Initializable{
+public class ListaFamiliaVisualizar implements Initializable{
 	
 	private FamiliaDAO daof = new FamiliaDAO();
 	
-	private List <DataChangeListener> listeners = new ArrayList<>();
 	
 	private Familia familia;
 	
@@ -66,17 +71,10 @@ public class ReativarFamiliaControlador implements Initializable{
 	
 	@FXML 
 	private TableColumn <Familia, Integer> colunaQuantidade;
-
 	
-	public void inscreverListener(DataChangeListener d) {
-		listeners.add(d);
-	}
+	@FXML 
+	private TableColumn <Familia, String> colunaAtivo;
 
-	public void notificarListener() {
-		for (DataChangeListener d : listeners) {
-			d.onDataChanged();
-		}
-	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -99,36 +97,7 @@ public class ReativarFamiliaControlador implements Initializable{
 	
 	@FXML
 	void clicarSelecionar(ActionEvent event) {
-		//TODO
 		
-		if(familia.toString().equals("Não possui")) {
-			
-			Alert alert = new Alert(AlertType.CONFIRMATION);
-			alert.setTitle("Familia não possui pessoa de referência!");
-			alert.setHeaderText("A Família selecionada não pode ser reativada.");
-			alert.setContentText("A família selecionada não tem \n mais uma pessoa de referência.\n "
-					+ "Esta família ficará no sistema \n para conferência de dados.");
-			alert.show();
-			return;
-		}else {
-			
-			daof.abrirTransacao();
-			
-			familia = daof.obterPorID(familia.getId());
-			
-			for(Pessoa p: familia.getPessoas()) {
-				p.setAtivo(true);
-			}
-			familia.setAtivo(true);
-			familia.setMotivoDesligamento(familia.getMotivoDesligamento()+ "-> (Família reativada no banco em "
-					+ converteData(new Date())+")");
-			
-			daof.atualizar(familia);
-			daof.fecharTransacao().fechar();
-			notificarListener();
-			Util.atual(event).close();
-		}
-			
 		
 	}
 
@@ -136,7 +105,7 @@ public class ReativarFamiliaControlador implements Initializable{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void iniciarTabela() {
 		
-		lista = daof.obterCondicao("ativo","0");
+		lista = daof.obterTodos();
 
 		obsFamilias = FXCollections.observableArrayList(lista);
 		tabelaFamilia.setItems(obsFamilias);
@@ -162,10 +131,33 @@ public class ReativarFamiliaControlador implements Initializable{
 		
 		colunaId.setCellValueFactory(new PropertyValueFactory<Familia, Long>("id"));
 		colunaNome.setCellValueFactory(new PropertyValueFactory<Familia, String>("pesReferencia"));
-		colunaData.setCellValueFactory(new PropertyValueFactory<Familia, Date>("dataDesligamento"));
+		colunaData.setCellValueFactory(new PropertyValueFactory<Familia, Date>("dataEntrada"));
 		colunaQuantidade.setCellValueFactory(new PropertyValueFactory<Familia, Integer>("numero"));
+		colunaAtivo.setCellValueFactory(new PropertyValueFactory<Familia, String>("ativo"));
 	}
 
-	
+	public void criarFormulario(Familia f, String nomeView, Stage parentStage) {
+		try {
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
+			Pane pane = loader.load();
+
+			VisualizarFamiliaControlador controlador = loader.getController();
+			controlador.setFamilia(f);
+			controlador.carregarFamilia(f);
+
+			Stage avisoCena = new Stage();
+			avisoCena.setTitle("Digite os dados para inclusão de pessoa de referência da família");
+			avisoCena.setScene(new Scene(pane));
+			avisoCena.setResizable(false);
+			avisoCena.initOwner(parentStage);
+			avisoCena.initModality(Modality.WINDOW_MODAL);
+			avisoCena.showAndWait();
+
+		} catch (IOException e) {
+			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
+	}
 
 }

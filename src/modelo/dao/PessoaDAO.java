@@ -1,8 +1,5 @@
 package modelo.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import modelo.basico.Pessoa;
 
 public class PessoaDAO extends DAO<Pessoa>{
