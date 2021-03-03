@@ -105,21 +105,21 @@ public class FormularioFamiliaControlador implements Initializable {
 
 	private boolean descumprimento;
 
-	@FXML
-	private Label lbPBF;
-
-	@FXML
-	private Label lbBPCI;
-
-	@FXML
-	private Label lbBPCD;
-
-	@FXML
-	private Label lbNV;
-
-	@FXML
-	private Label lbOutro;
-
+//	@FXML
+//	private Label lbPBF;
+//
+//	@FXML
+//	private Label lbBPCI;
+//
+//	@FXML
+//	private Label lbBPCD;
+//
+//	@FXML
+//	private Label lbNV;
+//
+//	@FXML
+//	private Label lbOutro;
+	
 	@FXML
 	private TextField txtTotalBeneficio;
 
@@ -240,6 +240,7 @@ public class FormularioFamiliaControlador implements Initializable {
 	}
 
 	public void setFamiliaNova(boolean familiaNova) {
+		
 		this.familiaNova = familiaNova;
 	}
 
@@ -319,7 +320,7 @@ public class FormularioFamiliaControlador implements Initializable {
 
 	@FXML
 	void clicarMulher(ActionEvent event) {
-		creas = checkMulherChefe.selectedProperty().getValue();
+		mulherChefe = checkMulherChefe.selectedProperty().getValue();
 	}
 
 	@FXML
@@ -398,6 +399,7 @@ public class FormularioFamiliaControlador implements Initializable {
 
 	@FXML
 	private void clicarSalvar(ActionEvent event) {
+		
 		salvarFamiliaNova();
 
 		Util.atual(event).close();
@@ -478,7 +480,7 @@ public class FormularioFamiliaControlador implements Initializable {
 	public void preencherFamilia() {
 
 		// this.id = entidade.getId();
-
+		
 		idFamilia.setText(entidade.getId() == null ? "" : "código da família: " + getFamilia().getId().toString());
 		if (!entidade.isAtivo()) {
 			btDesligar.setDisable(true);
@@ -489,92 +491,62 @@ public class FormularioFamiliaControlador implements Initializable {
 		idPessoa.setText("código da pessoa: " + entidade.getPesReferencia().getId());
 		comboTipoEndereco.getSelectionModel()
 				.select(entidade.getEndereco() == null ? EnderecoTipo.RUA : entidade.getEndereco().getTipo_endereco());
+		end = (EnderecoTipo) comboTipoEndereco.getSelectionModel().getSelectedItem();
 		txtLogradouro.setText(entidade.getEndereco() == null ? "" : entidade.getEndereco().getLogradouro());
 		txtNumero.setText(entidade.getEndereco() == null ? "" : "" + entidade.getEndereco().getNumero());
+		
 		checkPerfilCREAS.setSelected(entidade.isPerfilCreas() ? true : entidade.isPerfilCreas());
+		creas = checkPerfilCREAS.selectedProperty().getValue();
+		
 		txtComplemento.setText(entidade.getEndereco() == null ? "" : entidade.getEndereco().getComplemento());
 		comboBairro.getSelectionModel()
 				.select(entidade.getEndereco() == null ? "" : entidade.getEndereco().getBairro());
+		bairro = (String) comboBairro.getSelectionModel().getSelectedItem();
+		
 		checkMulherChefe.setSelected(entidade.isMulherChefe());
+		mulherChefe = checkMulherChefe.selectedProperty().getValue();
+		
 		txtCep.setText(entidade.getEndereco() == null ? "" : entidade.getEndereco().getCep());
 		txtTel1.setText(entidade.getTelefone().size() < 1 ? "" : entidade.getTelefone().get(0));
 		txtTel2.setText(entidade.getTelefone().size() < 2 ? "" : entidade.getTelefone().get(1));
 		txtTel3.setText(entidade.getTelefone().size() < 3 ? "" : entidade.getTelefone().get(2));
+		
 		comboTecnico.getSelectionModel().select(entidade.getTecnico());
+		tecnico = comboTecnico.getSelectionModel().getSelectedItem();
+		
 		comboSituacao.getSelectionModel().select(entidade.getSituacao());
+		situacao = comboSituacao.getSelectionModel().getSelectedItem();
+		
 		txtDataCad.setText(entidade.getDataCad() == null ? "" : converteData(entidade.getDataCad()));
+		
 		checkDescumprimento.setSelected(entidade.isDescumprimento());
+		descumprimento = checkDescumprimento.selectedProperty().getValue();
+		
 		entidade.setTotalRenda();
 		txtRenda.setText(String.valueOf(entidade.getTotalRenda()));// * 10));
 		entidade.setRendaReferencia();
-		if (entidade.getBeneficios().isEmpty()) {
-			lbPBF.setText("");
-			lbBPCI.setText("");
-			lbBPCD.setText("");
-			lbNV.setText("");
-			lbOutro.setText("");
-		} else {
 
-			for (Beneficio b : entidade.getBeneficios()) {
-
-				if (b.getNome().equals(BeneficioTipo.PBF)) {
-					lbPBF.setText("-> Programa Bolsa Família");
-				} else if (b.getNome().equals(BeneficioTipo.BPCDEF)) {
-					lbBPCD.setText("-> BPC Pessoa com Deficiência");
-				} else if (b.getNome().equals(BeneficioTipo.BPCI)) {
-					lbBPCD.setText("-> BPC Idoso");
-				} else if (b.getNome().equals(BeneficioTipo.NV)) {
-					lbNV.setText("-> Programa Nova Vida");
-				} else if (b.getNome().equals(BeneficioTipo.O)) {
-					lbOutro.setText("-> Outro Benefício");
-				}
-			}
-		}
-
-//		for (Pessoa p : entidade.getPessoas()) {
-//			if (p.getBeneficios().isEmpty()) {
-//				lbPBF.setText("");
-//				lbBPCI.setText("");
-//				lbBPCD.setText("");
-//				lbNV.setText("");
-//				lbOutro.setText("");
-//			} else {
-//
-//				for (Beneficio b : p.getBeneficios()) {
-//					if (b.getNome().equals(BeneficioTipo.PBF)) {
-//						lbPBF.setText("-> Programa Bolsa Família");
-//					} else if (b.getNome().equals(BeneficioTipo.BPCDEF)) {
-//						lbBPCD.setText("-> BPC Pessoa com Deficiência");
-//					} else if (b.getNome().equals(BeneficioTipo.BPCI)) {
-//						lbBPCD.setText("-> BPC Idoso");
-//						;
-//					} else if (b.getNome().equals(BeneficioTipo.NV)) {
-//						lbNV.setText("-> Programa Nova Vida");
-//					} else if (b.getNome().equals(BeneficioTipo.O)){
-//						lbOutro.setText("-> Outro Benefício");
-//					}
-//				}
-//			}
-//		}
 		entidade.setTotalBeneficio();
-		txtTotalBeneficio.setText(String.valueOf(entidade.getTotalBeneficio() * 10));
+		txtTotalBeneficio.setText(String.valueOf(entidade.getTotalBeneficio())+"");// * 10));
 		txtDataAtendimento.setText(
 				entidade.ultimoAtendimentoTecnico() == null ? "" : converteData(entidade.ultimoAtendimentoTecnico()));
 		txtDataCad
 				.setText(entidade.ultimoAtendimentoCad() == null ? "" : converteData(entidade.ultimoAtendimentoCad()));
 		entidade.setPercapita();
-		txtPerCapita.setText(entidade.getPercapita() * 10 + "");
+		txtPerCapita.setText(entidade.getPercapita()+"");// * 10 + "");
 		if (!entidade.isAtivo()) {
 			labelAtivo.setStyle("-fx-text-fill: #ff0000;");
 		}
 		labelAtivo.setText("CADASTRO " + entidade.getAtivo());
 		// TODO terminar esse método conferindo a consistência do banco com inclusão de
-		// dadta do último atendimento
+		// data do último atendimento
 		if (entidade.getValorMoradia() != 0) {
 			txtAlugada.setDisable(false);
 		}
 		txtAlugada.setText(String.valueOf(entidade.getValorMoradia() * 10));
 		comboTipoMoradia.getSelectionModel().select(entidade.getTipoMoradia());
+		moradia = (MoradiaTipo) comboTipoMoradia.getSelectionModel().getSelectedItem();
+		
 		labelDataDesligamento.setText("Data do Desligamento: " + converteData(entidade.getDataDesligamento()));
 		labelMotivoDesligamento.setText("Motivo do Desligamento: " + entidade.getMotivoDesligamento());
 //
@@ -630,6 +602,7 @@ public class FormularioFamiliaControlador implements Initializable {
 		comboTipoMoradia.setItems(obsMoradia);
 		comboTipoMoradia.getSelectionModel().selectFirst();
 
+		
 //		em.getTransaction().commit();
 //		em.close();
 //		emf.close();
@@ -650,6 +623,7 @@ public class FormularioFamiliaControlador implements Initializable {
 	public void salvarFamiliaNova() {
 		// transação de FamiliaDAO aberta em setFamilia
 		FamiliaDAO daof = new FamiliaDAO();
+		
 		daof.abrirTransacao();
 
 		Familia f = daof.obterPorID(this.entidade.getId());

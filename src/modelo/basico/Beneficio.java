@@ -31,6 +31,10 @@ public class Beneficio {
 	@JoinColumn(name="pessoa_beneficio")
 	private Pessoa pessoa;
 	
+	@ManyToOne
+	@JoinColumn(name="familia_beneficio")
+	private Familia familia;
+	
 	public Beneficio() {
 		
 	}
@@ -77,7 +81,15 @@ public class Beneficio {
 		this.pessoa = pessoa_beneficio;
 		//this.pessoa.setNomesBeneficios(this.nome.toString());
 	}
+	
 
+	public Familia getFamilia() {
+		return familia;
+	}
+
+	public void setFamilia(Familia familia) {
+		this.familia = familia;
+	}
 
 	@Override
 	public String toString() {

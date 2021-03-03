@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,6 +27,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import modelo.dao.BeneficioDAO;
 import modelo.dao.PessoaDAO;
 import modelo.enumerados.BeneficioTipo;
 import modelo.enumerados.Composicao;
@@ -135,10 +137,18 @@ public class Pessoa {
 	@Column(columnDefinition = "boolean default false")
 	private Boolean ativo;
 	
+//	@OneToMany
+//	@JoinTable(name="beneficios_novo",
+//	joinColumns = {@JoinColumn (name="nome")}, inverseJoinColumns = {@JoinColumn (name="valor_b")})
+//	@MapKey(name="benef")
+//	private Map <String, Double> bes = new HashMap<String, Double> ();
+	
 	public Pessoa() {
 		
 	}
 	
+
+
 	public void excluirBanco() {
 		
 		PessoaDAO dao = new PessoaDAO();
@@ -353,46 +363,162 @@ public class Pessoa {
 		
 		return beneficios;
 	}
-
-	private List<Beneficio> corrigirBeneficio(List<Beneficio> bes) {
-		
-		List<Beneficio> corrigido = new ArrayList<>();
-		
-		boolean pbf;
-		boolean bpci;
-		boolean bpcd;
-		boolean nv;
-		boolean outro;
-		
-		for(Beneficio b : beneficios) {
-			if(b.getNome().equals("PBF")) {
-				pbf = true;
-			}
-			if(b.getNome().equals("BPC Idoso")) {
-				bpci = true;
-			}
-			if(b.getNome().equals("BPC Def.")){
-				bpcd = true;
-			}
-			if(b.getNome().equals("Nova Vida")){
-				nv = true;
-			}
-			if(b.getNome().equals("Outro")){
-				outro = true;
-			}
-		}
-		
-		return corrigido;
-		
-	}
+	
+	//OPÇÃO PESSOA NOVA
 	public void setBeneficios(List<Beneficio> beneficios) {
 		this.beneficios = beneficios;
-		for(Beneficio b: getBeneficios()) {
-			b.setPessoa(this);
+	}
+	//SOBRESCRIÇÃO DO MÉTODO SETBENEFICIOS PARA PODER GERAR LISTA COM VALOR ATUALIZADO E BENEFÍCIO EXCLUÍDO SAIR DO BANCO
+	//OPÇÃO EDITAR PESSOA JÁ CRIADA
+	
+	public void setBeneficios(Map <String, Double> nova, boolean p, boolean b1, boolean b2, boolean n, boolean o) {
+		
+		//TODO -> está salvando o beneficio duas vezes e não está excluindo.
+		
+		List<Beneficio> bs = new ArrayList<>();
+
+		
+		
+		boolean pbf = false;
+		boolean bpci = false;
+		boolean bpcd = false;
+		boolean nv = false;
+		boolean outro = false;
+
+		BeneficioDAO dao = new BeneficioDAO();
+		
+		dao.abrirTransacao();
+		
+		Beneficio novo = new Beneficio();
+		
+		if(this.beneficios!=null) {
+			
+			for (Beneficio b : this.beneficios) {
+				if (b.getNome().equals(BeneficioTipo.PBF)) {
+					pbf = true;
+					if (pbf && p) {
+						System.out.println("edição de pbf");
+						b = dao.obterPorID(b.getId_beneficio());
+						b.setValor(nova.get("PBF"));
+						bs.add(b);
+						dao.atualizar(b);
+					}
+					if (pbf && !p) {
+						System.out.println("Excluir pbf");
+						b = dao.obterPorID(b.getId_beneficio());
+						dao.remover(b);
+					}
+				}
+				
+				else if (b.getNome().equals(BeneficioTipo.BPCI)) {
+					bpci = true;
+					if (bpci && b1) {
+						b = dao.obterPorID(b.getId_beneficio());
+						b.setValor(nova.get("BPCI"));
+						bs.add(b);
+						dao.atualizar(b);
+					}
+					if (bpci && !b1) {
+						b = dao.obterPorID(b.getId_beneficio());
+						dao.remover(b);
+					}
+				}
+				
+				else if (b.getNome().equals(BeneficioTipo.BPCDEF)) {
+					bpcd = true;
+					if (bpcd && b2) {
+						b = dao.obterPorID(b.getId_beneficio());
+						b.setValor(nova.get("BPCDEF"));
+						bs.add(b);
+						dao.atualizar(b);
+					}
+					if (bpcd && !b2) {
+						b = dao.obterPorID(b.getId_beneficio());
+						dao.remover(b);
+					}
+				}
+				
+				else if (b.getNome().equals(BeneficioTipo.NV)) {
+					nv = true;
+					if (nv && n) {
+						b = dao.obterPorID(b.getId_beneficio());
+						b.setValor(nova.get("NV"));
+						bs.add(b);
+						dao.atualizar(b);
+					}
+					if (nv && !n) {
+						b = dao.obterPorID(b.getId_beneficio());
+						dao.remover(b);
+					}
+				}
+				
+				else if (b.getNome().equals(BeneficioTipo.O)) {
+					outro = true;
+					
+					if (outro && o) {
+						b = dao.obterPorID(b.getId_beneficio());
+						b.setValor(nova.get("O"));
+						bs.add(b);
+						dao.atualizar(b);
+					}
+					if (outro && !o) {
+						b = dao.obterPorID(b.getId_beneficio());
+						dao.remover(b);
+					}
+				}
+			}
 		}
+		if (!pbf && p) {
+			System.out.println("Novo pbf");
+			pbf = true;
+			novo.setValor(nova.get("PBF"));
+			novo.setNome(BeneficioTipo.PBF);
+			novo.setPessoa(this);
+			dao.incluir(novo);
+			bs.add(novo);
+
+		}
+		else if (!bpci && b1) {
+			bpci = true;
+			novo.setValor(nova.get("BPCI"));
+			novo.setNome(BeneficioTipo.BPCI);
+			novo.setPessoa(this);
+			dao.incluir(novo);
+			bs.add(novo);
+
+		}
+		else if (!bpcd && b2) {
+			bpcd = true;
+			novo.setValor(nova.get("BPCDEF"));
+			novo.setNome(BeneficioTipo.BPCDEF);
+			novo.setPessoa(this);
+			dao.incluir(novo);
+			bs.add(novo);
+
+		}
+		else if (!nv && n) {
+			nv = true;
+			novo.setValor(nova.get("NV"));
+			novo.setNome(BeneficioTipo.NV);
+			novo.setPessoa(this);
+			dao.incluir(novo);
+			bs.add(novo);
+		}
+		else if (!outro && o) {
+			outro = true;
+			novo.setValor(nova.get("O"));
+			novo.setNome(BeneficioTipo.O);
+			novo.setPessoa(this);
+			dao.incluir(novo);
+			bs.add(novo);
+		}
+
+		dao.fecharTransacao().fechar();
+
+		this.beneficios = bs;
 		
-		setNomesBeneficios();
-		
+		setNomesBeneficios(pbf, bpci, bpcd, nv, outro);
+
 	}
 
 	public double getValorBeneficio(BeneficioTipo tipo) {
@@ -525,18 +651,30 @@ public class Pessoa {
 	}
 
 	public String getNomesBeneficios() {
-		setNomesBeneficios();
+		
 		return this.nomesBeneficios;
 	}
 
-	public void setNomesBeneficios() {
+	public void setNomesBeneficios(boolean p, boolean b1, boolean b2, boolean n, boolean o) {
 		nomesBeneficios = "";
-		if(!beneficios.isEmpty()) {
-			for(Beneficio b: beneficios) {
-				this.nomesBeneficios += b.getNome()+ " ";
-			}
+		
+		if(p) {
+			this.nomesBeneficios += " "+ BeneficioTipo.PBF + " ";
+		}
+		else if(b1) {
+			this.nomesBeneficios += " "+ BeneficioTipo.BPCI + " ";
+		}
+		else if(b2) {
+			this.nomesBeneficios += " "+ BeneficioTipo.BPCDEF + " ";
+		}
+		else if(n) {
+			this.nomesBeneficios += " "+ BeneficioTipo.NV + " ";
+		}
+		else if(o) {
+			this.nomesBeneficios += " "+ BeneficioTipo.O + " ";
 		}
 	}
+	
 
 	public boolean isAtivo() {
 		return ativo;

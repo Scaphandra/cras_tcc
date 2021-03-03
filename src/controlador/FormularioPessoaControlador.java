@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.persistence.EntityManager;
@@ -149,7 +151,7 @@ public class FormularioPessoaControlador implements Initializable{
 	private boolean ges;
 	private boolean def;
 	private boolean scfvB;
-//	private boolean resp;
+
 
 	@FXML
 	private ComboBox<Composicao> boxCompo;
@@ -251,6 +253,7 @@ public class FormularioPessoaControlador implements Initializable{
 				
 				Util.atual(evento).close();
 			} else {
+				
 				editarPessoa();
 				
 				Util.atual(evento).close();
@@ -313,7 +316,7 @@ public class FormularioPessoaControlador implements Initializable{
 	@FXML
 	public void clicarBeneficioBpci() {
 
-		bpci = bpci_b.selectedProperty().getValue();
+		bpci = (boolean) bpci_b.selectedProperty().getValue();
 		if (bpci == false) {
 			valorBpci.setText("0.00");
 			valorBpci.setDisable(true);
@@ -506,6 +509,8 @@ public class FormularioPessoaControlador implements Initializable{
 		idPessoa.setText(pessoa.getId() == null ? "" : "Identificador: " + pessoa.getId().toString());
 		nome.setText(pessoa.getNome());
 		homonimo.setSelected(pessoa.isHomonimo());
+		homo = homonimo.selectedProperty().getValue();
+		
 		cpf.setText(pessoa.getCpf());
 		rg.setText(pessoa.getRg());
 		nis.setText(pessoa.getNis());
@@ -514,16 +519,37 @@ public class FormularioPessoaControlador implements Initializable{
 		renda.setText(String.valueOf(pessoa.getRenda()));// * 10));
 		ocupacao.setText(pessoa.getOcupacao());
 
+		boxGenero.getSelectionModel().select(pessoa.getGenero());
+		genero = (Genero) boxGenero.getSelectionModel().getSelectedItem();
+
 		boxSexo.getSelectionModel().select(pessoa.getSexo());
+		sexo = (Sexo) boxSexo.getSelectionModel().getSelectedItem();
+		if (sexo == Sexo.M) {
+			gestante.setDisable(true);
+		} else {
+			gestante.setDisable(false);
+		}
+
+		
 		boxCompo.getSelectionModel().select(pessoa.getComposicao());
 		boxCor.getSelectionModel().select(pessoa.getCor());
-		boxGenero.getSelectionModel().select(pessoa.getGenero());
+		cor = (CorRaca) boxCor.getSelectionModel().getSelectedItem();
+		
 		boxEscolaridade.getSelectionModel().select(pessoa.getEscolaridade());
+		escolaridade = (Escolaridade) boxEscolaridade.getSelectionModel().getSelectedItem();
 
 		deficiencia.setSelected(pessoa.isComDeficiencia());
+		def = deficiencia.selectedProperty().getValue();
+		
 		gestante.setSelected(pessoa.isGestante());
+		ges = gestante.selectedProperty().getValue();
+		
 		prioritario.setSelected(pessoa.isPrioritarioSCFV());
+		pri = prioritario.selectedProperty().getValue();
+		
 		scfv.setSelected(pessoa.isNoSCFV());
+		scfvB = scfv.selectedProperty().getValue();
+		
 		if (!rf) {
 			responsavel.setText("");
 		} else {
@@ -531,8 +557,9 @@ public class FormularioPessoaControlador implements Initializable{
 			boxCompo.getSelectionModel().select(Composicao.RF);
 			boxCompo.setDisable(true);
 		}
-
-		List<Beneficio> bs = pessoa.getBeneficios();
+		compo = (Composicao) boxCompo.getSelectionModel().getSelectedItem();
+		
+		List <Beneficio> bs = pessoa.getBeneficios();
 		for (Beneficio b : bs) {
 			if (b.getNome() == BeneficioTipo.PBF) {
 				pbf_b.setSelected(true);
@@ -558,6 +585,11 @@ public class FormularioPessoaControlador implements Initializable{
 				valorOutro.setDisable(true);
 			}
 		}
+		bpci = (boolean) bpci_b.selectedProperty().getValue();
+		pbf = (boolean) pbf_b.selectedProperty().getValue();
+		bpcd = (boolean) pbf_b.selectedProperty().getValue();
+		nv = (boolean) pbf_b.selectedProperty().getValue();
+		outro = (boolean) pbf_b.selectedProperty().getValue();
 
 		valorBolsa.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.PBF)));// * 10));
 		valorBpci.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.BPCI)));
@@ -667,22 +699,6 @@ public class FormularioPessoaControlador implements Initializable{
 		emf.close();
 
 	}
-	//VERIFICADOR DE LISTA DE BENEFÍCIO ANTIGA, PASSA A LISTA ANTIGA E O BENEFÍCIO QUE QUER VERIFICAR
-	private Long verificarLista(List<Beneficio> lista, String nome) {
-		
-		Long id = null;
-		
-		for(Beneficio b : lista) {
-			
-			if(nome.equals(b.getNome())) {
-				id = b.getId_beneficio();
-			}else {
-				
-				id = null;
-			}			
-		}
-		return id;
-	}
 
 	public void editarPessoa() {
 
@@ -695,121 +711,55 @@ public class FormularioPessoaControlador implements Initializable{
 		ValidationSupport validarTxt = new ValidationSupport();
 		validarTxt.registerValidator(nome, Validator.createEmptyValidator("Campo Obrigatório"));
 		validarTxt.registerValidator(dataNasc, Validator.createEmptyValidator("Campo Obrigatório"));
+		
 		// CRIANDO LISTA DE BENEFÍCIO
 
-		List<Beneficio> beneficios = new ArrayList<>();
-		List<Beneficio> checar = p.getBeneficios();
+		Map <String, Double> beneficios = new HashMap<>();
+		
 
 		if (pbf) {
-			//SE A LISTA DE BENEFÍCIOS JÁ TEM O BENEFÍCIO PBF
-			if(verificarLista(checar, BeneficioTipo.PBF.toString())!=null) {
-				Beneficio b = em.find(Beneficio.class, verificarLista(checar, BeneficioTipo.PBF.toString()));
-				b.setValor(valorBolsa.getText().isEmpty() ? 0.0
-						: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")));
-				em.merge(b);
-				beneficios.add(b);
-				//SE O BENEFÍCIO NÃO ESTÁ NA LISTA
-			}else {
-				Beneficio b = new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty() ? 0.0
-						: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")), null);
-				beneficios.add(b);
-				em.persist(b);
-			}
 //			Beneficio b = new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty() ? 0.0
 //					: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")), null);
-//			for(Beneficio be :checar) {
-//				if(be.equals(b)) {
-//					beneficios.add(b);
-//					b = em.find(Beneficio.class, be.getId_beneficio());
-//					em.merge(b);
-//				}else {			
-//					beneficios.add(b);
-//					em.persist(b);
-//				}
-//			}
-			
-		}else {
-			if(verificarLista(checar, BeneficioTipo.PBF.toString())!=null) {
-				Beneficio b = em.find(Beneficio.class, verificarLista(checar, BeneficioTipo.PBF.toString()));
-				b.setValor(Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")));
-				em.remove(b);
-			}
-		}
-
-		if (bpci == true) {
-			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")), null);
-			for(Beneficio be :checar) {
-				
-				if(be.equals(b)) {
-					beneficios.add(b);
-					b = em.find(Beneficio.class, be.getId_beneficio());
-					em.merge(b);
-				}else {			
-					beneficios.add(b);
-					em.persist(b);
-				}
-			}
+//			beneficios.add(b);
+//			em.persist(b);
+			beneficios.put("PBF", Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")));
 
 		}
 
-		if (bpcd == true) {
-			Beneficio b = new Beneficio(BeneficioTipo.BPCDEF, valorBpcd.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")), null);
-			for(Beneficio be :checar) {
-				
-				if(be.equals(b)) {
-					beneficios.add(b);
-					b = em.find(Beneficio.class, be.getId_beneficio());
-					em.merge(b);
-				}else {			
-					beneficios.add(b);
-					em.persist(b);
-				}
-			}
-			
-		}
-		if (nv == true) {
-			Beneficio b = new Beneficio(BeneficioTipo.NV, valorNv.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")), null);
-			for(Beneficio be :checar) {
-				
-				if(be.equals(b)) {
-					beneficios.add(b);
-					b = em.find(Beneficio.class, be.getId_beneficio());
-					em.merge(b);
-				}else {			
-					beneficios.add(b);
-					em.persist(b);
-				}
-			}
-			
-
-		}
-		if (outro == true) {
-			Beneficio b = new Beneficio(BeneficioTipo.O, valorOutro.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")), null);
-			for(Beneficio be :checar) {
-				
-				if(be.equals(b)) {
-					beneficios.add(b);
-					b = em.find(Beneficio.class, be.getId_beneficio());
-					em.merge(b);
-				}else {			
-					beneficios.add(b);
-					em.persist(b);
-				}
-			}
-			
-		}
-		if(!outro && !nv && !bpcd && !bpci && !pbf && !checar.isEmpty()) {
-			
-			for(Beneficio b : checar) {
-				b = em.find(Beneficio.class, b.getId_beneficio());
-				em.remove(b);
-			}
+		else if (bpci) {
+//			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty() ? 0.0
+//					: Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")), null);
+//			beneficios.add(b);
+//			em.persist(b);
+			beneficios.put("BPCI", Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")));
 		}
 		
+		else if (bpcd) {
+//			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpcd.getText().isEmpty() ? 0.0
+//					: Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")), null);
+//			beneficios.add(b);
+//			em.persist(b);
+			beneficios.put("BPCDEF", Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")));
+		}
+
+		else if (nv) {
+//			Beneficio b = new Beneficio(BeneficioTipo.NV, valorNv.getText().isEmpty() ? 0.0
+//					: Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")), null);
+//
+//			beneficios.add(b);
+//			em.persist(b);
+			beneficios.put("NV", Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")));
+
+		}
+		else if (outro) {
+//			Beneficio b = new Beneficio(BeneficioTipo.O, valorOutro.getText().isEmpty() ? 0.0
+//					: Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")), null);
+//
+//			beneficios.add(b);
+//			em.persist(b);
+			beneficios.put("O", Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")));
+		}
+	
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
 		String dataStr = dataNasc.getText();
 		Date data = new Date();
@@ -839,7 +789,7 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setCor(cor);
 		p.setEscolaridade_pes(escolaridade);
 		p.setPrioritarioSCFV(pri);
-		p.setBeneficios(beneficios);
+		p.setBeneficios(beneficios, pbf, bpci, bpcd, nv, outro);
 		p.setGestante(ges);
 		p.setComDeficiencia(def);
 		p.setNoSCFV(scfvB);
@@ -863,41 +813,45 @@ public class FormularioPessoaControlador implements Initializable{
 		validarTxt.registerValidator(nome, Validator.createEmptyValidator("Campo Obrigatório"));
 		validarTxt.registerValidator(dataNasc, Validator.createEmptyValidator("Campo Obrigatório"));
 
-		List<Beneficio> beneficios = new ArrayList<>();
+		Map <String, Double> beneficios = new HashMap<>();
 
 		PessoaDAO dao = new PessoaDAO();
 		dao.abrirTransacao();
-
+//CRIANDO O MAP QUE VAI GERAR A LISTA NA CLASSE PESSOA
 		if (pbf) {
-			Beneficio b = new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")), null);
-			beneficios.add(b);
-
+//			Beneficio b = new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty() ? 0.0
+//					: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")), null);
+//			beneficios.add(b);
+			beneficios.put("PBF", Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")));
 		}
 
-		if (bpci == true) {
-			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")), null);
-			beneficios.add(b);
+		if (bpci) {
+//			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty() ? 0.0
+//					: Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")), null);
+//			beneficios.add(b);
 
+			beneficios.put("BPCI", Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")));
 		}
 
-		if (bpcd == true) {
-			Beneficio b = new Beneficio(BeneficioTipo.BPCDEF, valorBpcd.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")), null);
-			beneficios.add(b);
+		if (bpcd) {
+//			Beneficio b = new Beneficio(BeneficioTipo.BPCDEF, valorBpcd.getText().isEmpty() ? 0.0
+//					: Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")), null);
+//			beneficios.add(b);
+			beneficios.put("BPCDEF", Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")));
 
 		}
-		if (nv == true) {
-			Beneficio b = new Beneficio(BeneficioTipo.NV, valorNv.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")), null);
-			beneficios.add(b);
+		if (nv) {
+//			Beneficio b = new Beneficio(BeneficioTipo.NV, valorNv.getText().isEmpty() ? 0.0
+//					: Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")), null);
+//			beneficios.add(b);
+			beneficios.put("NV", Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")));
 
 		}
-		if (outro == true) {
-			Beneficio b = new Beneficio(BeneficioTipo.O, valorOutro.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")), null);
-			beneficios.add(b);
+		if (outro) {
+//			Beneficio b = new Beneficio(BeneficioTipo.O, valorOutro.getText().isEmpty() ? 0.0
+//					: Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")), null);
+//			beneficios.add(b);
+			beneficios.put("O", Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")));
 
 		}
 
@@ -912,8 +866,8 @@ public class FormularioPessoaControlador implements Initializable{
 		}
 		FamiliaDAO daof = new FamiliaDAO();
 		daof.abrirTransacao();
-		Familia f = familia;
-		Pessoa p = pessoa;
+		Familia f = daof.obterPorID(familia.getId());
+		Pessoa p = dao.obterPorID(pessoa.getId());
 
 		p.setNome(nome.getText());
 		p.setHomonimo(homo);
@@ -931,7 +885,6 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setCor(cor);
 		p.setEscolaridade_pes(escolaridade);
 		p.setPrioritarioSCFV(pri);
-		p.setBeneficios(beneficios);
 		p.setGestante(ges);
 		p.setComDeficiencia(def);
 		p.setNoSCFV(scfvB);
@@ -943,6 +896,7 @@ public class FormularioPessoaControlador implements Initializable{
 		setPessoa(p, true);
 		f.setAtivo(true);
 		f.setNumero(f.getPessoas().size());
+		p.setBeneficios(beneficios, pbf, bpci, bpcd, nv, outro);
 		daof.atualizar(f);
 		dao.atualizar(p);
 		dao.fecharTransacao().fechar();

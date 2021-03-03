@@ -99,7 +99,7 @@ public class Familia {
 	@Column(columnDefinition = "boolean default false")
 	private boolean mulherChefe;
 	
-	@Transient
+	@OneToMany(mappedBy="familia")
 	private List<Beneficio> beneficios = new ArrayList<>();
 	
 	@OneToMany
