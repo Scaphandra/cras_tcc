@@ -33,6 +33,10 @@ public class Atendimento {
 	@Column(name="id_atendimento")
 	private Long id;
 	
+	@ManyToOne
+	@JoinColumn(name="id_unidade")
+	private Unidade unidade;
+	
 	@OneToOne
 	@JoinColumn(name="id_pessoa")
 	private Pessoa pessoa;
@@ -58,6 +62,9 @@ public class Atendimento {
 	@ManyToOne
 	@JoinColumn(name="funcionario_atendimento")
 	private Funcionario funcionario;
+	
+//	@Column(name="descricao_atendimento", columnDefinition="VARCHAR(500)")
+//	private String descricao;
 	
 	@ManyToMany
 	@JoinTable(name="atendimento_grupo",
@@ -145,9 +152,24 @@ public class Atendimento {
 
 	public void setBeneficioEventual(BeneficioEventual beneficioEventual) {
 		this.beneficioEventual = beneficioEventual;
+	}	
+	
+	public Unidade getUnidade() {
+		return unidade;
 	}
-	
-	
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+	}
+
+//	public String getDescricao() {
+//		return descricao;
+//	}
+//
+//	public void setDescricao(String descricao) {
+//		this.descricao = descricao;
+//	}
+
 	@Override
 	public String toString() {
 		return tipo.toString();

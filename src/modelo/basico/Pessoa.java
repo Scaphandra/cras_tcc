@@ -12,6 +12,7 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
@@ -26,6 +27,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import modelo.dao.BeneficioDAO;
 import modelo.dao.PessoaDAO;
@@ -137,6 +139,18 @@ public class Pessoa {
 	@Column(columnDefinition = "boolean default false")
 	private Boolean ativo;
 	
+	@Transient
+	boolean pbf = false;
+	@Transient
+	boolean bpci = false;
+	@Transient
+	boolean bpcd = false;
+	@Transient
+	boolean nv = false;
+	@Transient
+	boolean outro = false;
+	
+	
 //	@OneToMany
 //	@JoinTable(name="beneficios_novo",
 //	joinColumns = {@JoinColumn (name="nome")}, inverseJoinColumns = {@JoinColumn (name="valor_b")})
@@ -146,7 +160,6 @@ public class Pessoa {
 	public Pessoa() {
 		
 	}
-	
 
 
 	public void excluirBanco() {
@@ -328,8 +341,7 @@ public class Pessoa {
 	}
 
 	public double getRenda() {
-//		DecimalFormat formato = new DecimalFormat("0.00");      
-//		renda = Double.valueOf(formato.format(renda));
+
 		return renda;
 	}
 
@@ -366,154 +378,175 @@ public class Pessoa {
 	
 	//OPÇÃO PESSOA NOVA
 	public void setBeneficios(List<Beneficio> beneficios) {
+		
 		this.beneficios = beneficios;
-	}
-	//SOBRESCRIÇÃO DO MÉTODO SETBENEFICIOS PARA PODER GERAR LISTA COM VALOR ATUALIZADO E BENEFÍCIO EXCLUÍDO SAIR DO BANCO
-	//OPÇÃO EDITAR PESSOA JÁ CRIADA
-	
-	public void setBeneficios(Map <String, Double> nova, boolean p, boolean b1, boolean b2, boolean n, boolean o) {
-		
-		//TODO -> está salvando o beneficio duas vezes e não está excluindo.
-		
-		List<Beneficio> bs = new ArrayList<>();
-
-		
-		
-		boolean pbf = false;
-		boolean bpci = false;
-		boolean bpcd = false;
-		boolean nv = false;
-		boolean outro = false;
-
-		BeneficioDAO dao = new BeneficioDAO();
-		
-		dao.abrirTransacao();
-		
-		Beneficio novo = new Beneficio();
 		
 		if(this.beneficios!=null) {
 			
 			for (Beneficio b : this.beneficios) {
+				
 				if (b.getNome().equals(BeneficioTipo.PBF)) {
 					pbf = true;
-					if (pbf && p) {
-						System.out.println("edição de pbf");
-						b = dao.obterPorID(b.getId_beneficio());
-						b.setValor(nova.get("PBF"));
-						bs.add(b);
-						dao.atualizar(b);
-					}
-					if (pbf && !p) {
-						System.out.println("Excluir pbf");
-						b = dao.obterPorID(b.getId_beneficio());
-						dao.remover(b);
-					}
 				}
-				
-				else if (b.getNome().equals(BeneficioTipo.BPCI)) {
+				else if(b.getNome().equals(BeneficioTipo.BPCI)){
 					bpci = true;
-					if (bpci && b1) {
-						b = dao.obterPorID(b.getId_beneficio());
-						b.setValor(nova.get("BPCI"));
-						bs.add(b);
-						dao.atualizar(b);
-					}
-					if (bpci && !b1) {
-						b = dao.obterPorID(b.getId_beneficio());
-						dao.remover(b);
-					}
 				}
-				
-				else if (b.getNome().equals(BeneficioTipo.BPCDEF)) {
+				else if(b.getNome().equals(BeneficioTipo.BPCDEF)){
 					bpcd = true;
-					if (bpcd && b2) {
-						b = dao.obterPorID(b.getId_beneficio());
-						b.setValor(nova.get("BPCDEF"));
-						bs.add(b);
-						dao.atualizar(b);
-					}
-					if (bpcd && !b2) {
-						b = dao.obterPorID(b.getId_beneficio());
-						dao.remover(b);
-					}
 				}
-				
-				else if (b.getNome().equals(BeneficioTipo.NV)) {
+				else if(b.getNome().equals(BeneficioTipo.NV)){
 					nv = true;
-					if (nv && n) {
-						b = dao.obterPorID(b.getId_beneficio());
-						b.setValor(nova.get("NV"));
-						bs.add(b);
-						dao.atualizar(b);
-					}
-					if (nv && !n) {
-						b = dao.obterPorID(b.getId_beneficio());
-						dao.remover(b);
-					}
 				}
-				
-				else if (b.getNome().equals(BeneficioTipo.O)) {
+				else if(b.getNome().equals(BeneficioTipo.O)){
 					outro = true;
-					
-					if (outro && o) {
-						b = dao.obterPorID(b.getId_beneficio());
-						b.setValor(nova.get("O"));
-						bs.add(b);
-						dao.atualizar(b);
-					}
-					if (outro && !o) {
-						b = dao.obterPorID(b.getId_beneficio());
-						dao.remover(b);
-					}
+				}
+			}
+		}
+		
+		setNomesBeneficios(pbf, bpci, bpcd, nv, outro);
+	}
+	//SOBRESCRIÇÃO DO MÉTODO SETBENEFICIOS PARA PODER GERAR LISTA COM VALOR ATUALIZADO E BENEFÍCIO EXCLUÍDO SAIR DO BANCO
+	//OPÇÃO EDITAR PESSOA JÁ CRIADA
+	
+	private void checarBeneficios() {
+		
+		for (Beneficio b : this.beneficios) {
+			if (b.getNome().equals(BeneficioTipo.PBF)) {
+				pbf = true;
+			}
+			else if(b.getNome().equals(BeneficioTipo.BPCI)) {
+				bpci = true;
+			}
+			else if(b.getNome().equals(BeneficioTipo.BPCDEF)) {
+				bpcd = true;
+			}
+			else if(b.getNome().equals(BeneficioTipo.NV)) {
+				nv = true;
+			}
+			else if(b.getNome().equals(BeneficioTipo.O)) {
+				outro = true;
+			}
+		}
+	}
+	
+	public void setBeneficios(Map <String, Double> nova, boolean p, boolean b1, boolean b2, boolean n, boolean o, EntityManager em) {
+		
+		//TODO -> está salvando o beneficio duas vezes e não está excluindo.
+		
+		List<Beneficio> bs = new ArrayList<>();
+		
+		Beneficio novo = new Beneficio();
+
+		if (this.beneficios != null) {
+			checarBeneficios();
+			for (Beneficio b : this.beneficios) {
+				if (pbf && p) {
+					System.err.print("PBF --------->Alterar");
+					b = em.find(Beneficio.class, b.getId_beneficio());
+					b.setValor(nova.get("PBF") == null ? 0 : nova.get("PBF"));
+					bs.add(b);
+					em.merge(b);
+				}
+				if (pbf && !p) {
+					pbf = false;
+					System.err.print("PBF --------->Excluir\n");
+					novo = em.find(Beneficio.class, b.getId_beneficio());
+					em.remove(novo);
+				}
+
+				if (bpci && b1) {
+					b = em.find(Beneficio.class,b.getId_beneficio());
+					b.setValor(nova.get("BPCI") == null ? 0 : nova.get("BPCI"));
+					bs.add(b);
+					em.merge(b);
+				}
+				if (bpci && !b1) {
+					bpci = false;
+					novo = em.find(Beneficio.class,b.getId_beneficio());
+					em.remove(novo);
+				}
+
+				if (bpcd && b2) {
+					b = em.find(Beneficio.class,b.getId_beneficio());
+					b.setValor(nova.get("BPCDEF") == null ? 0 : nova.get("BPCDEF"));
+					bs.add(b);
+					em.merge(b);
+				}
+				if (bpcd && !b2) {
+					bpcd = false;
+					novo = em.find(Beneficio.class,b.getId_beneficio());
+					em.remove(novo);
+				}
+
+				if (nv && n) {
+					b = em.find(Beneficio.class,b.getId_beneficio());
+					b.setValor(nova.get("NV") == null ? 0 : nova.get("NV"));
+					bs.add(b);
+					em.merge(b);
+				}
+				if (nv && !n) {
+					nv = false;
+					novo = em.find(Beneficio.class,b.getId_beneficio());
+					em.remove(novo);
+				}
+
+				if (outro && o) {
+					b = em.find(Beneficio.class,b.getId_beneficio());
+					b.setValor(nova.get("O") == null ? 0 : nova.get("O"));
+					bs.add(b);
+					em.merge(b);
+				}
+				if (outro && !o) {
+					outro = false;
+					novo = em.find(Beneficio.class,b.getId_beneficio());
+					em.remove(novo);
 				}
 			}
 		}
 		if (!pbf && p) {
-			System.out.println("Novo pbf");
+			System.err.print("PBF --------->Novo");
 			pbf = true;
 			novo.setValor(nova.get("PBF"));
 			novo.setNome(BeneficioTipo.PBF);
 			novo.setPessoa(this);
-			dao.incluir(novo);
+			em.persist(novo);
 			bs.add(novo);
 
 		}
-		else if (!bpci && b1) {
+		if (!bpci && b1) {
 			bpci = true;
 			novo.setValor(nova.get("BPCI"));
 			novo.setNome(BeneficioTipo.BPCI);
 			novo.setPessoa(this);
-			dao.incluir(novo);
+			em.persist(novo);
 			bs.add(novo);
 
 		}
-		else if (!bpcd && b2) {
+		if (!bpcd && b2) {
 			bpcd = true;
 			novo.setValor(nova.get("BPCDEF"));
 			novo.setNome(BeneficioTipo.BPCDEF);
 			novo.setPessoa(this);
-			dao.incluir(novo);
+			em.persist(novo);
 			bs.add(novo);
 
 		}
-		else if (!nv && n) {
+		if (!nv && n) {
 			nv = true;
 			novo.setValor(nova.get("NV"));
 			novo.setNome(BeneficioTipo.NV);
 			novo.setPessoa(this);
-			dao.incluir(novo);
+			em.persist(novo);
 			bs.add(novo);
 		}
-		else if (!outro && o) {
+		if (!outro && o) {
 			outro = true;
 			novo.setValor(nova.get("O"));
 			novo.setNome(BeneficioTipo.O);
 			novo.setPessoa(this);
-			dao.incluir(novo);
+			em.persist(novo);
 			bs.add(novo);
 		}
-
-		dao.fecharTransacao().fechar();
 
 		this.beneficios = bs;
 		

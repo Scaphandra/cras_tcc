@@ -23,7 +23,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 import modelo.enumerados.AtendimentoTipo;
 import modelo.enumerados.Composicao;
@@ -40,6 +39,10 @@ public class Familia {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_familia")
 	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name="id_unidade")
+	private Unidade unidade;
 	
 	//colocado o cascadeType persist porque na hora de reativar família sem pessoa de referencia deu TransientPropertyValueException
 	@OneToOne(cascade=CascadeType.PERSIST)
@@ -323,16 +326,19 @@ public class Familia {
 		return percapita;
 	}
 
+
 	public void setPercapita() {
 //		DecimalFormat formato = new DecimalFormat("###.##");      
 //		double renda = Double.valueOf(formato.format(this.totalRenda/pessoas_familia.size()));
 		//this.percapita = renda;
-		DecimalFormat d = new DecimalFormat("####,##");
-		d.format(this.percapita);
-		this.percapita = totalRenda/pessoas_familia.size();
+//		DecimalFormat d = new DecimalFormat("####,##");
+//		d.format(this.percapita);
+		
+		this.percapita = getTotalRenda()/pessoas_familia.size();
 	}
 
 	public double getTotalRenda() {
+		setTotalRenda();
 		return totalRenda;
 	}
 	

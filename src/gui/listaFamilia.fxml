@@ -30,7 +30,7 @@
           <TableColumn fx:id="colunaId" prefWidth="85.33331286907196" text="Identificador" />
           <TableColumn fx:id="colunaResponsavel" prefWidth="349.3332824707031" text="Responsável Familiar" />
             <TableColumn fx:id="colunaNum" prefWidth="69.3333740234375" text="nº pessoas" />
-            <TableColumn fx:id="colunaAtivo" prefWidth="86.666748046875" text="Ativo" />
+            <TableColumn fx:id="colunaData" prefWidth="86.666748046875" text="Data Inclusão" />
         </columns>
       </TableView>
       <HBox prefHeight="47.0" prefWidth="595.0" />

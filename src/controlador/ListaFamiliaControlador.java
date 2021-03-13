@@ -2,7 +2,9 @@ package controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -24,6 +26,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
@@ -38,7 +41,6 @@ import modelo.dao.FamiliaDAO;
 //observer
 
 public class ListaFamiliaControlador implements Initializable{
-	
 	
 
 	private Familia familia;
@@ -64,7 +66,7 @@ public class ListaFamiliaControlador implements Initializable{
 	private TableColumn<Familia, Integer> colunaNum;
 	
 	@FXML 
-	private TableColumn <Familia, String> colunaAtivo;
+	private TableColumn <Familia, Date> colunaData;
 	
 	@FXML
 	private Button selecionar;
@@ -161,7 +163,7 @@ public class ListaFamiliaControlador implements Initializable{
 		
 		Stage parentStage = Util.atual(evento);
 		
-		criarVisualizar("/gui/listaFamiliaVisualizar.fxml",parentStage, familia);
+		criarVisualizar("/gui/familiaVisualizar.fxml",parentStage, familia);
 		
 		
 	}
@@ -180,6 +182,16 @@ public class ListaFamiliaControlador implements Initializable{
 		carregarFamilia();
 		
 	}
+	
+	protected String converteData(Date dt) {
+		if (dt == null) {
+			return "";
+		}
+		SimpleDateFormat formatBra;
+		formatBra = new SimpleDateFormat("dd/MM/yyyy");
+
+		return formatBra.format(dt).toString();
+	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void iniciarComponentes() {
@@ -187,7 +199,27 @@ public class ListaFamiliaControlador implements Initializable{
 		colunaId.setCellValueFactory(new PropertyValueFactory<Familia, Long>("id"));
 		colunaResponsavel.setCellValueFactory(new PropertyValueFactory<Familia, String>("pesReferencia"));
 		colunaNum.setCellValueFactory(new PropertyValueFactory<Familia, Integer>("numero"));
-		colunaAtivo.setCellValueFactory(new PropertyValueFactory<Familia, String>("ativo"));
+		//colunaData.setCellValueFactory(new PropertyValueFactory<Familia, Date>("dataEntrada"));
+		colunaData.setCellValueFactory(new PropertyValueFactory<Familia, Date>("dataEntrada"));
+		
+        
+        colunaData.setCellFactory( cell -> {          
+              
+            return new TableCell<Familia, Date>() {
+                //SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                
+                @Override
+                protected void updateItem(Date item, boolean empty) {
+                   super.updateItem(item, empty);
+                   if( !empty ) {
+                      setText( converteData(item));
+                   }else {
+                      setText("");
+                      setGraphic(null);
+                   }
+                }
+            };        
+         } );
 		
 		Stage cena = (Stage) App.getCena().getWindow();
 		tabelaFamilia.prefHeightProperty().bind(cena.heightProperty());

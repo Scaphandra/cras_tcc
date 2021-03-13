@@ -9,11 +9,17 @@ public class Agenda {
 	
 	private Long id;
 	
+	private Tecnico tecnico;
+	
 	private List<Familia> familias = new ArrayList<>();	
 	
 	private Date previsao;
 	
 	private int tamanho;
+	
+	private boolean adiado;
+	
+	private int limite;
 	
 	public Agenda() {
 		
@@ -23,8 +29,11 @@ public class Agenda {
 		return familias;
 	}
 
-	public void setFamilias(List<Familia> familias) {
-		this.familias = familias;
+	public void setFamilias(Familia familia) {
+		if(limite>0) {
+			this.familias.add(familia);
+			limite -= 1;
+		}
 	}
 
 	public Date getPrevisao() {
@@ -41,6 +50,7 @@ public class Agenda {
 
 	public void setTamanho(int tamanho) {
 		this.tamanho = tamanho;
+		this.limite = tamanho;
 	}
 	
 	

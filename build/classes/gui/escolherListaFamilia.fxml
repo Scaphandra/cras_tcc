@@ -4,12 +4,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="432.0" prefWidth="683.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.ListaFamiliaVisualizar">
+<AnchorPane prefHeight="332.0" prefWidth="586.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.EscolherListaPessoaControlador">
    <children>
       <GridPane layoutX="14.0" layoutY="46.0" prefHeight="60.0" prefWidth="558.0">
         <columnConstraints>
@@ -20,17 +21,19 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
+         <children>
+            <Button fx:id="selecionar" mnemonicParsing="false" onAction="#clicarSelecionar" text="Selecionar Família" />
+            <TextField fx:id="busca" onKeyReleased="#filtrar" promptText="buscar por nome" GridPane.rowIndex="1" />
+         </children>
       </GridPane>
-      <TableView fx:id="tabelaFamilia" layoutX="23.0" layoutY="73.0" prefHeight="285.0" prefWidth="637.0">
+      <TableView fx:id="tabelaPessoa" layoutX="14.0" layoutY="118.0" prefHeight="200.0" prefWidth="558.0">
         <columns>
           <TableColumn fx:id="colunaId" prefWidth="49.333340644836426" text="código" />
-          <TableColumn fx:id="colunaNome" prefWidth="278.6666488647461" text="Nome" />
-            <TableColumn fx:id="colunaQuantidade" prefWidth="88.6666259765625" text="Nº de pessoas" />
-            <TableColumn fx:id="colunaData" prefWidth="142.66677856445312" text="Data de Inclusao" />
-            <TableColumn fx:id="colunaAtivo" prefWidth="75.0" text="Situação" />
+          <TableColumn fx:id="colunaNome" prefWidth="304.66670989990234" text="Nome da Pessoa de Referência" />
+            <TableColumn fx:id="colunaQuantidade" prefWidth="81.99993896484375" text="qtd. pessoas" />
+            <TableColumn fx:id="colunaData" prefWidth="120.66671752929688" text="Data de Inclusão" />
         </columns>
       </TableView>
-      <Label fx:id="idFamilia" layoutX="14.0" layoutY="14.0" text="Selecione a Família que deseja visualizar" />
-      <Button fx:id="selecionar" layoutX="281.0" layoutY="373.0" mnemonicParsing="false" onAction="#clicarSelecionar" text="Selecionar Família" />
+      <Label fx:id="idFamilia" layoutX="14.0" layoutY="14.0" text="Selecione a Família incluir ação:" />
    </children>
 </AnchorPane>

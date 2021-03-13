@@ -2,6 +2,7 @@ package controlador;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,7 +16,6 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import aplicacao.App;
-import gui.listeners.DataChangeListener;
 import gui.util.Alerta;
 import gui.util.MaskFieldUtil;
 import gui.util.Util;
@@ -50,7 +50,6 @@ import modelo.basico.Unidade;
 import modelo.dao.DAO;
 import modelo.dao.FamiliaDAO;
 import modelo.dao.PessoaDAO;
-import modelo.enumerados.BeneficioTipo;
 import modelo.enumerados.EnderecoTipo;
 import modelo.enumerados.MoradiaTipo;
 import modelo.enumerados.SituacaoFamilia;
@@ -384,6 +383,7 @@ public class FormularioFamiliaControlador implements Initializable {
 
 	@FXML
 	private void clicarEditar(ActionEvent event) {
+		
 
 		Stage parentStage = Util.atual(event);
 
@@ -444,6 +444,9 @@ public class FormularioFamiliaControlador implements Initializable {
 		String jpql = "select p from Pessoa p where id_familia='" + id + "'";//+ "' and estado!='RF'";
 		TypedQuery<Pessoa> query = em.createQuery(jpql, Pessoa.class);
 		List<Pessoa> pessoas = query.getResultList();
+		
+		
+		
 		ObservableList<Pessoa> obsPessoa = FXCollections.observableArrayList(pessoas);
 		tabelaPessoas.setItems(obsPessoa);
 		tabelaPessoas.setMaxHeight(180);
@@ -464,6 +467,7 @@ public class FormularioFamiliaControlador implements Initializable {
 
 			}
 		});
+		
 
 	}
 
@@ -485,6 +489,7 @@ public class FormularioFamiliaControlador implements Initializable {
 		if (!entidade.isAtivo()) {
 			btDesligar.setDisable(true);
 		}
+		
 		txtReferencia.setText(entidade.getPesReferencia() == null ? "" : entidade.getPesReferencia().getNome());
 		txtDataInclusao
 				.setText(converteData(entidade.getDataEntrada() == null ? (new Date()) : entidade.getDataEntrada()));
@@ -523,7 +528,7 @@ public class FormularioFamiliaControlador implements Initializable {
 		descumprimento = checkDescumprimento.selectedProperty().getValue();
 		
 		entidade.setTotalRenda();
-		txtRenda.setText(String.valueOf(entidade.getTotalRenda()));// * 10));
+		txtRenda.setText(String.valueOf(entidade.getTotalRenda()*10)+"");
 		entidade.setRendaReferencia();
 
 		entidade.setTotalBeneficio();
@@ -533,7 +538,8 @@ public class FormularioFamiliaControlador implements Initializable {
 		txtDataCad
 				.setText(entidade.ultimoAtendimentoCad() == null ? "" : converteData(entidade.ultimoAtendimentoCad()));
 		entidade.setPercapita();
-		txtPerCapita.setText(entidade.getPercapita()+"");// * 10 + "");
+		DecimalFormat d = new DecimalFormat("####,##");
+		txtPerCapita.setText(d.format(entidade.getPercapita()*100) + "");
 		if (!entidade.isAtivo()) {
 			labelAtivo.setStyle("-fx-text-fill: #ff0000;");
 		}
@@ -552,7 +558,7 @@ public class FormularioFamiliaControlador implements Initializable {
 //
 //		daof.fecharTransacao();
 //		daof.fechar();
-
+		carregarPessoas(this.entidade.getId());
 	}
 
 	private void carregarComboBox() {

@@ -1,19 +1,16 @@
 package aplicacao;
-//github.com/Scaphandra/tcc_cras
+
 import java.net.URL;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class App extends Application{
-	//foi necessário instalar um pluggin para ter a possibilidade de escolher um arquifo
-	//fxml na aba help -> eclipse MarcketPlace -> javafx e procurar
-	//plugin selecionado foi e(fx)clipse
+public class Teste extends Application{
 	
-	private static Scene cena;
+private static Scene cena;
 	
 
 	
@@ -21,15 +18,15 @@ public class App extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		
 		
-		//String arquivoCSS = getClass().getResource("../gui/estilo.css").toExternalForm();
-		URL arquivoFXML = getClass().getResource("../gui/app.fxml");
+		String arquivoCSS = getClass().getResource("../gui/estilo.css").toExternalForm();
+		URL arquivoFXML = getClass().getResource("../gui/agenda.fxml");
 		FXMLLoader loader = new FXMLLoader(arquivoFXML);
-		ScrollPane raiz = loader.load();
+		AnchorPane raiz = loader.load();
 		//ScrollPane raiz = loader.load(arquivoFXML);
 		
 		
-		raiz.setFitToHeight(true);
-		raiz.setFitToWidth(true);
+//		raiz.setFitToHeight(true);
+//		raiz.setFitToWidth(true);
 		
 		cena = new Scene(raiz);
 		//cena.getStylesheets().add(arquivoCSS);
@@ -55,3 +52,5 @@ public class App extends Application{
 	}
 	
 }
+
+

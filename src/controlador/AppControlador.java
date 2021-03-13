@@ -18,7 +18,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import modelo.basico.Familia;
+import modelo.basico.Funcionario;
 import modelo.basico.Pessoa;
+import modelo.dao.FuncionarioDAO;
 
 public class AppControlador implements Initializable, DataChangeListener{
 
@@ -37,7 +39,15 @@ public class AppControlador implements Initializable, DataChangeListener{
 	@FXML
 	private MenuItem menuRegistro;
 	
+	private Funcionario func;
+	
 
+	public void setFuncionario(Funcionario f) {
+		this.func = f;
+		System.out.println(f.toString());
+	}
+	
+	
 	@FXML
 	private void clicarFamilia() {
 		System.out.println("familia");
@@ -61,7 +71,16 @@ public class AppControlador implements Initializable, DataChangeListener{
 	
 	@FXML
 	private void clicarMenuAtendimento() {
-		System.out.println("atendimento");
+		FuncionarioDAO dao = new FuncionarioDAO();
+		Funcionario f = dao.obterPorID(3L);
+		rodarTela("../gui/menuAtendimento.fxml", (MenuAtendimento controlador) ->{
+			controlador.setFuncionario(f);
+		});
+	}
+	
+	@FXML
+	private void clicarAgenda() {
+		
 	}
 	
 	@FXML

@@ -1,7 +1,8 @@
 package modelo.enumerados;
 
 public enum NivelAcesso {
-	COORDENADOR("Coordenador"), TECNICO("Técnico"), RECEPCIONISTA("Recepcionista"), SEMACESSO("Sem Acesso");
+	COORDENADOR("Coordenador"), TECNICO("Técnico"), RECEPCIONISTA("Recepcionista"), 
+	SEMACESSO("Sem Acesso"), VIGILANCIA("Vigilância");
 	
 private String descricao;
 	

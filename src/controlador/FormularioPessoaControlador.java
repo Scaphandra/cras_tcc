@@ -40,6 +40,7 @@ import javafx.stage.Stage;
 import modelo.basico.Beneficio;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
+import modelo.dao.BeneficioDAO;
 import modelo.dao.FamiliaDAO;
 import modelo.dao.PessoaDAO;
 import modelo.enumerados.BeneficioTipo;
@@ -51,7 +52,7 @@ import modelo.enumerados.PessoaEstado;
 import modelo.enumerados.Sexo;
 
 public class FormularioPessoaControlador implements Initializable{
-
+	
 	private Pessoa pessoa;
 
 	private Familia familia;
@@ -516,9 +517,8 @@ public class FormularioPessoaControlador implements Initializable{
 		nis.setText(pessoa.getNis());
 		dataNasc.setText(converteData(pessoa.getDataNascimento()));
 		nomeMae.setText(pessoa.getNomeMae());
-		renda.setText(String.valueOf(pessoa.getRenda()));// * 10));
+		renda.setText(String.valueOf(pessoa.getRenda()));
 		ocupacao.setText(pessoa.getOcupacao());
-
 		boxGenero.getSelectionModel().select(pessoa.getGenero());
 		genero = (Genero) boxGenero.getSelectionModel().getSelectedItem();
 
@@ -587,11 +587,11 @@ public class FormularioPessoaControlador implements Initializable{
 		}
 		bpci = (boolean) bpci_b.selectedProperty().getValue();
 		pbf = (boolean) pbf_b.selectedProperty().getValue();
-		bpcd = (boolean) pbf_b.selectedProperty().getValue();
-		nv = (boolean) pbf_b.selectedProperty().getValue();
-		outro = (boolean) pbf_b.selectedProperty().getValue();
+		bpcd = (boolean) bpcd_b.selectedProperty().getValue();
+		nv = (boolean) nova_b.selectedProperty().getValue();
+		outro = (boolean) outro_b.selectedProperty().getValue();
 
-		valorBolsa.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.PBF)));// * 10));
+		valorBolsa.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.PBF) * 10));
 		valorBpci.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.BPCI)));
 		valorBpcd.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.BPCDEF)));
 		valorNv.setText(String.valueOf(pessoa.getValorBeneficio(BeneficioTipo.NV)));
@@ -610,6 +610,8 @@ public class FormularioPessoaControlador implements Initializable{
 		ValidationSupport validarTxt = new ValidationSupport();
 		validarTxt.registerValidator(nome, Validator.createEmptyValidator("Campo Obrigatório"));
 		validarTxt.registerValidator(dataNasc, Validator.createEmptyValidator("Campo Obrigatório"));
+		Pessoa p = new Pessoa();
+		this.pessoa = p;
 
 		// CRIANDO LISTA DE BENEFÍCIO
 
@@ -617,34 +619,34 @@ public class FormularioPessoaControlador implements Initializable{
 
 		if (pbf) {
 			Beneficio b = new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")), null);
+					: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")), p);
 			beneficios.add(b);
 			em.persist(b);
 		}
 
 		if (bpci == true) {
 			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")), null);
+					: Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")), p);
 			beneficios.add(b);
 			em.persist(b);
 		}
 
 		if (bpcd == true) {
 			Beneficio b = new Beneficio(BeneficioTipo.BPCDEF, valorBpcd.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")), null);
+					: Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")), p);
 			beneficios.add(b);
 			em.persist(b);
 		}
 		if (nv == true) {
 			Beneficio b = new Beneficio(BeneficioTipo.NV, valorNv.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")), null);
+					: Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")), p);
 			beneficios.add(b);
 			em.persist(b);
 
 		}
 		if (outro == true) {
 			Beneficio b = new Beneficio(BeneficioTipo.O, valorOutro.getText().isEmpty() ? 0.0
-					: Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")), null);
+					: Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")), p);
 			beneficios.add(b);
 			em.persist(b);
 		}
@@ -659,8 +661,6 @@ public class FormularioPessoaControlador implements Initializable{
 			e.printStackTrace();
 		}
 
-		Pessoa p = new Pessoa();
-		this.pessoa = p;
 		Familia f = em.find(Familia.class, this.familia.getId());
 
 		//p.setAtivo(true);
@@ -705,7 +705,14 @@ public class FormularioPessoaControlador implements Initializable{
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-
+//		PessoaDAO daop = new PessoaDAO();
+//		FamiliaDAO daof = new FamiliaDAO();
+//		BeneficioDAO daob = new BeneficioDAO();
+//		daop.abrirTransacao();
+//		daof.abrirTransacao();
+//		daob.abrirTransacao();
+		
+//		Pessoa p = daop.obterPorID(pessoa.getId());
 		Pessoa p = em.find(Pessoa.class, pessoa.getId());
 
 		ValidationSupport validarTxt = new ValidationSupport();
@@ -718,45 +725,23 @@ public class FormularioPessoaControlador implements Initializable{
 		
 
 		if (pbf) {
-//			Beneficio b = new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")), null);
-//			beneficios.add(b);
-//			em.persist(b);
-			beneficios.put("PBF", Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")));
+			beneficios.put("PBF", Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", "."))/10);
 
 		}
 
-		else if (bpci) {
-//			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")), null);
-//			beneficios.add(b);
-//			em.persist(b);
+		if (bpci) {
 			beneficios.put("BPCI", Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")));
 		}
 		
-		else if (bpcd) {
-//			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpcd.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")), null);
-//			beneficios.add(b);
-//			em.persist(b);
+		if (bpcd) {
 			beneficios.put("BPCDEF", Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")));
 		}
 
-		else if (nv) {
-//			Beneficio b = new Beneficio(BeneficioTipo.NV, valorNv.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")), null);
-//
-//			beneficios.add(b);
-//			em.persist(b);
+		if (nv) {
 			beneficios.put("NV", Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")));
 
 		}
-		else if (outro) {
-//			Beneficio b = new Beneficio(BeneficioTipo.O, valorOutro.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")), null);
-//
-//			beneficios.add(b);
-//			em.persist(b);
+		if (outro) {
 			beneficios.put("O", Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")));
 		}
 	
@@ -770,9 +755,8 @@ public class FormularioPessoaControlador implements Initializable{
 			e.printStackTrace();
 		}
 
-
-		Familia f = p.getFamilia();
-
+		Familia f = em.find(Familia.class, p.getFamilia().getId());
+		
 		p.setNome(nome.getText());
 		p.setHomonimo(homo);
 		p.setCpf(cpf.getText().isEmpty() ? "" : cpf.getText());
@@ -789,7 +773,7 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setCor(cor);
 		p.setEscolaridade_pes(escolaridade);
 		p.setPrioritarioSCFV(pri);
-		p.setBeneficios(beneficios, pbf, bpci, bpcd, nv, outro);
+		p.setBeneficios(beneficios, pbf, bpci, bpcd, nv, outro, em);
 		p.setGestante(ges);
 		p.setComDeficiencia(def);
 		p.setNoSCFV(scfvB);
@@ -797,9 +781,11 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setFamilia(f);
 
 		em.merge(p);
+		em.merge(f);
 		em.getTransaction().commit();
 		em.close();
 		emf.close();
+		
 
 	}
 
@@ -809,50 +795,52 @@ public class FormularioPessoaControlador implements Initializable{
 		// AS FAMÍLIAS SERÃO RECONHECIDAS PELA PESSOA DE REFERÊNCIA UMA VEZ QUE O ID É
 		// IRRELEVANTE NA ROTINA DO PROFISSIONAL
 
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
+		EntityManager em = emf.createEntityManager();
+		em.getTransaction().begin();
+		
 		ValidationSupport validarTxt = new ValidationSupport();
 		validarTxt.registerValidator(nome, Validator.createEmptyValidator("Campo Obrigatório"));
 		validarTxt.registerValidator(dataNasc, Validator.createEmptyValidator("Campo Obrigatório"));
 
-		Map <String, Double> beneficios = new HashMap<>();
 
-		PessoaDAO dao = new PessoaDAO();
-		dao.abrirTransacao();
-//CRIANDO O MAP QUE VAI GERAR A LISTA NA CLASSE PESSOA
+		Familia f = new Familia();
+		Pessoa p = new Pessoa();
+
+		List<Beneficio> beneficios = new ArrayList<>();
+		
 		if (pbf) {
-//			Beneficio b = new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")), null);
-//			beneficios.add(b);
-			beneficios.put("PBF", Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")));
+			Beneficio b = new Beneficio(BeneficioTipo.PBF, valorBolsa.getText().isEmpty() ? 0.0
+					: Double.parseDouble(valorBolsa.getText().replace(".", "").replace(",", ".")), p);
+			beneficios.add(b);
+			em.persist(b);
 		}
-
-		if (bpci) {
-//			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")), null);
-//			beneficios.add(b);
-
-			beneficios.put("BPCI", Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")));
+		
+		if (bpci == true) {
+			Beneficio b = new Beneficio(BeneficioTipo.BPCI, valorBpci.getText().isEmpty() ? 0.0
+					: Double.parseDouble(valorBpci.getText().replace(".", "").replace(",", ".")), p);
+			beneficios.add(b);
+			em.persist(b);
 		}
-
-		if (bpcd) {
-//			Beneficio b = new Beneficio(BeneficioTipo.BPCDEF, valorBpcd.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")), null);
-//			beneficios.add(b);
-			beneficios.put("BPCDEF", Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")));
-
+		
+		if (bpcd == true) {
+			Beneficio b = new Beneficio(BeneficioTipo.BPCDEF, valorBpcd.getText().isEmpty() ? 0.0
+					: Double.parseDouble(valorBpcd.getText().replace(".", "").replace(",", ".")), p);
+			beneficios.add(b);
+			em.persist(b);
 		}
-		if (nv) {
-//			Beneficio b = new Beneficio(BeneficioTipo.NV, valorNv.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")), null);
-//			beneficios.add(b);
-			beneficios.put("NV", Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")));
-
+		if (nv == true) {
+			Beneficio b = new Beneficio(BeneficioTipo.NV, valorNv.getText().isEmpty() ? 0.0
+					: Double.parseDouble(valorNv.getText().replace(".", "").replace(",", ".")), p);
+			beneficios.add(b);
+			em.persist(b);
+			
 		}
-		if (outro) {
-//			Beneficio b = new Beneficio(BeneficioTipo.O, valorOutro.getText().isEmpty() ? 0.0
-//					: Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")), null);
-//			beneficios.add(b);
-			beneficios.put("O", Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")));
-
+		if (outro == true) {
+			Beneficio b = new Beneficio(BeneficioTipo.O, valorOutro.getText().isEmpty() ? 0.0
+					: Double.parseDouble(valorOutro.getText().replace(".", "").replace(",", ".")), p);
+			beneficios.add(b);
+			em.persist(b);
 		}
 
 		SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -864,10 +852,6 @@ public class FormularioPessoaControlador implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		FamiliaDAO daof = new FamiliaDAO();
-		daof.abrirTransacao();
-		Familia f = daof.obterPorID(familia.getId());
-		Pessoa p = dao.obterPorID(pessoa.getId());
 
 		p.setNome(nome.getText());
 		p.setHomonimo(homo);
@@ -896,11 +880,12 @@ public class FormularioPessoaControlador implements Initializable{
 		setPessoa(p, true);
 		f.setAtivo(true);
 		f.setNumero(f.getPessoas().size());
-		p.setBeneficios(beneficios, pbf, bpci, bpcd, nv, outro);
-		daof.atualizar(f);
-		dao.atualizar(p);
-		dao.fecharTransacao().fechar();
-		daof.fecharTransacao().fechar();
+		p.setBeneficios(beneficios);
+		em.persist(f);
+		em.persist(p);
+		em.getTransaction().commit();
+		em.close();
+		emf.close();
 		familia = f;
 
 	}
@@ -953,13 +938,11 @@ public class FormularioPessoaControlador implements Initializable{
 
 			// SE FOR PESSOA NOVA
 		} else {
-			//System.out.println(entidade.toString());
 
 			if (rf) {
 				
 				this.pessoa = new Pessoa();
 				this.pessoa.setAtivo(true);
-				//this.pessoa.setPesReferencia(true);
 				this.pessoa.setEstado(PessoaEstado.RF);
 				setPessoa(this.pessoa, true);
 

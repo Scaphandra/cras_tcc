@@ -1,18 +1,24 @@
 package teste.basico;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import modelo.basico.Pessoa;
+import java.util.Scanner;
 
 public class TestePrint {
 	public static void main(String[] args) {
-//		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
-//		EntityManager em = emf.createEntityManager();
-//		em.getTransaction().begin();
-
-	
+		int menor = 1000;
+		int vetor [] = new int[10];
+		Scanner ler = new Scanner(System.in);
+		System.out.println("Digite 10 números aleatórios");
+		for(int i=0;i<10;i++) {
+			int n = ler.nextInt();
+			vetor[i] = n;
+			if(n<menor) {
+				menor = n;
+			}
+		}
+		for(int i=0;i<10;i++) {
+			System.out.println(vetor[i]);
+		}
+		System.out.println("O menor número é "+menor);
 	}
 	
 }

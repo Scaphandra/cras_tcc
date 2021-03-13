@@ -37,7 +37,7 @@ import modelo.basico.Familia;
 import modelo.basico.Pessoa;
 import modelo.dao.FamiliaDAO;
 
-public class ListaFamiliaVisualizar implements Initializable{
+public class ListaVisualizarControlador implements Initializable{
 	
 	private FamiliaDAO daof = new FamiliaDAO();
 	
@@ -98,6 +98,9 @@ public class ListaFamiliaVisualizar implements Initializable{
 	@FXML
 	void clicarSelecionar(ActionEvent event) {
 		
+		Stage parentStage = Util.atual(event);
+		
+		criarFormulario(this.familia, "/gui/visualizarFamilia.fxml",parentStage);
 		
 	}
 
@@ -145,6 +148,7 @@ public class ListaFamiliaVisualizar implements Initializable{
 			VisualizarFamiliaControlador controlador = loader.getController();
 			controlador.setFamilia(f);
 			controlador.carregarFamilia(f);
+			controlador.carregarPessoas(f.getId());
 
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Digite os dados para inclusão de pessoa de referência da família");

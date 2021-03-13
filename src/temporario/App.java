@@ -1,4 +1,4 @@
-package aplicacao;
+package temporario;
 //github.com/Scaphandra/tcc_cras
 import java.net.URL;
 
@@ -21,18 +21,18 @@ public class App extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		
 		
-		//String arquivoCSS = getClass().getResource("../gui/estilo.css").toExternalForm();
+		String arquivoCSS = getClass().getResource("../gui/estilo.css").toExternalForm();
 		URL arquivoFXML = getClass().getResource("../gui/app.fxml");
 		FXMLLoader loader = new FXMLLoader(arquivoFXML);
 		ScrollPane raiz = loader.load();
 		//ScrollPane raiz = loader.load(arquivoFXML);
 		
 		
-		raiz.setFitToHeight(true);
-		raiz.setFitToWidth(true);
+//		raiz.setFitToHeight(true);
+//		raiz.setFitToWidth(true);
 		
 		cena = new Scene(raiz);
-		//cena.getStylesheets().add(arquivoCSS);
+		cena.getStylesheets().add(arquivoCSS);
 		
 		
 		primaryStage.setResizable(true);

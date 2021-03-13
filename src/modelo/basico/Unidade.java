@@ -10,6 +10,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,6 +21,9 @@ public class Unidade {
 	@Id
 	@Column(name="id_unidade")
 	private Integer id = 1;
+	
+	@OneToMany(mappedBy= "unidade", fetch=FetchType.LAZY)
+	private List <Familia> familias = new ArrayList<>();
 
 	private String idCRAS;
 	

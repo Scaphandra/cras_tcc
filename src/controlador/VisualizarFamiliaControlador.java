@@ -1,6 +1,8 @@
 package controlador;
 
+import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -19,19 +21,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableView.TableViewSelectionModel;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.basico.Beneficio;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
-import modelo.dao.FamiliaDAO;
 import modelo.enumerados.BeneficioTipo;
 import modelo.enumerados.EnderecoTipo;
 
@@ -184,7 +188,7 @@ public class VisualizarFamiliaControlador implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		
 		colunaNome.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("nome"));
 		colId.setCellValueFactory(new PropertyValueFactory<Pessoa, Long>("id"));
 		colunaIdade.setCellValueFactory(new PropertyValueFactory<Pessoa, Integer>("idade"));
@@ -211,7 +215,7 @@ public class VisualizarFamiliaControlador implements Initializable {
 			labelAtivo.setStyle("-fx-text-fill: #ff0000;");
 		}
 		dataInclusao.setText("Data de Inclusão: "+ converteData(familia.getDataEntrada()));
-		labelAtivo.setText("CADASTRO" +familia.getAtivo());
+		labelAtivo.setText("CADASTRO " +familia.getAtivo());
 		referencia.setText("Pessoa de Referência: "+familia.getPesReferencia().toString());
 		idPessoa.setText("Código pessoa: "+familia.getPesReferencia().getId());
 		endTipo.setText(familia.getEndereco().getTipo_endereco()==null?
@@ -219,7 +223,7 @@ public class VisualizarFamiliaControlador implements Initializable {
 		logradouro.setText(familia.getEndereco().getLogradouro()==null?
 				"":familia.getEndereco().getLogradouro());
 		num.setText(familia.getEndereco().getNumero() == 0?
-				"":"Número: "+Integer.toString(familia.getEndereco().getNumero()));
+				"":"Nº: "+Integer.toString(familia.getEndereco().getNumero()));
 		complemento.setText(familia.getEndereco().getComplemento()==null?
 				"":"Complemento: "+familia.getEndereco().getComplemento());
 		cep.setText(familia.getEndereco().getCep()==null?
@@ -281,10 +285,11 @@ public class VisualizarFamiliaControlador implements Initializable {
 				}
 			}
 		}
+		DecimalFormat decimal = new DecimalFormat("####,##");
 		totalBeneficios.setText("Total R$ " + Double.toString(familia.getTotalBeneficios()));
 		rendaRef.setText("Renda da Pessoa de Referência R$ "+Double.toString(familia.getRendaReferencia()));
 		rendaTotal.setText("Renda Total R$ " + Double.toString(familia.getTotalRenda()));
-		perCapita.setText("Renda Per Capita R$" + Double.toString(familia.getPercapita()));
+		perCapita.setText("Renda Per Capita R$ " + familia.getPercapita());
 		labelDataDesligamento.setText(familia.getDataDesligamento()==null?
 				"Nunca foi desligada": "Data do Desligamento: "+ familia.getDataDesligamento());
 		labelMotivoDesligamento.setText(familia.getMotivoDesligamento()==null?
@@ -297,7 +302,7 @@ public class VisualizarFamiliaControlador implements Initializable {
 	public void carregarPessoas(Long id) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
-		String jpql = "select p from Pessoa p where id_familia='" + id + "' and estado!='RF'";
+		String jpql = "select p from Pessoa p where id_familia='" + id +"'";
 		TypedQuery<Pessoa> query = em.createQuery(jpql, Pessoa.class);
 		List<Pessoa> pessoas = query.getResultList();
 		ObservableList <Pessoa> obsPessoa = FXCollections.observableArrayList(pessoas);
@@ -323,5 +328,39 @@ public class VisualizarFamiliaControlador implements Initializable {
 	@FXML
 	void clicarOk(ActionEvent event) {
 		Util.atual(event).close();
+	}
+	
+	
+	@FXML
+	void clicarVisualizarPessoa(ActionEvent event) {
+		Stage parent = Util.atual(event);
+		chamarFormulario(selecionado, "/gui/visualizarPessoa.fxml", parent);
+	}
+	
+	
+	private void chamarFormulario(Pessoa p, String caminho, Stage parentStage) {
+
+		try {
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+			Pane pane = loader.load();
+
+			VisualizarPessoaControlador controlador = loader.getController();
+			
+			controlador.carregarPessoa(selecionado.getId());
+			
+			Stage avisoCena = new Stage();
+			avisoCena.setTitle("Digite os dados para inclusão de pessoa");
+			avisoCena.setScene(new Scene(pane));
+			avisoCena.setResizable(false);
+			avisoCena.initOwner(parentStage);
+			avisoCena.initModality(Modality.WINDOW_MODAL);
+			avisoCena.showAndWait();
+
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

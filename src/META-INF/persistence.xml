@@ -34,21 +34,27 @@
 			<!-- <property name= "javax.persistence.jdbc.url" 
 				value="jdbc:mysql://localhost/cras"></property>
 				value="jdbc:mysql://localhost/cras?useTimezone='true';serverTimezone='UTC';useSSL='false'"></property>
-				-->
-			<property name= "javax.persistence.jdbc.url" 
+				-->				
+			<property name= "javax.persistence.jdbc.url" 	
 				value="jdbc:mysql://localhost/cras?useSSL=false"></property>
+				
 			<property name= "javax.persistence.jdbc.user" 
 				value="tcc"></property>
+				
 			<property name= "javax.persistence.jdbc.password" 
 				value="tcccras"></property>
 		
 			<property name= "hibernate.dialect" 
 				value="org.hibernate.dialect.MySQL57Dialect"></property>
+				
 			<property name= "hibernate.show_sql" 
 				value="true"></property>
+				
 			<property name= "hibernate.format_sql" 
 				value="true"></property>
+				
 			<property name= "hibernate.hbm2ddl.auto" value="update"></property>
+			
 		</properties>
 	
 	
