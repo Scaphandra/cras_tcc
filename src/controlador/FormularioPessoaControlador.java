@@ -29,6 +29,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -40,8 +42,7 @@ import javafx.stage.Stage;
 import modelo.basico.Beneficio;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
-import modelo.dao.BeneficioDAO;
-import modelo.dao.FamiliaDAO;
+import modelo.basico.Unidade;
 import modelo.dao.PessoaDAO;
 import modelo.enumerados.BeneficioTipo;
 import modelo.enumerados.Composicao;
@@ -56,6 +57,10 @@ public class FormularioPessoaControlador implements Initializable{
 	private Pessoa pessoa;
 
 	private Familia familia;
+	
+	private int idUnidade;
+	
+	Pessoa pessoaBusca;
 
 	Long id = null;
 
@@ -68,6 +73,9 @@ public class FormularioPessoaControlador implements Initializable{
 	private boolean rf;
 	
 	private boolean famNova;
+	
+	@FXML
+	private Button botaoUsar;
 
 	@FXML
 	private Label labelAtivo;
@@ -89,9 +97,14 @@ public class FormularioPessoaControlador implements Initializable{
 
 	@FXML
 	private CheckBox homonimo;
-
+	
 	private boolean homo;
 
+	@FXML 
+	private CheckBox checkClt;
+
+	private boolean clt;
+	
 	private Composicao compo;
 
 	private CorRaca cor;
@@ -233,21 +246,59 @@ public class FormularioPessoaControlador implements Initializable{
 		
 	}
 	
+	public void setUnidade(int idUnidade) {
+		this.idUnidade = idUnidade;
+	}
+	
+	public void desabilitarBotaoUsar() {
+		botaoUsar.setDisable(true);
+	}
 
 	@FXML
 	private void clicarNome(ActionEvent event) {
 
 	}
+	
+	@FXML
+	public void clicarUsarBanco(ActionEvent event) {
+		
+		if (pessoaBusca == null || pessoaBusca.getNome()==null || nome.getText().isEmpty()) {
+
+			Alert alerta = new Alert(AlertType.WARNING);
+			alerta.setTitle("Não houve busca");
+			alerta.setHeaderText("Digite um nome no campo 'nome'");
+			alerta.show();
+		}
+		if (pessoaBusca.getUnidade() != null) {
+			Alert alerta = new Alert(AlertType.WARNING);
+			alerta.setTitle("Pessoa cadastrada");
+			alerta.setHeaderText("Essa pessoa ainda está cadastrada na unidade "
+			+ pessoaBusca.getUnidade().getNomeCRAS());
+			alerta.show();
+
+		}
+		if(pessoaBusca.getUnidade()==null) {
+			if(famNova) {
+				this.pessoaBusca.setComposicao(Composicao.RF);
+			}
+			this.pessoa = pessoaBusca;
+			pesNova = false;
+			//this.pessoa.setFamilia(familia);
+			//clicarSalvar(event);
+			preencherPessoa();
+		}
+
+	}
 
 	@FXML
 	public void clicarSalvar(ActionEvent evento) {
-
-		if (rf && pesNova && famNova) {
+		//Quando criamos uma nova família
+		if ((rf && pesNova && famNova)||(rf && !pesNova && famNova)) {
 			Stage parentStage = Util.atual(evento);
 			salvarNovaFamilia();
 			chamarFormulario(pessoa, familia, "/gui/formularioFamilia.fxml", parentStage, true);
 			Util.atual(evento).close();
-			
+		//Quando não é um RF
 		}if(!rf) {
 			if (pesNova) {
 				salvarPessoa();
@@ -259,6 +310,7 @@ public class FormularioPessoaControlador implements Initializable{
 				
 				Util.atual(evento).close();
 			}
+		//Quando o Cadastro é chamado de Alterar Pessoa de Referência -> RF é pessoa nova
 		}if(rf && pesNova && !famNova) {
 			
 			salvarPessoa();
@@ -284,10 +336,15 @@ public class FormularioPessoaControlador implements Initializable{
 			emf.close();
 			Util.atual(evento).close();
 		}
+		//Quando vamos editar um RF
 		if(rf && !pesNova && !famNova) {
 			editarPessoa();
 			Util.atual(evento).close();
 		}
+//		//Quando Usamos uma pessoa já cadastrada para iniciar uma nova Família (bt -> Usar Pessoa do Banco)
+//		if(rf && !pesNova && famNova) {
+//			
+//		}
 
 	}
 
@@ -394,6 +451,12 @@ public class FormularioPessoaControlador implements Initializable{
 	public void clicarPrioritario() {
 		pri = prioritario.selectedProperty().getValue();
 	}
+	
+	@FXML
+	public void clicarCLT() {
+		
+		clt = checkClt.selectedProperty().getValue();
+	}
 
 	@FXML
 	public void clicarBoxCor() {
@@ -499,10 +562,7 @@ public class FormularioPessoaControlador implements Initializable{
 		if (pessoa == null) {
 			throw new IllegalStateException("Pessoa não está no banco");
 		}
-
-		//this.id = entidade.getId();
-		System.out.println(pessoa.toString());
-		//nullPointer 
+		//TODO setar unidade aqui 
 		if (!pessoa.isAtivo()) {
 			labelAtivo.setStyle("-fx-text-fill: #ff0000;");
 		}
@@ -519,6 +579,8 @@ public class FormularioPessoaControlador implements Initializable{
 		nomeMae.setText(pessoa.getNomeMae());
 		renda.setText(String.valueOf(pessoa.getRenda()));
 		ocupacao.setText(pessoa.getOcupacao());
+		checkClt.setSelected(pessoa.isVinculoFormal());
+		clt = checkClt.selectedProperty().getValue();
 		boxGenero.getSelectionModel().select(pessoa.getGenero());
 		genero = (Genero) boxGenero.getSelectionModel().getSelectedItem();
 
@@ -606,7 +668,7 @@ public class FormularioPessoaControlador implements Initializable{
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-
+		
 		ValidationSupport validarTxt = new ValidationSupport();
 		validarTxt.registerValidator(nome, Validator.createEmptyValidator("Campo Obrigatório"));
 		validarTxt.registerValidator(dataNasc, Validator.createEmptyValidator("Campo Obrigatório"));
@@ -662,9 +724,10 @@ public class FormularioPessoaControlador implements Initializable{
 		}
 
 		Familia f = em.find(Familia.class, this.familia.getId());
+		Unidade u = em.find(Unidade.class, familia.getUnidade().getId());
 
 		//p.setAtivo(true);
-
+		p.setAtivo(true);
 		p.setNome(nome.getText());
 		p.setHomonimo(homo);
 		p.setCpf(cpf.getText().isEmpty() ? "" : cpf.getText());
@@ -687,11 +750,14 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setComDeficiencia(def);
 		p.setNoSCFV(scfvB);
 		p.setHomonimo(homo);
+		p.setVinculoFormal(clt);
 		p.setEstado(PessoaEstado.P);
+		//TODO retirar pesReferencia
 		p.setPesReferencia(false);
 		p.setFamilia(f);
 		f.setNumero(f.getPessoas().size());
-
+		p.setUnidade(u);
+		
 		em.persist(p);
 		em.merge(f);
 		em.getTransaction().commit();
@@ -755,8 +821,11 @@ public class FormularioPessoaControlador implements Initializable{
 			e.printStackTrace();
 		}
 
-		Familia f = em.find(Familia.class, p.getFamilia().getId());
+		Familia f = em.find(Familia.class, familia.getId());
+		Unidade u = em.find(Unidade.class, familia.getUnidade().getId());
 		
+		System.out.println(u.getNomeCRAS()); 
+		p.setAtivo(true);
 		p.setNome(nome.getText());
 		p.setHomonimo(homo);
 		p.setCpf(cpf.getText().isEmpty() ? "" : cpf.getText());
@@ -778,7 +847,11 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setComDeficiencia(def);
 		p.setNoSCFV(scfvB);
 		p.setHomonimo(homo);
+		p.setVinculoFormal(clt);
 		p.setFamilia(f);
+		f.setUnidade(u);
+		p.setUnidade(u);
+		u.setPessoa(p);
 
 		em.merge(p);
 		em.merge(f);
@@ -803,9 +876,13 @@ public class FormularioPessoaControlador implements Initializable{
 		validarTxt.registerValidator(nome, Validator.createEmptyValidator("Campo Obrigatório"));
 		validarTxt.registerValidator(dataNasc, Validator.createEmptyValidator("Campo Obrigatório"));
 
-
-		Familia f = new Familia();
 		Pessoa p = new Pessoa();
+		Familia f = new Familia();
+		Unidade u = em.find(Unidade.class, idUnidade);
+		if(pessoa.getId()!=null) {
+			p = em.find(Pessoa.class, pessoa.getId());
+			
+		}
 
 		List<Beneficio> beneficios = new ArrayList<>();
 		
@@ -853,6 +930,7 @@ public class FormularioPessoaControlador implements Initializable{
 			e.printStackTrace();
 		}
 
+		p.setAtivo(true);
 		p.setNome(nome.getText());
 		p.setHomonimo(homo);
 		p.setCpf(cpf.getText().isEmpty() ? "" : cpf.getText());
@@ -873,6 +951,7 @@ public class FormularioPessoaControlador implements Initializable{
 		p.setComDeficiencia(def);
 		p.setNoSCFV(scfvB);
 		p.setHomonimo(homo);
+		p.setVinculoFormal(clt);
 		p.setPesReferencia(true);
 		p.setEstado(PessoaEstado.RF);
 		f.setPesReferencia(p);
@@ -881,8 +960,14 @@ public class FormularioPessoaControlador implements Initializable{
 		f.setAtivo(true);
 		f.setNumero(f.getPessoas().size());
 		p.setBeneficios(beneficios);
+		f.setUnidade(u);
+		p.setUnidade(u);
 		em.persist(f);
-		em.persist(p);
+		if(pesNova) {
+			em.persist(p);
+		}else {
+			em.merge(p);
+		}
 		em.getTransaction().commit();
 		em.close();
 		emf.close();
@@ -903,6 +988,7 @@ public class FormularioPessoaControlador implements Initializable{
 			controlador.setFamiliaNova(familiaNova);
 			controlador.setPessoa(p);
 			controlador.preencherFamilia();
+			controlador.setUnidade(this.idUnidade);
 			
 			Stage avisoCena = new Stage();
 			avisoCena.setTitle("Digite os dados para inclusão de pessoa");
@@ -917,6 +1003,34 @@ public class FormularioPessoaControlador implements Initializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private Pessoa chamarEscolherBanco(String caminho, Stage parentStage) {
+		Pessoa p = new Pessoa();
+		try {
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+			Pane pane = loader.load();
+
+			EscolherListaPessoaControlador controlador = loader.getController();
+				
+			
+			Stage avisoCena = new Stage();
+			avisoCena.setTitle("Escolha Pessoa do Sistema");
+			avisoCena.setScene(new Scene(pane));
+			avisoCena.setResizable(false);
+			avisoCena.initOwner(parentStage);
+			avisoCena.initModality(Modality.WINDOW_MODAL);
+			avisoCena.showAndWait();
+			
+			p =  controlador.getPessoa();
+
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return p;
 	}
 
 	public void prepararPessoa(Pessoa p) {
@@ -987,15 +1101,20 @@ public class FormularioPessoaControlador implements Initializable{
 			System.out.println("textfield changed from " + oldValue + " to " + newValue);
 
 			if (newValue == null) {
-
+				lista.clear();
 				buscar.setText("Pessoas com o mesmo nome devem ser marcadas como Homônimo");
 
 			} else {
+				if(newValue.length()>=5) {
+					atualizarFiltro();
+					lista.clear();
+					
+					System.out.println(buscar.getText());
+				}
+				else {
+					lista.clear();
+				}
 				
-				lista.clear();
-				atualizarFiltro();
-				
-				System.out.println(buscar.getText());
 
 			}
 
@@ -1012,10 +1131,16 @@ public class FormularioPessoaControlador implements Initializable{
 			
 			lista = dao.obterPrimeiros(nome.getText(), "nome");
 			
-			
-
-			buscar.setText("Já existe uma pessoa com o nome: " + lista.get(0).getNome()
-					+ " - código identificador: " + lista.get(0).getId().toString());
+//			if(lista.size() <= nome.getText().length()) {
+//				
+//				lista.clear();
+//				return;
+//			}
+			buscar.setText("Já existe uma pessoa com o nome: " + (lista.get(0).getNome()).toUpperCase()
+					+ " - código identificador: " + lista.get(0).getId().toString() 
+					+ (lista.get(0).getUnidade()==null?
+							" 'Sem unidade'":"-> Unidade: "+lista.get(0).getUnidade().getNomeCRAS()));
+			pessoaBusca =  lista.get(0);
 			
 		} else {
 			buscar.setText("");

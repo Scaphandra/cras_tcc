@@ -21,7 +21,7 @@ public class App extends Application{
 	public void start(Stage primaryStage) throws Exception {
 		
 		
-		//String arquivoCSS = getClass().getResource("../gui/estilo.css").toExternalForm();
+		String arquivoCSS = getClass().getResource("../gui/estilo.css").toExternalForm();
 		URL arquivoFXML = getClass().getResource("../gui/app.fxml");
 		FXMLLoader loader = new FXMLLoader(arquivoFXML);
 		ScrollPane raiz = loader.load();
@@ -32,7 +32,7 @@ public class App extends Application{
 		raiz.setFitToWidth(true);
 		
 		cena = new Scene(raiz);
-		//cena.getStylesheets().add(arquivoCSS);
+		cena.getStylesheets().add(arquivoCSS);
 		
 		
 		primaryStage.setResizable(true);

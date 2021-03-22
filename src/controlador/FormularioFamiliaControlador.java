@@ -60,6 +60,8 @@ public class FormularioFamiliaControlador implements Initializable {
 
 	@SuppressWarnings("unused")
 	private Long id = null;
+	
+	private int idUnidade;
 
 	private Pessoa pessoa;
 
@@ -259,6 +261,10 @@ public class FormularioFamiliaControlador implements Initializable {
 		this.pessoa = pessoa;
 
 	}
+	
+	public void setUnidade(int u) {
+		this.idUnidade = u;
+	}
 
 	@FXML
 	void clicarBoxBairro(ActionEvent event) {
@@ -289,6 +295,7 @@ public class FormularioFamiliaControlador implements Initializable {
 		if (moradia == MoradiaTipo.A || moradia == MoradiaTipo.S) {
 			txtAlugada.setDisable(false);
 		} else {
+			txtAlugada.setText("0");
 			txtAlugada.setDisable(true);
 
 		}
@@ -441,7 +448,8 @@ public class FormularioFamiliaControlador implements Initializable {
 	public void carregarPessoas(Long id) {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("cras_tcc");
 		EntityManager em = emf.createEntityManager();
-		String jpql = "select p from Pessoa p where id_familia='" + id + "'";//+ "' and estado!='RF'";
+		//TODO unidade não está entrando
+		String jpql = "select p from Pessoa p where id_familia='" + id + "' and unidade='"+idUnidade+"'";
 		TypedQuery<Pessoa> query = em.createQuery(jpql, Pessoa.class);
 		List<Pessoa> pessoas = query.getResultList();
 		
@@ -533,10 +541,11 @@ public class FormularioFamiliaControlador implements Initializable {
 
 		entidade.setTotalBeneficio();
 		txtTotalBeneficio.setText(String.valueOf(entidade.getTotalBeneficio())+"");// * 10));
-		txtDataAtendimento.setText(
-				entidade.ultimoAtendimentoTecnico() == null ? "" : converteData(entidade.ultimoAtendimentoTecnico()));
-		txtDataCad
-				.setText(entidade.ultimoAtendimentoCad() == null ? "" : converteData(entidade.ultimoAtendimentoCad()));
+		//TODO melhorar visualização do último Atendimento, impactando pessoa velha em família nova
+//		txtDataAtendimento.setText(
+//				entidade.ultimoAtendimentoTecnico() == null ? "" : converteData(entidade.ultimoAtendimentoTecnico()));
+//		txtDataCad
+//				.setText(entidade.ultimoAtendimentoCad() == null ? "" : converteData(entidade.ultimoAtendimentoCad()));
 		entidade.setPercapita();
 		DecimalFormat d = new DecimalFormat("####,##");
 		txtPerCapita.setText(d.format(entidade.getPercapita()*100) + "");
@@ -660,6 +669,8 @@ public class FormularioFamiliaControlador implements Initializable {
 		f.setPerfilCreas(creas);
 		f.setDescumprimento(descumprimento);
 		f.setMulherChefe(mulherChefe);
+		f.setEndereco(e);
+		
 
 		daof.incluir(f);
 		daof.fecharTransacao().fechar();
@@ -703,6 +714,7 @@ public class FormularioFamiliaControlador implements Initializable {
 			controlador.identificarRF(p.isPesReferencia());
 			controlador.prepararPessoa(p);
 			controlador.setFamilia(this.entidade, false);
+			controlador.desabilitarBotaoUsar();
 			controlador.preencherPessoa();
 
 			Stage avisoCena = new Stage();

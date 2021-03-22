@@ -20,7 +20,9 @@ import javafx.scene.layout.VBox;
 import modelo.basico.Familia;
 import modelo.basico.Funcionario;
 import modelo.basico.Pessoa;
+import modelo.basico.Unidade;
 import modelo.dao.FuncionarioDAO;
+import modelo.dao.UnidadeDAO;
 
 public class AppControlador implements Initializable, DataChangeListener{
 
@@ -41,7 +43,15 @@ public class AppControlador implements Initializable, DataChangeListener{
 	
 	private Funcionario func;
 	
+	private int unidade = 1;
+	
 
+	public void setUnidade(int u) {
+		this.unidade = u;
+		
+	}
+	
+	
 	public void setFuncionario(Funcionario f) {
 		this.func = f;
 		System.out.println(f.toString());
@@ -52,9 +62,12 @@ public class AppControlador implements Initializable, DataChangeListener{
 	private void clicarFamilia() {
 		System.out.println("familia");
 		rodarTela("../gui/listaFamilia.fxml",(ListaFamiliaControlador controlador)-> {
+			
+			controlador.setUnidade(unidade);
 			controlador.setFamilia(new Familia());
 			controlador.carregarFamilia();
 			controlador.inscreverListener(this);
+			
 		});
 	
 	}
@@ -73,7 +86,7 @@ public class AppControlador implements Initializable, DataChangeListener{
 	private void clicarMenuAtendimento() {
 		FuncionarioDAO dao = new FuncionarioDAO();
 		Funcionario f = dao.obterPorID(3L);
-		rodarTela("../gui/menuAtendimento.fxml", (MenuAtendimento controlador) ->{
+		rodarTela("../gui/menuAtendimento.fxml", (MenuAtendimentoControlador controlador) ->{
 			controlador.setFuncionario(f);
 		});
 	}

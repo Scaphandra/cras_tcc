@@ -29,6 +29,10 @@ public class Visita {
 	@Column(name="id_visita")
 	private Long id;
 	
+	@ManyToOne
+	@JoinColumn(name="id_unidade")
+	private Unidade unidade;
+	
 	@Enumerated(EnumType.STRING)
 	@Column(name="tipo_visita")
 	private VisitaTipo tipo;
@@ -60,6 +64,14 @@ public class Visita {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 
 	public VisitaTipo getTipo() {

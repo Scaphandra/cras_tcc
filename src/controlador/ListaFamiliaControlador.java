@@ -36,6 +36,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import modelo.basico.Familia;
 import modelo.basico.Pessoa;
+import modelo.basico.Unidade;
 import modelo.dao.FamiliaDAO;
 
 //observer
@@ -44,6 +45,8 @@ public class ListaFamiliaControlador implements Initializable{
 	
 
 	private Familia familia;
+	
+	private int unidade;
 	
 	private Object valor;
 	
@@ -81,6 +84,10 @@ public class ListaFamiliaControlador implements Initializable{
 	
 	private ObservableList<Familia> obsFamilia;
 	
+	
+	public void setUnidade(int u) {
+		this.unidade = u;
+	}
 	
 	public void inscreverListener(DataChangeListener d) {
 		listeners.add(d);
@@ -168,8 +175,6 @@ public class ListaFamiliaControlador implements Initializable{
 		
 	}
 	
-
-
 	public void setFamilia(Familia familia) {
 				
 		this.familia = familia;
@@ -241,7 +246,7 @@ public class ListaFamiliaControlador implements Initializable{
 	
 	public void carregarFamilia() {
 		//CRIA UMA LISTA COM TODAS AS FAMÍLIAS PARA APARECEREM NO TABLEVIEW COM A VARIÁVEL OBSFAMILIA
-		List<Familia> pessoas = fdao.obterCondicao("ativo","1");
+		List<Familia> pessoas = fdao.obterCondicao2("ativo","1", "id_unidade",Integer.toString(unidade));
 		obsFamilia = FXCollections.observableArrayList(pessoas);
 		tabelaFamilia.setItems(obsFamilia);
 		
@@ -258,6 +263,7 @@ public class ListaFamiliaControlador implements Initializable{
 			FormularioPessoaControlador controlador = loader.getController();
 			//setando pessoa nova
 			//controlador.setPessoa(obj, true);
+			controlador.setUnidade(this.unidade);
 			controlador.identificarRF(true);
 			controlador.prepararPessoa(null);
 			controlador.preencherPessoa();
@@ -285,6 +291,7 @@ public class ListaFamiliaControlador implements Initializable{
 			
 			FormularioFamiliaControlador controlador = loader.getController();
 			
+			controlador.setUnidade(this.unidade);
 			controlador.setFamilia(obj);
 			controlador.preencherFamilia();
 			controlador.carregarPessoas(obj.getId());

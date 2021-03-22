@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,6 +29,10 @@ public class Reuniao {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_reuniao")
 	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name="id_unidade")
+	private Unidade unidade;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="tipo_reuniao")
@@ -61,6 +66,14 @@ public class Reuniao {
 		this.id = id;
 	}
 	
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+	}
+
 	@Enumerated(EnumType.STRING)
 	public ReuniaoTipo getTipo() {
 		return tipo;

@@ -1,9 +1,11 @@
 package controlador;
 
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.ResourceBundle;
 
+import gui.util.Util;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,8 +15,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import modelo.basico.Pessoa;
+import modelo.dao.PessoaDAO;
 import modelo.enumerados.AtendimentoTipo;
-import modelo.enumerados.Composicao;
 import modelo.enumerados.DemandaAtendimento;
 
 public class FormularioAtendimentoControlador implements Initializable{
@@ -28,7 +31,7 @@ public class FormularioAtendimentoControlador implements Initializable{
     @FXML
     private ComboBox <AtendimentoTipo> comboTipo;
     private ObservableList<AtendimentoTipo> obsTipo;
-    private boolean tipo;
+    private AtendimentoTipo tipo;
 
     @FXML
     private DatePicker data;
@@ -36,7 +39,7 @@ public class FormularioAtendimentoControlador implements Initializable{
     @FXML
     private ComboBox <DemandaAtendimento> comboDemanda;
     private ObservableList<DemandaAtendimento> obsDemanda;
-    private boolean demanda;
+    private DemandaAtendimento demanda;
 
     @FXML
     private Label nomeFuncionario;
@@ -45,15 +48,25 @@ public class FormularioAtendimentoControlador implements Initializable{
     private CheckBox checkRelatorio;
     
     private boolean relatorio;
+    
+    private Pessoa pessoa;
+    
+    public void setPessoa(Pessoa p) {
+    	
+    	PessoaDAO dao = new PessoaDAO();
+    	
+    	this.pessoa = dao.obterPorID(p.getId());
+    }
 
     @FXML
     public void clicarCancelar(ActionEvent event) {
-
+    	
+    	Util.atual(event).close();
     }
 
     @FXML
     public void clicarEncaminhamento(ActionEvent event) {
-
+    	System.out.println("Chamar Formulário Encaminhamento com dados da Pessoa e Família");
     }
 
     @FXML
@@ -65,17 +78,31 @@ public class FormularioAtendimentoControlador implements Initializable{
     @FXML
     public void clicarSalvar(ActionEvent event) {
 
+    	
     }
     
     @FXML
     public void clicarDemanda() {
 
     	demanda = (DemandaAtendimento) comboDemanda.getSelectionModel().getSelectedItem();
+    	
     }
     
     @FXML
     public void clicarTipo() {
-    	tipo = (AtendimentoTipo) comboTipo.setSelectionModel().getSelecitedItem();
+    	
+    	tipo = (AtendimentoTipo) comboTipo.getSelectionModel().getSelectedItem();
+    }
+    
+    private void salvarAtendimentoNovo() {
+    	
+    	
+    }
+    
+    public void carregarAtendimento() {
+    	data.setValue(LocalDate.now());
+    	nomePessoa.setText(this.pessoa.getNome());
+    	idFamilia.setText("Código Familiar: " + this.pessoa.getFamilia().getId());
     }
 
 	
@@ -93,7 +120,8 @@ public class FormularioAtendimentoControlador implements Initializable{
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+
+		carregarCombos();
 		
 	}
 

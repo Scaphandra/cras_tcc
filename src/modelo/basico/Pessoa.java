@@ -50,12 +50,17 @@ public class Pessoa {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_pessoa")
 	private Long id;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_unidade")
+	private Unidade unidade;
 	
 	@Column(name="nome_pessoa")
 	private String nome;
 	
 	@Column(name="cpf_pessoa")
 	private String cpf;
+	
 
 	private String rg;
 
@@ -85,6 +90,9 @@ public class Pessoa {
 	private double renda;
 	
 	private String ocupacao;
+	
+	@Column(name="vinvulo", columnDefinition = "boolean default false")
+	private boolean vinculoFormal;
 	
 	@Enumerated(EnumType.STRING)
 	private Composicao composicao;
@@ -210,6 +218,19 @@ public class Pessoa {
 	public void setPesReferencia(boolean pesReferencia) {
 		this.pesReferencia = pesReferencia;
 	}
+	
+	
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+		this.unidade.setPessoa(this);
+	}
+
 
 	public String getCpf() {
 		return cpf;
@@ -725,6 +746,16 @@ public class Pessoa {
 		}
 		
 	}
+
+	public boolean isVinculoFormal() {
+		return vinculoFormal;
+	}
+
+
+	public void setVinculoFormal(boolean vinculoFormal) {
+		this.vinculoFormal = vinculoFormal;
+	}
+
 
 	@Override
 	public String toString() {

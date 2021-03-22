@@ -25,6 +25,10 @@ public class Encaminhamento {
 	private Long id;
 	
 	@ManyToOne
+	@JoinColumn(name="id_unidade")
+	private Unidade unidade;
+	
+	@ManyToOne
 	@JoinColumn(name="id_tecnico")
 	private Tecnico tecnico;
 	
@@ -50,6 +54,14 @@ public class Encaminhamento {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 
 	public Tecnico getTecnico() {

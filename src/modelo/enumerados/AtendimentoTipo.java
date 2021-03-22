@@ -1,7 +1,7 @@
 package modelo.enumerados;
 
 public enum AtendimentoTipo {
-	T("Técnico"), C("CadÚnico"), R("Recepção");
+	T("Técnico"), C("CadÚnico");
 	
 	private String descricao;
 	

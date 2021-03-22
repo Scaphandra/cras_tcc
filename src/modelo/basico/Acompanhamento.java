@@ -4,10 +4,12 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -21,6 +23,10 @@ public class Acompanhamento {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_acompanhamento")
 	private Long id;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_unidade")
+	private Unidade unidade;
 	
 	@OneToOne
 	@JoinColumn(name="familia_acompanhamento")
@@ -51,6 +57,14 @@ public class Acompanhamento {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 
 	public Familia getFamilia() {

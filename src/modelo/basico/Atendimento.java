@@ -56,12 +56,17 @@ public class Atendimento {
 	@Column(name="relatorio_atendimento")
 	private boolean relatorio;
 	
+	@Column(name="relatorio_encaminhamento", columnDefinition = "boolean default false")
+	private boolean encaminhamento;
+	
 	@Column(name="beneficioEventual_atendimento")
 	private BeneficioEventual beneficioEventual;
 	
 	@ManyToOne
 	@JoinColumn(name="funcionario_atendimento")
 	private Funcionario funcionario;
+	
+	private Long idFamilia;
 	
 //	@Column(name="descricao_atendimento", columnDefinition="VARCHAR(500)")
 //	private String descricao;
@@ -146,6 +151,14 @@ public class Atendimento {
 		this.relatorio = relatorio;
 	}
 
+	public boolean isEncaminhamento() {
+		return encaminhamento;
+	}
+
+	public void setEncaminhamento(boolean encaminhamento) {
+		this.encaminhamento = encaminhamento;
+	}
+
 	public BeneficioEventual getBeneficioEventual() {
 		return beneficioEventual;
 	}
@@ -161,6 +174,15 @@ public class Atendimento {
 	public void setUnidade(Unidade unidade) {
 		this.unidade = unidade;
 	}
+	
+	public Long getIdFamilia() {
+		
+		return this.pessoa.getFamilia().getId();
+	}
+//	public void setIdFamilia() {
+//		
+//		this.idFamilia = this.pessoa.getFamilia().getId();
+//	}
 
 //	public String getDescricao() {
 //		return descricao;

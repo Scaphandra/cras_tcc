@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="443.0" prefWidth="606.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.VisualizarAtendimentoControlador">
+   <children>
+      <Label fx:id="nomePessoa" layoutX="14.0" layoutY="14.0" prefHeight="26.0" prefWidth="410.0" text="Pessoa Atendida">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <Label fx:id="idFamilia" layoutX="435.0" layoutY="18.0" prefHeight="17.0" prefWidth="134.0" text="Código Familiar: " />
+      <Label fx:id="demanda" layoutX="52.0" layoutY="164.0" prefHeight="17.0" prefWidth="521.0" text="Selecione demanda de atendimento: " />
+      <CheckBox fx:id="relatorio" disable="true" layoutX="261.0" layoutY="266.0" mnemonicParsing="false" text="Gerou Relatório" />
+      <Label fx:id="data" layoutX="51.0" layoutY="71.0" prefHeight="17.0" prefWidth="246.0" text="Data do Atendimento:" />
+      <Button layoutX="285.0" layoutY="356.0" mnemonicParsing="false" onAction="#clicarOk" text="OK" />
+      <Label fx:id="tipoAtendimento" layoutX="52.0" layoutY="120.0" prefHeight="17.0" prefWidth="375.0" text="Selecione o tipo de atendimento: " />
+      <Label layoutX="52.0" layoutY="209.0" text="Funcionário Responsável:" />
+      <Label fx:id="nomeFuncionario" layoutX="205.0" layoutY="209.0" prefHeight="17.0" prefWidth="329.0" text="Nome funcionário" />
+      <Label fx:id="encaminhamento" layoutX="51.0" layoutY="258.0" />
+   </children>
+</AnchorPane>

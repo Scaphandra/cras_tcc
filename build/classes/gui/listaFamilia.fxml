@@ -23,6 +23,7 @@
             <Button fx:id="editar" mnemonicParsing="false" onAction="#clicarEditar" text="Editar Família" />
             <Button fx:id="reativar" mnemonicParsing="false" onAction="#clicarReativar" text="Reativar Família" />
             <Button mnemonicParsing="false" onAction="#clicarVisualizar" text="Visualizar Família" />
+            <Button mnemonicParsing="false" text="Acompanhar" />
         </items>
       </ToolBar>
       <TableView fx:id="tabelaFamilia" prefHeight="200.0" prefWidth="463.0">

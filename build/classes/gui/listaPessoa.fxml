@@ -20,7 +20,6 @@
       </Label>
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
-            <Button fx:id="editar" mnemonicParsing="false" onAction="#clicarEditar" text="Editar" />
             <Button fx:id="excluir" mnemonicParsing="false" onAction="#clicarExcluir" text="Excluir" />
         </items>
       </ToolBar>
@@ -37,6 +36,21 @@
             <TableColumn fx:id="colunaAtivo" prefWidth="75.33331298828125" text="Ativo" />
         </columns>
       </TableView>
+      <Label text="Registrar Ação:" />
+      <HBox prefHeight="100.0" prefWidth="517.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#clicarAtendimento" text="Atendimento">
+               <HBox.margin>
+                  <Insets top="20.0" />
+               </HBox.margin>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#clicarAcolhida" text="Acolhida">
+               <HBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
    </children>
    <padding>
       <Insets left="5.0" top="5.0" />

@@ -7,7 +7,8 @@ public enum EncaminhamentoTipo {
 	EDU("Educação"), REDE("Rede Socioassistencial"), SAU("Saúde"), OUTRAS("Outras Políticas"), 
 	EVENTUAL("Benefícios Eventuais"), ACESSUAS("ACESSUAS"),	TARIFA("Tarifa Social"), 
 	CARTEIRA("Carteira Interistadual do Idoso"), ISENCAO("Isenção de Taxa de Concurso Público"),
-	JOVEM("ID Jovem"), DESCINSS("Descontos INSS"), NV("Programa Nova Vida"), PASSE("Passe Social Municipal"), CEAM("CEAM");
+	JOVEM("ID Jovem"), DESCINSS("Descontos INSS"), NV("Programa Nova Vida"), PASSE("Passe Social Municipal"),
+	SCFV("Serviço de Conviência e Fortalecimento de Vínculos"), CEAM("CEAM");
 	
 	private String descricao;
 	

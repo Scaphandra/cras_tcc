@@ -1,8 +1,8 @@
 package modelo.enumerados;
 
 public enum Genero {
-	F("Feminino"), M("Masculino"), HT("Homem Transgênero"), MT("Mulher Transgênero"), 
-	HS("Homem Transexual"), MS("Mulher Transexual"), C("Cisgênero"), O("Outro");
+	F("Mulher Cisgênero"), M("Homem Cisgênero"), MT("Mulher Transgênero"), HT("Homem Transgênero"), 
+	MS("Mulher Transexual"), HS("Homem Transexual"), O("Outro");
 	
 	private String descricao;
 	

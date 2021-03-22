@@ -98,7 +98,10 @@ public class EscolherListaPessoaControlador implements Initializable {
 		
 	}
 	
-	
+	public Pessoa getPessoa() {
+		
+		return this.pessoa;
+	}
 	
 	@FXML
 	void clicarSelecionar(ActionEvent event) {

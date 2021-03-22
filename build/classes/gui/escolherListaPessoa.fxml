@@ -29,9 +29,10 @@
       <TableView fx:id="tabelaPessoa" layoutX="14.0" layoutY="118.0" prefHeight="200.0" prefWidth="558.0">
         <columns>
           <TableColumn fx:id="colunaId" prefWidth="49.333340644836426" text="código" />
-          <TableColumn fx:id="colunaNome" prefWidth="349.99996185302734" text="Nome" />
-            <TableColumn fx:id="colunaIdade" prefWidth="36.00006103515625" text="Idade" />
-            <TableColumn fx:id="colunaData" prefWidth="120.66671752929688" text="Data de Nascimento" />
+          <TableColumn fx:id="colunaNome" prefWidth="262.66670989990234" text="Nome" />
+            <TableColumn fx:id="colunaIdade" prefWidth="42.6666259765625" text="Idade" />
+            <TableColumn fx:id="colunaData" prefWidth="124.6666259765625" text="Data de Nascimento" />
+            <TableColumn fx:id="colunaUnidade" maxWidth="100.0" prefWidth="76.00003051757812" text="Unidade" />
         </columns>
       </TableView>
       <Label fx:id="idFamilia" layoutX="14.0" layoutY="14.0" text="Selecione a pessoa para incluir na Família " />

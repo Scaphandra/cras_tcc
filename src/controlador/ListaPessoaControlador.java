@@ -39,10 +39,11 @@ import modelo.enumerados.PessoaEstado;
 
 public class ListaPessoaControlador implements Initializable{
 
-	@SuppressWarnings("unused")
 	private Pessoa pessoa;
 	
 	private Object valor;
+	
+	private int idUnidade;
 	
 	private Long id;
 	
@@ -86,7 +87,13 @@ public class ListaPessoaControlador implements Initializable{
 	private ObservableList<Pessoa> obsPessoa;
 	
 
+	public void setUnidade(int u) {
+		this.idUnidade = u;
+	}
 	
+	public int getUnidade() {
+		return this.idUnidade;
+	}
 	
 	@FXML
 	private void filtrarRegistros() {
@@ -136,14 +143,14 @@ public class ListaPessoaControlador implements Initializable{
 	}
 	@FXML
 	public void clicarEditar(ActionEvent evento) {
-		Stage parentStage = Util.atual(evento);
-		
-		Pessoa obj = (Pessoa) valor;
-		System.out.println(obj.getId());
-		pessoa = dao.obterPorID(obj.getId());
-		System.out.println(obj);
-		
-		criarFormulario(obj,"/gui/formularioPessoa.fxml", parentStage, false);
+//		Stage parentStage = Util.atual(evento);
+//		
+//		Pessoa obj = (Pessoa) valor;
+//		System.out.println(obj.getId());
+//		pessoa = dao.obterPorID(obj.getId());
+//		System.out.println(obj);
+//		
+//		criarFormulario(obj,"/gui/formularioPessoa.fxml", parentStage, false);
 		
 	}
 	
@@ -172,6 +179,25 @@ public class ListaPessoaControlador implements Initializable{
 			dao.fechar();
 			carregarPessoas();	
 		}
+	}
+	
+	@FXML
+	public void clicarAtendimento(ActionEvent evento) {
+		
+		Stage parent = Util.atual(evento);
+		this.pessoa = (Pessoa) valor;
+		if(this.pessoa==null) {
+			Alerta.showAlert("Nenhuma Pessoa Selecionada", "Selecione uma pessoa", "" , AlertType.WARNING);
+		}else {
+			
+			this.pessoa = dao.obterPorID(this.pessoa.getId());
+			chamarAtendimento("/gui/formularioAtendimento.fxml", this.pessoa, parent);
+		}
+	}
+	
+	@FXML
+	public void clicarAcolhida(ActionEvent evento) {
+		
 	}
 	
 
@@ -205,7 +231,7 @@ public class ListaPessoaControlador implements Initializable{
 		        System.out.println("Selected Value " + item + " "+ id);
 		        Pessoa p = (Pessoa) item;
 		        busca.setText(p.getNome());
-		  
+		        
 		        //System.out.println(item.toString().substring(18,19));
 		       valor = item;
 				
@@ -220,14 +246,8 @@ public class ListaPessoaControlador implements Initializable{
 		colunaNome.setCellValueFactory(new PropertyValueFactory<Pessoa, String>("nome"));
 		colunaIdFamilia.setCellValueFactory(new PropertyValueFactory<>("familia"));
 		colunaAtivo.setCellValueFactory(new PropertyValueFactory<>("ativo"));
-		
-		
-		
-		
 	}
-	
-	
-	
+
 	public void carregarPessoas() {
 		
 		obsPessoa = FXCollections.observableArrayList(lista);
@@ -262,6 +282,29 @@ public class ListaPessoaControlador implements Initializable{
 			avisoCena.showAndWait();
 			
 		}catch(IOException e) {
+			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
+			e.printStackTrace();
+		}
+	}
+	
+	private void chamarAtendimento(String nomeView, Pessoa pessoa, Stage parent) {
+		try {
+
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeView));
+			Pane pane = loader.load();
+			FormularioAtendimentoControlador controlador = loader.getController();
+			controlador.setPessoa(pessoa);
+			controlador.carregarAtendimento();
+
+			Stage avisoCena = new Stage();
+			avisoCena.setTitle("Digite os dados para inclusão de pessoa");
+			avisoCena.setScene(new Scene(pane));
+			avisoCena.setResizable(false);
+			avisoCena.initOwner(parent);
+			avisoCena.initModality(Modality.WINDOW_MODAL);
+			avisoCena.showAndWait();
+
+		} catch (IOException e) {
 			Alerta.showAlert("IOException", "Erro ao carregar a página", e.getMessage(), AlertType.ERROR);
 			e.printStackTrace();
 		}

@@ -461,47 +461,48 @@ public class Familia {
 		this.valorMoradia = valorMoradia;
 	}
 	
-	public Date ultimoAtendimentoCad() {
-		List<Atendimento> cad = new ArrayList<>();
-		for(Pessoa p: pessoas_familia) {
-			if(p.getAtendimentos().size()==0) {
-				return null;
-			}
-			for(Atendimento a: p.getAtendimentos()) {
-				if(a.getTipo() == AtendimentoTipo.C) {
-					cad.add(a);
-				}
-			}
-		}
-		if(cad.isEmpty()) {
-			return null;
-		}else {
-			
-			return cad.get(cad.size()-1).getData();
-		}
-	}
-	public Date ultimoAtendimentoTecnico() {
-		String sql = "Select max(data_atendimento) from atendimento a";
-		
-		List<Atendimento> tec = new ArrayList<>();
-		
-		for(Pessoa p: pessoas_familia) {
-			if(p.getAtendimentos().isEmpty()) {
-				return null;
-			}
-			for(Atendimento a: p.getAtendimentos()) {
-				if(a.getTipo() == AtendimentoTipo.T) {
-					tec.add(a);
-				}
-			}
-		}
-		if(tec.isEmpty()) {
-			return null;
-		}else {
-			
-			return tec.get(tec.size()-1).getData();
-		}
-	}
+//	public Date ultimoAtendimentoCad() {
+//		List<Atendimento> cad = new ArrayList<>();
+//		for(Pessoa p: pessoas_familia) {
+//			if(p.getAtendimentos().size()==0) {
+//				return null;
+//			}
+//			for(Atendimento a: p.getAtendimentos()) {
+//				if(a.getTipo() == AtendimentoTipo.C) {
+//					cad.add(a);
+//				}
+//			}
+//		}
+//		if(cad.isEmpty()) {
+//			return null;
+//		}else {
+//			
+//			return cad.get(cad.size()-1).getData();
+//		}
+//	}
+//	public Date ultimoAtendimentoTecnico() {
+//		
+//		String sql = "Select max(data_atendimento) from atendimento a";
+//		
+//		List<Atendimento> tec = new ArrayList<>();
+//		
+//		for(Pessoa p: pessoas_familia) {
+//			if(p.getAtendimentos().isEmpty()) {
+//				return null;
+//			}
+//			for(Atendimento a: p.getAtendimentos()) {
+//				if(a.getTipo() == AtendimentoTipo.T) {
+//					tec.add(a);
+//				}
+//			}
+//		}
+//		if(tec.isEmpty()) {
+//			return null;
+//		}else {
+//			
+//			return tec.get(tec.size()-1).getData();
+//		}
+//	}
 
 	
 	public void apagarFamilia() {
@@ -523,13 +524,21 @@ public class Familia {
 		this.setTecnico(null);
 		}
 	
+	
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+		this.unidade.setFamilia(this);
+	}
+
 	@Override
 	public String toString() {
 		
 		if(this.pesReferencia == null) {
-			PesReferencia p = new PesReferencia();
-			p.setNome("Não possui");
-			this.pesReferencia = p;
+			return "Não possui";
 		}
 		return pesReferencia.getNome();
 	}

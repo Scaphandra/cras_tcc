@@ -25,6 +25,10 @@ public class Acolhida {
 	@Column(name="id_acolhida")
 	private Long id;
 	
+	@ManyToOne
+	@JoinColumn(name="id_unidade")
+	private Unidade unidade;
+	
 	@Temporal(TemporalType.DATE)
 	@Column(name="dataPrevista_acolhida")
 	private Date dataPrevista;
@@ -46,6 +50,14 @@ public class Acolhida {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
 	}
 
 	public Date getDataPrevista() {

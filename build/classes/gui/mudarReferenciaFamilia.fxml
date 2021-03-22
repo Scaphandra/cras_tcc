@@ -49,7 +49,7 @@
       </Label>
       <Separator layoutX="168.0" layoutY="302.0" prefHeight="3.0" prefWidth="387.0" />
       <Separator layoutX="167.0" layoutY="407.0" prefHeight="3.0" prefWidth="387.0" />
-      <Label layoutX="21.0" layoutY="487.0" prefHeight="67.0" prefWidth="319.0" text="Edite a família a qual a Pessoa de Referência está vinculada e desligue esta Família." wrapText="true">
+      <Label layoutX="21.0" layoutY="487.0" prefHeight="67.0" prefWidth="319.0" text="Desligue esta Família e edite a família a qual a Pessoa de Referência está vinculada." wrapText="true">
          <font>
             <Font size="14.0" />
          </font>

@@ -86,6 +86,19 @@ public class DAO <E> {
 		return obterTodos(10000, 0);
 	}
 	
+	public List<E> obterPorOrdem(String atributo){
+		
+		if (classe == null) {
+			throw new UnsupportedOperationException("Classe nula");
+		}
+		
+		String jpql = "select e from " + classe.getName() + " e order by "+ atributo + " DESC";
+		
+		TypedQuery<E> query = em.createQuery(jpql, classe);
+		
+		return query.getResultList();
+	}
+	
 	public List<E> obterTodos(int qtde, int deslocamento){
 		if (classe == null) {
 			throw new UnsupportedOperationException("Classe nula");
@@ -125,6 +138,13 @@ public class DAO <E> {
 	
 	public List<E> obterCondicao(String nomeDoAtributo, String condicao){
 		String jpql = "select p from "+ classe.getName() + " p where "+nomeDoAtributo+"='"+condicao+"'";
+		TypedQuery<E> query = em.createQuery(jpql, classe);
+		query.setMaxResults(200);
+		return query.getResultList();
+		
+	}
+	public List<E> obterCondicao2(String nome1, String condicao1, String nome2, String condicao2){
+		String jpql = "select p from "+ classe.getName() + " p where "+nome1+"='"+condicao1+"' and "+nome2+"='"+condicao2+"'";
 		TypedQuery<E> query = em.createQuery(jpql, classe);
 		query.setMaxResults(200);
 		return query.getResultList();

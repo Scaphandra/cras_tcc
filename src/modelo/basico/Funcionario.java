@@ -1,5 +1,6 @@
 package modelo.basico;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,8 +16,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import modelo.enumerados.Escolaridade;
 import modelo.enumerados.NivelAcesso;
@@ -33,6 +38,10 @@ public class Funcionario {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id_funcionario")
 	protected Long id;
+	
+	@ManyToOne
+	@JoinColumn(name="id_unidade")
+	private Unidade unidade;
 	
 	@Column(name="nome_funcionario")
 	protected String nome;
@@ -70,6 +79,11 @@ public class Funcionario {
 	@OneToMany(mappedBy="funcionario")
 	private List<Atendimento> atendimentos;
 	
+	private String cidade;
+	
+	@Temporal(TemporalType.DATE)
+	@Column(name="data_funcionario")
+	private Date dataNascimento;
 	
 	public Funcionario() {
 		
@@ -84,6 +98,13 @@ public class Funcionario {
 		this.id = id;
 	}
 
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+	}
 
 	public String getNome() {
 		return nome;
@@ -199,6 +220,22 @@ public class Funcionario {
 
 	public void setAtendimentos(Atendimento atendimento) {
 		this.atendimentos.add(atendimento);
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 	@Override
